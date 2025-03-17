@@ -1,0 +1,20 @@
+.product-img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+}
+
+.hover-alt {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    display: none;
+}
+
