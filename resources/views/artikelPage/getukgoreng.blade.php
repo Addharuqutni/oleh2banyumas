@@ -1,85 +1,64 @@
 @extends('layouts.index')
 
-@section('title', 'Getuk Goreng - Snack Banyumas')
+@section('title', 'Getuk Goreng - Oleh-oleh Khas Banyumas')
 
 @section('content')
-<div class="container-fluid py-5" style="background-color: #e8f5e9;">
-    <!-- Main Header Section -->
-    <div class="row mb-4">
-        <div class="col-12 text-center">
-            <h1 class="fw-bold mb-1">Oleh Oleh Makanan Ringan Banyumas</h1>
-            <p class="text-muted">apa aja sih oleh-oleh makanan ringan khas dari Banyumas? berikut pilihannya</p>
-        </div>
-    </div>
-    
-    <!-- Featured Product Image -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-12 col-md-8 col-lg-6 text-center">
-            <div class="card border-0 rounded-4 overflow-hidden shadow-sm">
-                <img src="https://radarbanyumas.disway.id/upload/21f2411871cc16ea65d41cc9f6f10379.jpg" 
-                     class="card-img-top img-fluid" 
-                     alt="Getuk Goreng"
-                     style="max-height: 400px; object-fit: cover;">
+    <div class="container py-3">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('artikel.index') }}" class="text-decoration-none">Artikel</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Getuk Goreng</li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h1 class="fw-bold mb-4 text-center">Getuk Goreng</h1>
+
+                <div class="mb-4 text-center">
+                    <img src="https://radarbanyumas.disway.id/upload/21f2411871cc16ea65d41cc9f6f10379.jpg"
+                        alt="Getuk Goreng" class="img-fluid rounded shadow-sm" style="max-height: 400px;">
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="fw-semibold mb-3">Apa itu Getuk Goreng?</h2>
+                    <p>Getuk goreng adalah makanan olahan yang terbuat dari singkong yang dihaluskan kemudian digoreng.
+                        Getuk goreng khas Sokaraja memiliki tekstur yang lembut di dalam namun renyah di luar. Rasanya manis
+                        dengan aroma yang khas, menjadikannya salah satu oleh-oleh favorit dari Banyumas.</p>
+                    <p>Getuk goreng Sokaraja biasanya dikemas dalam kotak kardus yang praktis untuk dibawa sebagai
+                        oleh-oleh. Makanan ini memiliki daya tahan sekitar 3-4 hari pada suhu ruangan.</p>
+                    <p>Harga getuk goreng bervariasi mulai dari Rp 15.000 hingga Rp 30.000 per kotak, tergantung ukuran dan
+                        produsennya.</p>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="fw-semibold mb-3">Sejarah Getuk Goreng</h2>
+                    <p>Getuk goreng Sokaraja pertama kali dibuat pada sekitar tahun 1918 oleh Ibu Djoewariyah. Awalnya,
+                        makanan ini hanya dijual di pasar tradisional Sokaraja. Namun seiring berjalannya waktu, popularitas
+                        getuk goreng semakin meningkat hingga menjadi ikon kuliner Banyumas.</p>
+                    <p>Nama "getuk goreng" sendiri berasal dari kata "getuk" yang merupakan makanan tradisional berbahan
+                        dasar singkong yang dikukus, dan "goreng" karena proses pengolahannya yang digoreng setelah
+                        dihaluskan dan diberi bumbu.</p>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="fw-semibold mb-3">Cara Pembuatan</h2>
+                    <p>Pembuatan getuk goreng dimulai dengan mengupas dan membersihkan singkong. Singkong kemudian dikukus
+                        hingga empuk. Setelah empuk, singkong ditumbuk atau dihaluskan, kemudian dicampur dengan gula pasir,
+                        gula merah, dan sedikit garam. Adonan kemudian dibentuk pipih dan digoreng hingga kecoklatan dan
+                        renyah di bagian luarnya.</p>
+                    <p>Proses penggorengan membutuhkan keahlian khusus agar getuk goreng tidak hancur saat digoreng dan
+                        memiliki tekstur yang tepat - renyah di luar namun tetap lembut di dalam.</p>
+                </div>
+
+                <div class="text-center mt-5 mb-5">
+                    <a href="{{ route('shops.index') }}" class="btn btn-success px-4 py-2">Lihat Toko Oleh-oleh</a>
+                    <a href="{{ route('artikel.index') }}" class="btn btn-outline-secondary px-4 py-2 ms-2">Kembali ke
+                        Artikel</a>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- Product Title -->
-    <div class="row justify-content-center mb-4">
-        <div class="col-12 text-center">
-            <h2 class="fw-semibold fs-1">Getuk Goreng</h2>
-        </div>
-    </div>
-    
-    <!-- Product Description -->
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-            <p class="text-muted fw-normal lh-base" style="text-align: justify;">
-                There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, 
-                by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of 
-                Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum 
-                generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the 
-                Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate 
-                Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected 
-                humour, or non-characteristic words etc
-            </p>
-        </div>
-    </div>
-</div>
-@endsection
-
-@section('styles')
-<style>
-    body {
-        background-color: #e8f5e9;
-    }
-    
-    h1 {
-        color: #333;
-        font-size: 2.5rem;
-    }
-    
-    h2 {
-        color: #333;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .text-muted {
-        color: #555 !important;
-    }
-    
-    .rounded-4 {
-        border-radius: 1rem !important;
-    }
-    
-    /* Custom styling for the card */
-    .card {
-        background-color: transparent;
-    }
-    
-    .card img {
-        border-radius: 1rem;
-    }
-</style>
 @endsection

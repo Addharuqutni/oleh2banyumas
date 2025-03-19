@@ -22,6 +22,10 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
 <style>
     .map-container {
         position: relative;
@@ -75,10 +79,6 @@
     }
 </style>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Data statis untuk demo (ganti dengan data dinamis dari database)
@@ -113,7 +113,7 @@
         ];
 
         // Initialize map centered on Banyumas
-        var map = L.map('map').setView([-7.4312, 109.2350], 11);
+        var map = L.map('map').setView([-7.4292, 109.2297], 12);
 
         // Add OpenStreetMap tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -121,30 +121,25 @@
             maxZoom: 19
         }).addTo(map);
 
-        // Add markers for each location
-        for (var i = 0; i < locations.length; i++) {
-            var location = locations[i];
-
-            // Create marker
-            L.marker([location.latitude, location.longitude])
+        // Add markers for each location from database
+        @foreach($shops as $shop)
+            L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
                 .bindPopup('<div class="popup-content">' +
-                    '<img src="' + location.foto + '" alt="' + location.nama + '">' +
-                    '<h3 class="text-primary fw-bold">' + location.nama + '</h3>' +
+                    '<img src="{{ asset("storage/" . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
+                    '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
                     '<div>' +
                     '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
-                    '<h6 class="text-secondary">' + location.alamat + '</h6>' +
-                    '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="/shop-toko/' +
-                    encodeURIComponent(location.nama) + '">Detail Toko</a>' +
+                    '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
+                    '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route("shops.show", $shop->id) }}">Detail Toko</a>' +
                     '<div class="view-link d-flex align-items-center mt-2">' +
                     '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
-                    '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q=' +
-                    location.latitude + ',' + location.longitude + '">' +
+                    '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
                     '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
                     '</div>' +
                     '</div>' +
                     '</div>')
                 .addTo(map);
-        }
+        @endforeach
 
         // Make map responsive
         window.addEventListener('resize', function() {

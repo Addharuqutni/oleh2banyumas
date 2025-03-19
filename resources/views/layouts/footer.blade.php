@@ -1,4 +1,4 @@
-<footer class="bg-light text-dark" style="height: auto;">
+<footer class="bg-light text-dark mt-auto" style="height: auto;">
     <div class="container py-4 py-md-5">
         <div class="row align-items-center text-center text-md-start">
             <!-- Logo -->

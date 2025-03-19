@@ -26,71 +26,37 @@
             <h2 class="fw-bold">Daftar Toko Oleh-Oleh</h2>
             <p class="mb-5 w-lg-50">Rekomendasi</p>
             <div class="row g-4">
-                <!-- Toko Card 1 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="store-card">
-                        <div class="card-img-container">
-                            <img src="https://radarbanyumas.disway.id/upload/21f2411871cc16ea65d41cc9f6f10379.jpg"
-                                alt="Getuk Goreng Sokaraja" class="card-img">
-                        </div>
-                        <div class="card-content">
-                            <h5 class="card-title">Getuk Goreng Sokaraja</h5>
-                            <p class="card-address">Jl. Raya Sokaraja, Banyumas</p>
-                            <a href="/detail-toko" class="btn-detail">Detail Toko</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Toko Card 2 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="store-card">
-                        <div class="card-img-container">
-                            <img src="https://visitjawatengah.jatengprov.go.id/assets/images/c55b5229-9b76-4248-b4dd-07eb530d03b5.jpg"
-                                alt="Pusat Oleh-oleh Nopia" class="card-img">
-                        </div>
-                        <div class="card-content">
-                            <h5 class="card-title">Pusat Oleh-oleh Nopia</h5>
-                            <p class="card-address">Jl. Suparjo Rustam, Purwokerto</p>
-                            <a href="#" class="btn-detail">Detail Toko</a>
+                @forelse($featuredShops as $shop)
+                    <!-- Toko Card -->
+                    <div class="col-md-3 col-sm-6">
+                        <div class="store-card">
+                            <div class="card-img-container">
+                                @if ($shop->featured_image)
+                                    <img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}"
+                                        class="card-img">
+                                @else
+                                    <img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}"
+                                        class="card-img">
+                                @endif
+                            </div>
+                            <div class="card-content">
+                                <h5 class="card-title">{{ $shop->name }}</h5>
+                                <p class="card-address">{{ $shop->address }}</p>
+                                <a href="{{ route('shops.detail', $shop->id) }}" class="btn-detail">Detail Toko</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Toko Card 3 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="store-card">
-                        <div class="card-img-container">
-                            <img src="https://radarbanyumas.disway.id//upload/600a36d2ce150a861848b8cad106f2ee.jpg"
-                                alt="Jenang Jaket Banyumas" class="card-img">
-                        </div>
-                        <div class="card-content">
-                            <h5 class="card-title">Jenang Jaket Banyumas</h5>
-                            <p class="card-address">Jl. S. Parman, Purwokerto</p>
-                            <a href="#" class="btn-detail">Detail Toko</a>
-                        </div>
+                @empty
+                    <div class="col-12 text-center">
+                        <p>Belum ada toko yang tersedia.</p>
                     </div>
-                </div>
-
-                <!-- Toko Card 4 -->
-                <div class="col-md-3 col-sm-6">
-                    <div class="store-card">
-                        <div class="card-img-container">
-                            <img src="https://down-id.img.susercontent.com/file/2244ce68d5cc9d5b5456131a4edbed17"
-                                alt="Toko Lanting Asli" class="card-img">
-                        </div>
-                        <div class="card-content">
-                            <h5 class="card-title">Toko Lanting Asli</h5>
-                            <p class="card-address">Jl. Raya Baturraden, Banyumas</p>
-                            <a href="#" class="btn-detail">Detail Toko</a>
-                        </div>
-                    </div>
-                </div>
+                @endforelse
             </div>
 
             <!-- Pagination -->
             <div class="row justify-content-center mt-4">
                 <div class="col-12 text-center">
-                    <a href="/list-toko"
+                    <a href="{{ route('shops.list') }}"
                         class="fw-semibold btn border rounded shadow-regular d-inline-flex justify-content-center align-items-center"
                         style="height: 50px; width: 120px; background: #ffffff;">Selengkapnya</a>
                 </div>
@@ -254,37 +220,6 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Data statis untuk demo (ganti dengan data dinamis dari database)
-            var locations = [{
-                    nama: "Getuk Goreng Sokaraja",
-                    alamat: "Jl. Raya Sokaraja, Banyumas",
-                    latitude: -7.4576737,
-                    longitude: 109.2925581,
-                    foto: "https://asset.kompas.com/crops/WYVkY6Lk1HtXCw9uA5Cw-NJkBtw=/0x0:698x465/750x500/data/photo/2020/12/30/5fec4ca8f3fd9.jpg"
-                },
-                {
-                    nama: "Pusat Oleh-oleh Nopia",
-                    alamat: "Jl. Suparjo Rustam, Purwokerto",
-                    latitude: -7.4312,
-                    longitude: 109.2350,
-                    foto: "https://visitjawatengah.jatengprov.go.id/assets/images/c55b5229-9b76-4248-b4dd-07eb530d03b5.jpg"
-                },
-                {
-                    nama: "Jenang Jaket Banyumas",
-                    alamat: "Jl. S. Parman, Purwokerto",
-                    latitude: -7.4159,
-                    longitude: 109.2376,
-                    foto: "https://radarbanyumas.disway.id//upload/600a36d2ce150a861848b8cad106f2ee.jpg"
-                },
-                {
-                    nama: "Toko Lanting Asli",
-                    alamat: "Jl. Raya Baturraden, Banyumas",
-                    latitude: -7.3800,
-                    longitude: 109.2290,
-                    foto: "https://down-id.img.susercontent.com/file/2244ce68d5cc9d5b5456131a4edbed17"
-                }
-            ];
-
             // Initialize map centered on Banyumas
             var map = L.map('map').setView([-7.4312, 109.2350], 11);
 
@@ -294,30 +229,25 @@
                 maxZoom: 19
             }).addTo(map);
 
-            // Add markers for each location
-            for (var i = 0; i < locations.length; i++) {
-                var location = locations[i];
-
-                // Create marker
-                L.marker([location.latitude, location.longitude])
+            // Add markers for each shop from database
+            @foreach ($shops as $shop)
+                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
                     .bindPopup('<div class="popup-content">' +
-                        '<img src="' + location.foto + '" alt="' + location.nama + '">' +
-                        '<h3 class="text-primary fw-bold">' + location.nama + '</h3>' +
+                        '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
+                        '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
                         '<div>' +
                         '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
-                        '<h6 class="text-secondary">' + location.alamat + '</h6>' +
-                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="/shop-toko/' +
-                        encodeURIComponent(location.nama) + '">Detail Toko</a>' +
+                        '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
+                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', $shop->id) }}">Detail Toko</a>' +
                         '<div class="view-link d-flex align-items-center mt-2">' +
                         '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
-                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q=' +
-                        location.latitude + ',' + location.longitude + '">' +
+                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
                         '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
                         '</div>' +
                         '</div>' +
                         '</div>')
                     .addTo(map);
-            }
+            @endforeach
 
             // Make map responsive
             window.addEventListener('resize', function() {
