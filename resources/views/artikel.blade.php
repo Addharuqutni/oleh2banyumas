@@ -1,6 +1,3 @@
-<div>
-    <!-- Simplicity is the essence of happiness. - Cedric Bledsoe -->
-</div>
 @extends('layouts.index')
 
 @section('title', 'Artikel - Snack Banyumas')
@@ -16,7 +13,7 @@
             </div>
 
             <div class="row g-4">
-                <!-- Product Cards -->
+                <!-- Produk -->
                 <div class="col-6 col-md-4 col-lg-3 mb-4">
                     <a href="/artikel/getukgoreng" class="text-decoration-none">
                         <div class="product-wrapper">
@@ -190,9 +187,4 @@
             transform: scale(1.05);
         }
     </style>
-
-    <script>
-        // JavaScript tidak diperlukan lagi karena kita menggunakan CSS hover
-    </script>
-
 @endsection

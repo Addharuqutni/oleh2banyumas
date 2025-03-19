@@ -36,7 +36,7 @@
                         <div class="card-content">
                             <h5 class="card-title">Getuk Goreng Sokaraja</h5>
                             <p class="card-address">Jl. Raya Sokaraja, Banyumas</p>
-                            <a href="#" class="btn-detail">Detail Toko</a>
+                            <a href="/detail-toko" class="btn-detail">Detail Toko</a>
                         </div>
                     </div>
                 </div>

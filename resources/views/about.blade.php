@@ -4,14 +4,12 @@
 
 @section('content')
 <div class="container mt-4 pt-5">
-    <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12 text-center">
             <h1 class="text-dark">Tentang Kami</h1>
         </div>
     </div>
     
-    <!-- Logo and Description Section -->
     <div class="row mb-4">
         <div class="col-12 text-center">
             <img src="{{ asset('images/Logo.png') }}" alt="Snack Banyumas Logo" class="img-fluid" style="height: 108px;">
@@ -23,7 +21,6 @@
         </div>
     </div>
     
-    <!-- Banyumas Sign Image Section -->
     <div class="row mt-5 mb-5">
         <div class="col-12 text-center">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Banyumas_Regency.jpg" alt="Banyumas Sign" class="img-fluid rounded shadow-sm" style="max-width: 100%;">
