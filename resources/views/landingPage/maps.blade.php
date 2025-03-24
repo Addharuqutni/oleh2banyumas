@@ -81,37 +81,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Data statis untuk demo (ganti dengan data dinamis dari database)
-        var locations = [{
-                nama: "Getuk Goreng Sokaraja",
-                alamat: "Jl. Raya Sokaraja, Banyumas",
-                latitude: -7.4576737,
-                longitude: 109.2925581,
-                foto: "https://asset.kompas.com/crops/WYVkY6Lk1HtXCw9uA5Cw-NJkBtw=/0x0:698x465/750x500/data/photo/2020/12/30/5fec4ca8f3fd9.jpg"
-            },
-            {
-                nama: "Pusat Oleh-oleh Nopia",
-                alamat: "Jl. Suparjo Rustam, Purwokerto",
-                latitude: -7.4312,
-                longitude: 109.2350,
-                foto: "https://visitjawatengah.jatengprov.go.id/assets/images/c55b5229-9b76-4248-b4dd-07eb530d03b5.jpg"
-            },
-            {
-                nama: "Jenang Jaket Banyumas",
-                alamat: "Jl. S. Parman, Purwokerto",
-                latitude: -7.4159,
-                longitude: 109.2376,
-                foto: "https://radarbanyumas.disway.id//upload/600a36d2ce150a861848b8cad106f2ee.jpg"
-            },
-            {
-                nama: "Toko Lanting Asli",
-                alamat: "Jl. Raya Baturraden, Banyumas",
-                latitude: -7.3800,
-                longitude: 109.2290,
-                foto: "https://down-id.img.susercontent.com/file/2244ce68d5cc9d5b5456131a4edbed17"
-            }
-        ];
-
         // Initialize map centered on Banyumas
         var map = L.map('map').setView([-7.4292, 109.2297], 12);
 

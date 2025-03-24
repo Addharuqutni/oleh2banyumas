@@ -3,8 +3,8 @@
 @section('title', 'Artikel - Snack Banyumas')
 
 @section('content')
-    <section class="py-5">
-        <div class="container">
+    <section>
+        <div class="container mt-4">
             <div class="row mb-4">
                 <div class="col-12 col-lg-8 mx-auto text-center">
                     <h1 class="fw-bold mb-3">Oleh-oleh khas Banyumas</h1>
@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <div class="row mt-5">
+            <div class="row mt-5 mb-5">
                 <div class="col-12 text-center">
                     <a href="{{ route('shops.index') }}"
                         class="fw-semibold btn border rounded shadow-regular d-inline-flex justify-content-center align-items-center"
