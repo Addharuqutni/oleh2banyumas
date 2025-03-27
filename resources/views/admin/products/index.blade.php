@@ -75,20 +75,20 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Edit">
+                                            <a href="{{ route('admin.products.edit', $product->slug) }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $product->id }}" data-bs-toggle="tooltip" title="Hapus">
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $product->slug }}" data-bs-toggle="tooltip" title="Hapus">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
                                         
                                         <!-- Delete Modal -->
-                                        <div class="modal fade" id="deleteModal{{ $product->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $product->id }}" aria-hidden="true">
+                                        <div class="modal fade" id="deleteModal{{ $product->slug }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $product->slug }}" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{ $product->id }}">Konfirmasi Hapus</h5>
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ $product->slug }}">Konfirmasi Hapus</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -96,7 +96,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
+                                                        <form action="{{ route('admin.products.destroy', $product->slug) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger">Hapus</button>

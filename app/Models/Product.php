@@ -16,6 +16,7 @@ class Product extends Model
         'price',
         'image',
         'is_available',
+        'slug', // Ensure slug is included for mass assignment
     ];
 
     /**
@@ -32,5 +33,15 @@ class Product extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'product_categories');
+    }
+
+    /**
+     * Override the default route key binding.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug'; // Use 'slug' for route model binding
     }
 }

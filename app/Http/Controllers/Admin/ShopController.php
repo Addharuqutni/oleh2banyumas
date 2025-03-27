@@ -20,7 +20,7 @@ class ShopController extends Controller
         $shops = Shop::withCount('products')
             ->orderBy('name')
             ->paginate(10);
-            
+
         return view('admin.shops.index', compact('shops'));
     }
 
@@ -54,6 +54,7 @@ class ShopController extends Controller
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:active,inactive',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'nullable|string|unique:shops,slug',
         ]);
 
         // Handle featured image upload
@@ -89,7 +90,7 @@ class ShopController extends Controller
     public function show(Shop $shop)
     {
         $shop->load('products', 'images', 'reviews');
-        
+
         return view('admin.shops.show', compact('shop'));
     }
 
@@ -102,7 +103,7 @@ class ShopController extends Controller
     public function edit(Shop $shop)
     {
         $shop->load('images');
-        
+
         return view('admin.shops.edit', compact('shop'));
     }
 
@@ -127,7 +128,20 @@ class ShopController extends Controller
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:active,inactive',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug' => 'nullable|string|unique:shops,slug,' . $shop->id,
         ]);
+
+        // Update slug if name changed and slug not manually set
+        if ($shop->name !== $validated['name'] && (!isset($validated['slug']) || empty($validated['slug']))) {
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+
+            // Ensure slug is unique
+            $count = 2;
+            $originalSlug = $validated['slug'];
+            while (Shop::where('slug', $validated['slug'])->where('id', '!=', $shop->id)->exists()) {
+                $validated['slug'] = $originalSlug . '-' . $count++;
+            }
+        }
 
         // Handle featured image
         if ($request->hasFile('featured_image')) {
@@ -135,7 +149,7 @@ class ShopController extends Controller
             if ($shop->featured_image) {
                 Storage::disk('public')->delete($shop->featured_image);
             }
-            
+
             $path = $request->file('featured_image')->store('shops', 'public');
             $validated['featured_image'] = $path;
         } elseif ($request->has('remove_featured_image')) {
@@ -176,19 +190,19 @@ class ShopController extends Controller
         if ($shop->featured_image) {
             Storage::disk('public')->delete($shop->featured_image);
         }
-        
+
         // Delete shop images
         foreach ($shop->images as $image) {
             Storage::disk('public')->delete($image->image_path);
         }
-        
+
         // Delete shop (will cascade delete related records)
         $shop->delete();
 
         return redirect()->route('admin.shops.index')
             ->with('success', 'Toko berhasil dihapus.');
     }
-    
+
     /**
      * Delete a shop image.
      *
@@ -198,13 +212,34 @@ class ShopController extends Controller
     public function deleteImage($id)
     {
         $image = ShopImage::findOrFail($id);
-        
+
         // Delete image file
         Storage::disk('public')->delete($image->image_path);
-        
+
         // Delete database record
         $image->delete();
-        
+
         return back()->with('success', 'Foto berhasil dihapus.');
+    }
+
+    public function regenerateSlugs()
+    {
+        $shops = Shop::all();
+
+        foreach ($shops as $shop) {
+            $originalSlug = \Illuminate\Support\Str::slug($shop->name);
+            $slug = $originalSlug;
+            $count = 2;
+
+            while (Shop::where('slug', $slug)->where('id', '!=', $shop->id)->exists()) {
+                $slug = $originalSlug . '-' . $count++;
+            }
+
+            $shop->slug = $slug;
+            $shop->save();
+        }
+
+        return redirect()->route('admin.shops.index')
+            ->with('success', 'Semua slug toko berhasil diregenerasi.');
     }
 }

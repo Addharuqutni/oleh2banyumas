@@ -126,7 +126,9 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                            <a href="#" class="btn btn-primary">Detail</a>
+                            <a class="btn btn-primary" href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}">
+                                Detail
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -200,7 +202,7 @@
                         <h5 class="mb-0">Tambahkan Ulasan</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('shops.reviews.store', $shop->id) }}" method="POST">
+                        <form action="{{ route('shops.reviews.store', $shop) }}" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama</label>

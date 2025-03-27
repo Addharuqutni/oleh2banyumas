@@ -14,8 +14,9 @@ class ShopController extends Controller
     public function index()
     {
         // Get all active shops for both map and card display
+        // Added 'slug' to the select fields to ensure it's available for URL generation
         $shops = Shop::where('status', 'active')
-            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image')
+            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug')
             ->orderBy('name')
             ->get();
 
@@ -49,7 +50,10 @@ class ShopController extends Controller
             });
         }
 
-        $shops = $query->orderBy('name')->paginate(12);
+        // Make sure to select 'slug' field for URL generation
+        $shops = $query->select('id', 'name', 'address', 'featured_image', 'description', 'slug')
+            ->orderBy('name')
+            ->paginate(12);
 
         return view('tokoPage.listToko', compact('shops'));
     }
@@ -59,12 +63,16 @@ class ShopController extends Controller
      */
     public function maps()
     {
-        $shops = Shop::where('status', 'active')->get();
+        // Include slug field for URL generation if needed
+        $shops = Shop::where('status', 'active')
+            ->select('id', 'name', 'address', 'latitude', 'longitude', 'slug')
+            ->get();
         return view('landingPage.maps', compact('shops'));
     }
 
     /**
      * Display the specified shop.
+     * Uses Route Model Binding - will automatically work with slug
      */
     public function show(Shop $shop)
     {
@@ -86,6 +94,7 @@ class ShopController extends Controller
 
     /**
      * Display the detailed shop page.
+     * Uses Route Model Binding - will automatically work with slug
      */
     public function detailToko(Shop $shop)
     {
@@ -107,6 +116,7 @@ class ShopController extends Controller
 
     /**
      * Store a new review for a shop.
+     * Uses Route Model Binding - will automatically work with slug
      */
     public function storeReview(Request $request, Shop $shop)
     {
@@ -123,5 +133,35 @@ class ShopController extends Controller
         Review::create($validated);
 
         return back()->with('success', 'Terima kasih atas ulasan Anda. Ulasan akan ditampilkan setelah disetujui.');
+    }
+
+    /**
+     * Optional: Add backward compatibility for old ID-based URLs
+     * This can help during transition to slug-based URLs
+     */
+    public function detailTokoFallback($identifier)
+    {
+        // Try to find by slug first
+        $shop = Shop::where('slug', $identifier)->first();
+
+        // If not found and identifier is numeric, try to find by ID
+        if (!$shop && is_numeric($identifier)) {
+            $shop = Shop::find($identifier);
+        }
+
+        if (!$shop || $shop->status !== 'active') {
+            abort(404);
+        }
+
+        $shop->load(['products' => function ($query) {
+            $query->where('is_available', true);
+        }, 'images']);
+
+        $reviews = $shop->reviews()
+            ->where('is_approved', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('tokoPage.detailToko', compact('shop', 'reviews'));
     }
 }

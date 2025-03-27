@@ -27,12 +27,16 @@ Route::get('/kategori', [HomeController::class, 'kategori'])->name('kategori');
 // Map Routes
 Route::get('/maps', [ShopController::class, 'maps'])->name('maps');
 
-// Shop/Toko Routes
+// Shop Toko Routes
 Route::get('/toko', [ShopController::class, 'index'])->name('shops.index');
 Route::get('/toko/{shop}', [ShopController::class, 'show'])->name('shops.show');
 Route::get('/list-toko', [ShopController::class, 'listToko'])->name('shops.list');
-Route::get('/detail-toko/{shop}', [ShopController::class, 'detailToko'])->name('shops.detail');
+Route::get('/toko/detail-toko/{shop:slug}', [ShopController::class, 'detailToko'])->name('shops.detail');
 Route::post('/toko/{shop}/reviews', [ShopController::class, 'storeReview'])->name('shops.reviews.store');
+
+// Product Routes
+Route::get('/toko/detail-toko/{shop:slug}/produk/{product:slug}', [ProductController::class, 'show'])->name('shops.products.show');
+
 
 // Article Pages
 Route::get('/artikel', [ArticleController::class, 'index'])->name('artikel.index');
@@ -56,23 +60,24 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 
 // Admin Protected Routes
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // Shop Management
     Route::resource('shops', AdminShopController::class);
     Route::delete('/shop-images/{id}', [AdminShopController::class, 'deleteImage'])->name('shop-images.destroy');
-    
+    Route::get('/shops-regenerate-slugs', [AdminShopController::class, 'regenerateSlugs'])->name('shops.regenerate-slugs');
+
     // Product Management
     Route::resource('products', AdminProductController::class);
-    
+
     // Review Management
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::get('/reviews/pending', [AdminReviewController::class, 'pending'])->name('reviews.pending');
     Route::patch('/reviews/{review}/approve', [AdminReviewController::class, 'approve'])->name('reviews.approve');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
-    
+
     // Category Management
     Route::resource('categories', AdminCategoryController::class);
 });

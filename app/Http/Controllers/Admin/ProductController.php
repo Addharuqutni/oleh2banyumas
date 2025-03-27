@@ -20,34 +20,33 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::with('shop');
-        
-        // Filter by shop
+
+        // Filter by shop if provided
         if ($request->filled('shop_id')) {
             $query->where('shop_id', $request->shop_id);
         }
-        
-        // Search by name
+
+        // Search by name if provided
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
-        
+
         $products = $query->orderBy('name')->paginate(10);
         $shops = Shop::orderBy('name')->get();
-        
+
         return view('admin.products.index', compact('products', 'shops'));
     }
 
     /**
      * Show the form for creating a new product.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
-    public function create(Request $request)
+    public function create()
     {
         $shops = Shop::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
-        
+
         return view('admin.products.create', compact('shops', 'categories'));
     }
 
@@ -68,24 +67,33 @@ class ProductController extends Controller
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
-        
+
         // Set availability
         $validated['is_available'] = $request->has('is_available');
+
+        // Generate slug from the name
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
         
+        // Ensure slug is unique
+        $count = 2;
+        $originalSlug = $validated['slug'];
+        while (Product::where('slug', $validated['slug'])->exists()) {
+            $validated['slug'] = $originalSlug . '-' . $count++;
+        }
+
         // Handle image upload
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('products', 'public');
-            $validated['image'] = $path;
+            $validated['image'] = $request->file('image')->store('products', 'public');
         }
-        
+
         // Create the product
         $product = Product::create($validated);
-        
+
         // Attach categories
         if ($request->has('categories')) {
             $product->categories()->attach($request->categories);
         }
-        
+
         return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -101,7 +109,7 @@ class ProductController extends Controller
         $shops = Shop::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
         $selectedCategories = $product->categories->pluck('id')->toArray();
-        
+
         return view('admin.products.edit', compact('product', 'shops', 'categories', 'selectedCategories'));
     }
 
@@ -123,19 +131,30 @@ class ProductController extends Controller
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
-        
+
         // Set availability
         $validated['is_available'] = $request->has('is_available');
-        
+
+        // Generate slug only if the name has changed
+        if ($product->name !== $validated['name']) {
+            $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+            
+            // Ensure slug is unique
+            $count = 2;
+            $originalSlug = $validated['slug'];
+            while (Product::where('slug', $validated['slug'])->where('id', '!=', $product->id)->exists()) {
+                $validated['slug'] = $originalSlug . '-' . $count++;
+            }
+        }
+
         // Handle image
         if ($request->hasFile('image')) {
             // Delete old image if exists
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
-            
-            $path = $request->file('image')->store('products', 'public');
-            $validated['image'] = $path;
+
+            $validated['image'] = $request->file('image')->store('products', 'public');
         } elseif ($request->has('remove_image')) {
             // Remove image if requested
             if ($product->image) {
@@ -143,17 +162,17 @@ class ProductController extends Controller
                 $validated['image'] = null;
             }
         }
-        
+
         // Update the product
         $product->update($validated);
-        
+
         // Sync categories
         if ($request->has('categories')) {
             $product->categories()->sync($request->categories);
         } else {
             $product->categories()->detach();
         }
-        
+
         return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil diperbarui.');
     }
@@ -170,10 +189,10 @@ class ProductController extends Controller
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
-        
+
         // Delete product
         $product->delete();
-        
+
         return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil dihapus.');
     }

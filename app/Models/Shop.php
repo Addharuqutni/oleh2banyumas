@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Shop extends Model
 {
@@ -20,7 +21,47 @@ class Shop extends Model
         'operating_hours',
         'featured_image',
         'status',
+        'slug',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($shop) {
+            if (empty($shop->slug)) {
+                $shop->slug = Str::slug($shop->name);
+
+                // Ensure slug is unique
+                $count = 2;
+                $originalSlug = $shop->slug;
+                while (static::where('slug', $shop->slug)->exists()) {
+                    $shop->slug = $originalSlug . '-' . $count++;
+                }
+            }
+        });
+
+        static::updating(function ($shop) {
+            if ($shop->isDirty('name') && !$shop->isDirty('slug')) {
+                $shop->slug = Str::slug($shop->name);
+
+                // Ensure slug is unique
+                $count = 2;
+                $originalSlug = $shop->slug;
+                while (static::where('slug', $shop->slug)->where('id', '!=', $shop->id)->exists()) {
+                    $shop->slug = $originalSlug . '-' . $count++;
+                }
+            }
+        });
+    }
 
     /**
      * Get the products for the shop.
@@ -45,7 +86,7 @@ class Shop extends Model
     {
         return $this->hasMany(Review::class);
     }
-    
+
     /**
      * Get the average rating for the shop.
      */

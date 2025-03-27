@@ -112,7 +112,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('admin.shops.edit', $shop->id) }}" class="btn btn-sm btn-outline-primary">
+                                                <a href="{{ route('admin.shops.edit', $shop->slug) }}" class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
                                             </td>

@@ -54,7 +54,7 @@
                             <div class="card-content">
                                 <h5 class="card-title">{{ $shop->name }}</h5>
                                 <p class="card-address">{{ $shop->address }}</p>
-                                <a href="{{ route('shops.detail', $shop->id) }}" class="btn-detail">Detail Toko</a>
+                                <a href="{{ route('shops.detail', ['shop' => $shop]) }}" class="btn-detail">Detail Toko</a>
                             </div>
                         </div>
                     </div>

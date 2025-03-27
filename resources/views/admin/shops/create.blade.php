@@ -37,6 +37,17 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <!-- Add this new slug field -->
+                        <div class="col-md-6 mb-3">
+                            <label for="slug" class="form-label">Slug URL</label>
+                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug"
+                                name="slug" value="{{ old('slug') }}">
+                            <small class="text-muted">Akan digunakan di URL: example.com/detail-toko/[slug]. Kosongi untuk
+                                generate otomatis.</small>
+                            @error('slug')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
 
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
@@ -108,8 +119,6 @@
                     </div>
 
                     <div class="row">
-                        
-
                         <div class="col-md-6 mb-3">
                             <label for="operating_hours" class="form-label">Jam Operasional</label>
                             <input type="text" class="form-control @error('operating_hours') is-invalid @enderror"
@@ -118,6 +127,9 @@
                             @error('operating_hours')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <!-- Possibly add another field here -->
                         </div>
                     </div>
 
@@ -166,6 +178,25 @@
 @section('scripts')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('name');
+            const slugInput = document.getElementById('slug');
+
+            nameInput.addEventListener('input', function() {
+                if (!slugInput.value.trim()) {
+                    // Only auto-generate if user hasn't manually entered a slug
+                    slugInput.value = nameInput.value
+                        .toLowerCase()
+                        .replace(/\s+/g, '-') // Replace spaces with -
+                        .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                        .replace(/\-\-+/g, '-') // Replace multiple - with single -
+                        .replace(/^-+/, '') // Trim - from start
+                        .replace(/-+$/, ''); // Trim - from end
+                }
+            });
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize map centered on Banyumas
