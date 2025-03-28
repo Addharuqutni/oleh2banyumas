@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('shop_id')->constrained()->onDelete('cascade');
             $table->string('name');
+            $table->string('slug')->nullable()->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->string('image')->nullable();
             $table->boolean('is_available')->default(true);
-            $table->string('slug')->unique();
+            
             $table->timestamps();
         });
     }
