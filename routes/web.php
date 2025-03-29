@@ -49,7 +49,6 @@ Route::get('/artikel/mendoan', [ArticleController::class, 'mendoan'])->name('art
 Route::get('/artikel/cimplung', [ArticleController::class, 'cimplung'])->name('artikel.cimplung');
 Route::get('/artikel/mireng', [ArticleController::class, 'mireng'])->name('artikel.mireng');
 
-
 // Other Pages
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
@@ -68,6 +67,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::resource('shops', AdminShopController::class);
     Route::delete('/shop-images/{id}', [AdminShopController::class, 'deleteImage'])->name('shop-images.destroy');
     Route::get('/shops-regenerate-slugs', [AdminShopController::class, 'regenerateSlugs'])->name('shops.regenerate-slugs');
+    Route::put('/shops/{shop}', [AdminShopController::class, 'update'])->name('shops.update');
 
     // Product Management
     Route::resource('products', AdminProductController::class);

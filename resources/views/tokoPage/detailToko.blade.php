@@ -126,7 +126,8 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                            <a class="btn btn-primary" href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}">
+                            <a class="btn btn-primary"
+                                href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}">
                                 Detail
                             </a>
                         </div>

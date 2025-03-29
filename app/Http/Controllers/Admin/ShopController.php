@@ -211,6 +211,7 @@ class ShopController extends Controller
      */
     public function deleteImage($id)
     {
+        // Cari image berdasarkan ID, bukan slug
         $image = ShopImage::findOrFail($id);
 
         // Delete image file

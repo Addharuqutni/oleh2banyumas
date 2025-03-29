@@ -44,6 +44,38 @@
             background-color: #dc3545;
             color: white;
         }
+        
+        /* Styling untuk loading overlay */
+        .form-loading {
+            position: relative;
+        }
+        
+        .form-loading::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .form-loading::before {
+            content: "Menyimpan...";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
     </style>
 @endsection
 
@@ -56,9 +88,36 @@
             </a>
         </div>
 
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <!-- Tampilkan error validasi secara umum -->
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Terjadi kesalahan!</strong> Silakan periksa form Anda.
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <form action="{{ route('admin.shops.update', $shop->id) }}" method="POST" enctype="multipart/form-data">
+                <form id="editShopForm" action="{{ route('admin.shops.update', $shop->slug) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -198,22 +257,17 @@
 
                     <div class="mb-4">
                         <label class="form-label">Foto Galeri</label>
-                        <div class="row">
+                        <div class="row" id="shop-images-container">
                             @if ($shop->images->count() > 0)
                                 @foreach ($shop->images as $image)
-                                    <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="col-md-3 col-sm-4 col-6 image-item" data-id="{{ $image->id }}">
                                         <div class="shop-image">
                                             <img src="{{ asset('storage/' . $image->image_path) }}"
                                                 alt="{{ $image->caption ?? $shop->name }}">
-                                            <form action="{{ route('admin.shop-images.destroy', $image->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus foto ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="delete-btn" title="Hapus Foto">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="delete-btn delete-image-btn" 
+                                                data-id="{{ $image->id }}" title="Hapus Foto">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 @endforeach
@@ -240,9 +294,28 @@
 
                     <div class="d-flex justify-content-end mt-4">
                         <a href="{{ route('admin.shops.index') }}" class="btn btn-secondary me-2">Batal</a>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">Simpan Perubahan</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteImageModal" tabindex="-1" aria-labelledby="deleteImageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteImageModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda yakin ingin menghapus foto ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
             </div>
         </div>
     </div>
@@ -255,7 +328,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             const nameInput = document.getElementById('name');
             const slugInput = document.getElementById('slug');
+            const form = document.getElementById('editShopForm');
+            const submitBtn = document.getElementById('submitBtn');
 
+            // Slug generator
             nameInput.addEventListener('input', function() {
                 if (!slugInput.value.trim()) {
                     // Only auto-generate if user hasn't manually entered a slug
@@ -268,13 +344,30 @@
                         .replace(/-+$/, ''); // Trim - from end
                 }
             });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize map centered on shop location
-            var lat = {{ $shop->latitude }};
-            var lng = {{ $shop->longitude }};
+
+            // Form submission handler
+            form.addEventListener('submit', function(e) {
+                // Disable submit button to prevent multiple submissions
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Menyimpan...';
+                
+                // Add loading class to form
+                form.classList.add('form-loading');
+                
+                // Continue with form submission
+                return true;
+            });
+            
+            // Initialize map
+            var lat = {{ $shop->latitude ?? 'null' }};
+            var lng = {{ $shop->longitude ?? 'null' }};
+            
+            // Default to center of Indonesia if no coordinates
+            if (!lat || !lng) {
+                lat = -2.5489;
+                lng = 118.0149;
+            }
+            
             var map = L.map('map').setView([lat, lng], 15);
             var marker;
 
@@ -295,6 +388,123 @@
 
                 // Update marker position
                 marker.setLatLng(e.latlng);
+            });
+            
+            // Refresh map when it becomes visible (fixes Leaflet rendering issues)
+            setTimeout(function() {
+                map.invalidateSize();
+            }, 100);
+            
+            // Handle image deletion
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteImageModal'));
+            let imageIdToDelete = null;
+            let imageElementToRemove = null;
+            
+            // Handle delete button click
+            document.querySelectorAll('.delete-image-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    imageIdToDelete = this.getAttribute('data-id');
+                    imageElementToRemove = document.querySelector(`.image-item[data-id="${imageIdToDelete}"]`);
+                    deleteModal.show();
+                });
+            });
+            
+            // Handle confirm delete button
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+                if (imageIdToDelete) {
+                    // Add loading state
+                    if (imageElementToRemove) {
+                        imageElementToRemove.classList.add('deleting');
+                    }
+                    
+                    // Send AJAX request to delete the image
+                    fetch(`{{ url('admin/shop-images') }}/${imageIdToDelete}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Remove the image element from DOM
+                        if (imageElementToRemove) {
+                            imageElementToRemove.remove();
+                        }
+                        
+                        // Show success message
+                        const alertContainer = document.createElement('div');
+                        alertContainer.className = 'alert alert-success alert-dismissible fade show';
+                        alertContainer.innerHTML = `
+                            ${data.message || 'Foto berhasil dihapus.'}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        document.querySelector('.container-fluid').insertBefore(alertContainer, document.querySelector('.card'));
+                        
+                        // Check if there are no more images
+                        const remainingImages = document.querySelectorAll('.image-item');
+                        if (remainingImages.length === 0) {
+                            const noImagesMessage = document.createElement('div');
+                            noImagesMessage.className = 'col-12';
+                            noImagesMessage.innerHTML = '<p class="text-muted">Belum ada foto galeri.</p>';
+                            document.getElementById('shop-images-container').appendChild(noImagesMessage);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Remove loading state
+                        if (imageElementToRemove) {
+                            imageElementToRemove.classList.remove('deleting');
+                        }
+                        
+                        // Show error message
+                        const alertContainer = document.createElement('div');
+                        alertContainer.className = 'alert alert-danger alert-dismissible fade show';
+                        alertContainer.innerHTML = `
+                            Terjadi kesalahan saat menghapus foto.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        document.querySelector('.container-fluid').insertBefore(alertContainer, document.querySelector('.card'));
+                    })
+                    .finally(() => {
+                        deleteModal.hide();
+                        imageIdToDelete = null;
+                        imageElementToRemove = null;
+                    });
+                }
+            });
+            
+            // File validation
+            const imageInput = document.getElementById('featured_image');
+            const multipleImagesInput = document.getElementById('images');
+            
+            function validateFileSize(input) {
+                if (input.files) {
+                    for (let i = 0; i < input.files.length; i++) {
+                        const fileSize = input.files[i].size / 1024 / 1024; // in MB
+                        if (fileSize > 2) {
+                            alert('File terlalu besar! Maksimal ukuran file adalah 2MB.');
+                            input.value = '';
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            
+            imageInput.addEventListener('change', function() {
+                validateFileSize(this);
+            });
+            
+            multipleImagesInput.addEventListener('change', function() {
+                validateFileSize(this);
             });
         });
     </script>

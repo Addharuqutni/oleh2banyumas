@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use app\Models\Shop;
+use app\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -38,25 +41,25 @@ class ProductController extends Controller
     /**
      * Display the specified product.
      */
-    public function show($product)
+    public function show($shopSlug, $productSlug)
     {
-        // Find the product by slug
-        $product = Product::where('slug', $product)->firstOrFail();
+        // Find the product with eager loading
+        $product = Product::with(['categories'])
+            ->whereHas('shop', function ($query) use ($shopSlug) {
+                $query->where('slug', $shopSlug)
+                    ->where('status', 'active');
+            })
+            ->where('slug', $productSlug)
+            ->where('is_available', true)
+            ->firstOrFail();
 
-        // Check if the product is available and the shop is active
-        if (!$product->is_available || $product->shop->status !== 'active') {
-            abort(404);
-        }
-
-        // Load related data
-        $product->load('shop', 'categories');
-
-        // Get related products from the same shop
+        // Get related products
         $relatedProducts = $this->getRelatedProducts($product);
 
-        // Return to the product detail view (you may need to create this view)
+        // Return view with product data
         return view('products.show', compact('product', 'relatedProducts'));
     }
+
 
     /**
      * Get related products from the same shop.
@@ -66,9 +69,11 @@ class ProductController extends Controller
      */
     protected function getRelatedProducts(Product $product)
     {
-        return Product::where('shop_id', $product->shop_id)
+        return Product::with('shop') // Eager load shop untuk menghindari N+1 query
+            ->where('shop_id', $product->shop_id)
             ->where('id', '!=', $product->id)
             ->where('is_available', true)
+            ->inRandomOrder() // Tampilkan produk secara acak untuk variasi
             ->limit(4)
             ->get();
     }
