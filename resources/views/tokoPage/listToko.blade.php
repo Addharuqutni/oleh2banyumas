@@ -28,7 +28,8 @@
                     <div class="col-md-6">
                         <form action="{{ route('shops.list') }}" method="GET">
                             <div class="input-group">
-                                <input type="text" class="form-control rounded-start" name="search" placeholder="Cari toko atau produk..." value="{{ request('search') }}">
+                                <input type="text" class="form-control rounded-start" name="search"
+                                    placeholder="Cari toko atau produk..." value="{{ request('search') }}">
                                 <button class="btn btn-dark rounded-end" type="submit">Cari</button>
                             </div>
                         </form>
@@ -36,9 +37,9 @@
                 </div>
             </div>
 
-            <!-- Store Cards - Row 1 -->
+            <!-- Store Cards - Row -->
             <div class="row g-4 mb-4">
-                <!-- Store Card 1 -->
+                <!-- Store Card -->
                 @forelse($shops as $shop)
                     <div class="col-md-3 col-sm-6 mb-4">
                         <div class="store-card">

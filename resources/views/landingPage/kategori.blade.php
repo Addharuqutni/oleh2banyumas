@@ -175,7 +175,3 @@
         transform: scale(1.05);
     }
 </style>
-
-<script>
-    // JavaScript tidak diperlukan lagi karena kita menggunakan CSS hover
-</script>

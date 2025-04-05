@@ -28,7 +28,7 @@
             </ol>
         </nav>
 
-        <!-- Map Section -->
+        <!-- Map -->
         <div class="row mb-4">
             <div class="col-12">
                 <div class="map-container shadow rounded">
@@ -40,24 +40,104 @@
         </div>
 
         <!-- Store Details -->
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h2 class="fw-semibold">{{ $shop->name }}</h2>
-                <p class="text-secondary">Alamat: {{ $shop->address }}</p>
-                @if ($shop->phone)
-                    <p class="text-secondary">Telepon: {{ $shop->phone }}</p>
-                @endif
-                @if ($shop->operating_hours)
-                    <p class="text-secondary">Jam Operasional: {{ $shop->operating_hours }}</p>
-                @endif
-                <p class="text-secondary">Deskripsi: {{ $shop->description ?? 'Belum ada deskripsi untuk toko ini.' }}</p>
+        <div class="row mb-5 mt-5">
+            <div class="col-12">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-success text-white py-3">
+                        <h1 class="fw-bold mb-0">{{ $shop->name }}</h1>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <!-- Store Information -->
+                            <div class="col-md-8">
+                                <div class="d-flex flex-column gap-3">
+                                    <!-- Address -->
+                                    <div class="d-flex align-items-start">
+                                        <div class="me-3 text-success">
+                                            <i class="bi bi-geo-alt-fill fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Alamat</h6>
+                                            <p class="mb-0">{{ $shop->address }}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Phone -->
+                                    @if ($shop->phone)
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-3 text-success">
+                                                <i class="bi bi-telephone-fill fs-4"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Telepon</h6>
+                                                <p class="mb-0">{{ $shop->phone }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Operating Hours -->
+                                    @if ($shop->operating_hours)
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-3 text-success">
+                                                <i class="bi bi-clock-fill fs-4"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="fw-bold mb-1">Jam Operasional</h6>
+                                                <p class="mb-0">{{ $shop->operating_hours }}</p>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Description -->
+                                    <div class="d-flex align-items-start">
+                                        <div class="me-3 text-success">
+                                            <i class="bi bi-info-circle-fill fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-1">Deskripsi</h6>
+                                            <p class="mb-0">
+                                                {{ $shop->description ?? 'Belum ada deskripsi untuk toko ini.' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Rating Info Column -->
+                            <div class="col-md-4 mt-4 mt-md-0">
+                                <div class="bg-light p-3 rounded-3">
+                                    <!-- Rating -->
+                                    <div class="text-center mb-3">
+                                        <h6 class="fw-bold">Rating Toko</h6>
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                            <span class="badge bg-success rounded-pill px-3 py-2 fs-5">
+                                                {{ number_format($shop->average_rating ?? 0, 1) }}
+                                            </span>
+                                            <div class="star-rating">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= round($shop->average_rating ?? 0))
+                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                    @else
+                                                        <i class="bi bi-star text-warning"></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">
+                                            ({{ count($reviews ?? []) }} ulasan)
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Carousel Section -->
+        <!-- Carousel -->
         <div class="row mb-5">
             <div class="col-12">
-                <h2 class="fw-semibold mb-4 text-center">Foto Toko</h2>
+                {{-- <h1 class="fw-semibold mb-4 text-center">Foto Toko</h1> --}}
                 <div id="storeCarousel" class="carousel slide shadow rounded" data-bs-ride="carousel">
                     <!-- Indicators -->
                     <div class="carousel-indicators">
@@ -141,10 +221,9 @@
         </div>
 
         <!-- Reviews Section -->
-        <div class="row mt-5">
+        <div class="row my-5">
             <div class="col-12">
                 <h2 class="fw-semibold mb-4">Ulasan Pelanggan</h2>
-
                 @if (count($reviews) > 0)
                     <div class="mb-4">
                         <div class="d-flex align-items-center mb-3">
@@ -153,13 +232,10 @@
                                     class="badge bg-success rounded-pill fs-5">{{ number_format($shop->average_rating, 1) }}</span>
                             </div>
                             <div class="star-rating">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    @if ($i <= round($shop->average_rating))
-                                        <i class="bi bi-star-fill text-warning fs-4"></i>
-                                    @else
-                                        <i class="bi bi-star text-warning fs-4"></i>
-                                    @endif
-                                @endfor
+                                @include('partials.star-rating', [
+                                    'rating' => $shop->average_rating,
+                                    'size' => 'fs-4',
+                                ])
                             </div>
                             <div class="ms-3">
                                 <span class="text-muted">({{ count($reviews) }} ulasan)</span>
@@ -170,20 +246,14 @@
                     <div class="row">
                         @foreach ($reviews as $review)
                             <div class="col-md-6 mb-4">
-                                <div class="card shadow-sm">
+                                <div class="card shadow-sm h-100">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h5 class="fw-bold mb-0">{{ $review->name }}</h5>
                                             <small class="text-muted">{{ $review->created_at->format('d M Y') }}</small>
                                         </div>
                                         <div class="mb-2">
-                                            @for ($i = 1; $i <= 5; $i++)
-                                                @if ($i <= $review->rating)
-                                                    <i class="bi bi-star-fill text-warning"></i>
-                                                @else
-                                                    <i class="bi bi-star text-warning"></i>
-                                                @endif
-                                            @endfor
+                                            @include('partials.star-rating', ['rating' => $review->rating])
                                         </div>
                                         <p class="mb-0">{{ $review->comment }}</p>
                                     </div>
@@ -205,48 +275,37 @@
                     <div class="card-body">
                         <form action="{{ route('shops.reviews.store', $shop) }}" method="POST">
                             @csrf
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Rating</label>
                                 <div class="rating-input">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating1"
-                                            value="1" required>
-                                        <label class="form-check-label" for="rating1">1</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating2"
-                                            value="2">
-                                        <label class="form-check-label" for="rating2">2</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating3"
-                                            value="3">
-                                        <label class="form-check-label" for="rating3">3</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating4"
-                                            value="4">
-                                        <label class="form-check-label" for="rating4">4</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="rating" id="rating5"
-                                            value="5">
-                                        <label class="form-check-label" for="rating5">5</label>
-                                    </div>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="rating"
+                                                id="rating{{ $i }}" value="{{ $i }}"
+                                                {{ $i === 1 ? 'required' : '' }}>
+                                            <label class="form-check-label"
+                                                for="rating{{ $i }}">{{ $i }}</label>
+                                        </div>
+                                    @endfor
                                 </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="comment" class="form-label">Komentar</label>
                                 <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
                             </div>
+
                             <button type="submit" class="btn btn-success">Kirim Ulasan</button>
                         </form>
                     </div>
@@ -305,27 +364,12 @@
             border-radius: 8px;
         }
 
-        .carousel-caption {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            padding: 15px;
-            bottom: 20px;
-        }
-
-        .carousel-indicators {
-            bottom: 0;
-        }
-
-        .carousel-control-prev,
-        .carousel-control-next {
-            width: 5%;
-        }
-
         /* Map container */
         .map-container {
             overflow: hidden;
             border-radius: 8px;
         }
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
@@ -333,12 +377,8 @@
                 height: 300px;
             }
 
-            .carousel-caption h5 {
-                font-size: 1rem;
-            }
-
-            .carousel-caption p {
-                font-size: 0.8rem;
+            .card-img {
+                height: 180px;
             }
         }
     </style>
