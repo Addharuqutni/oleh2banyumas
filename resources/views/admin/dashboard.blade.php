@@ -6,7 +6,6 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3">Dashboard</h1>
-            <span class="text-muted">Selamat datang di Panel Admin Oleh-oleh Banyumas</span>
         </div>
         
         <div class="row">

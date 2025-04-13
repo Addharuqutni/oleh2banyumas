@@ -3,160 +3,214 @@
 @section('title', 'Mendoan - Kuliner Legendaris Khas Banyumas')
 
 @section('content')
-    <div class="container py-3">
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('artikel.index') }}" class="text-decoration-none">Artikel</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Mendoan</li>
-            </ol>
-        </nav>
-
-        <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <h1 class="fw-bold mb-4 text-center">Mendoan: Gorengan Setengah Matang Khas Banyumas</h1>
-
-                <div class="mb-4 text-center">
-                    <img src="https://imgcdn.espos.id/@espos/images/2019/12/mendoan.jpg?quality=60"
-                        alt="Mendoan Banyumas" class="img-fluid rounded shadow-sm" style="max-height: 400px;">
+    <div class="article-container container">
+        <article class="article-content">
+            <!-- Header -->
+            <header class="article-header">
+                <h1>Mendoan: Kuliner Tradisional Khas Banyumas</h1>
+                <div class="article-featured-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mendoan.jpg/1200px-Mendoan.jpg"
+                        alt="Mendoan Banyumas">
+                    <span class="image-caption">Mendoan - Gorengan tempe setengah matang khas Banyumas</span>
                 </div>
+            </header>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Apa itu Mendoan?</h2>
-                    <p>Mendoan adalah hidangan khas Banyumas yang terbuat dari tempe yang diiris tipis, dicelupkan ke dalam adonan tepung berbumbu, lalu digoreng setengah matang. Ciri khas mendoan yang paling menonjol adalah teksturnya yang lembut dan lembab di bagian dalam, namun tetap renyah di bagian luar. Berbeda dengan tempe goreng pada umumnya yang digoreng hingga kering dan renyah, mendoan sengaja digoreng dengan waktu yang singkat sehingga bagian dalamnya masih lembab.</p>
-                    <p>Nama "mendoan" berasal dari bahasa Banyumasan "mendo" yang berarti setengah matang atau lembek. Hal ini merujuk pada cara menggorengnya yang tidak sampai kering benar. Mendoan biasanya disajikan panas-panas dengan cabai rawit segar atau sambal kecap sebagai pelengkap. Aromanya yang harum dan rasanya yang gurih membuat mendoan menjadi camilan favorit masyarakat Banyumas dan kini telah populer di berbagai daerah di Indonesia.</p>
-                    <p>Di Banyumas, mendoan tidak hanya sekadar camilan tetapi telah menjadi bagian dari identitas kuliner daerah tersebut. Mendoan biasa dinikmati sebagai camilan sore hari, lauk pendamping nasi, atau sebagai hidangan pembuka. Harganya sangat terjangkau, berkisar antara Rp 1.000 hingga Rp 2.000 per potong di warung-warung kecil, atau Rp 10.000 hingga Rp 15.000 per porsi di rumah makan.</p>
+            <!-- Introduction -->
+            <section class="article-section">
+                <h2>Penjelasan</h2>
+                <div class="article-text">
+                    <p>Mendoan adalah makanan tradisional khas Banyumas yang terbuat dari tempe tipis yang dicelupkan ke
+                        dalam adonan tepung berbumbu, kemudian digoreng dengan cara khusus hingga setengah matang. Nama
+                        "mendoan" berasal dari kata "mendo" dalam bahasa Banyumasan yang berarti setengah matang atau
+                        lembek. Makanan ini memiliki tekstur yang unik, dengan bagian dalam yang lembut dan lembab,
+                        sementara bagian luar memiliki lapisan tepung yang tipis namun tetap lembut.</p>
+
+                    <p>Cita rasa mendoan sangat khas, dengan perpaduan gurih dari tempe, aroma wangi dari daun bawang dan
+                        bumbu rempah seperti ketumbar, bawang putih, dan kadang ditambahkan kencur. Tempe yang digunakan
+                        untuk mendoan biasanya memiliki bentuk yang lebih tipis dan lebar dibandingkan tempe biasa, yang di
+                        Banyumas dikenal dengan istilah "tempe dobel" (tempe berlapis dua). Karena proses penggorengan yang
+                        singkat, mendoan memiliki tekstur yang lebih lembut dan lembab dibandingkan dengan tempe goreng pada
+                        umumnya.</p>
+
+                    <p>Di Banyumas, mendoan telah menjadi identitas kuliner yang kuat dan diakui sebagai Warisan Budaya Tak
+                        Benda Indonesia. Makanan ini bisa ditemui di berbagai tempat, dari warung kecil di pinggir jalan
+                        hingga restoran. Mendoan biasanya disajikan dengan cabai rawit atau sambal kecap sebagai pelengkap.
+                        Makanan ini menjadi camilan favorit saat hujan, pendamping minum teh atau kopi di sore hari, dan
+                        juga sering hadir sebagai lauk dalam hidangan utama.</p>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Sejarah Mendoan</h2>
-                    <p>Sejarah mendoan tidak terlepas dari budaya kuliner masyarakat Banyumas yang gemar mengolah tempe sebagai bahan makanan. Menurut cerita turun-temurun, mendoan sudah ada sejak abad ke-19 dan menjadi makanan sehari-hari masyarakat Banyumas, khususnya di daerah Sokaraja dan Purwokerto.</p>
-                    <p>Pada awalnya, mendoan dibuat sebagai alternatif cara menikmati tempe yang lebih lembut untuk orang tua atau anak-anak yang kesulitan mengunyah tempe goreng yang keras. Seiring berjalannya waktu, cara menggoreng tempe yang tidak terlalu kering ini justru disukai banyak orang karena rasanya yang lebih gurih dan teksturnya yang unik.</p>
-                    <p>Popularitas mendoan semakin meningkat pada tahun 1970-an ketika banyak mahasiswa dari Banyumas yang kuliah di kota-kota besar mulai memperkenalkan makanan ini kepada teman-teman mereka. Saat ini, mendoan tidak hanya dapat ditemukan di Banyumas, tetapi juga di berbagai kota besar di Indonesia. Meskipun demikian, mendoan asli Banyumas tetap memiliki cita rasa yang khas dan tidak tergantikan.</p>
-                </div>
+            <!-- History -->
+            <section class="article-section">
+                <h2>Sejarah</h2>
+                <div class="article-text">
+                    <p>Sejarah mendoan berkaitan erat dengan masuknya kedelai ke Indonesia. Tempe sendiri mulai dikenal di
+                        Indonesia sekitar abad ke-16, ketika migrasi dari Asia Tengah membawa kedelai ke Asia Tenggara.
+                        Kemudian, kreativitas masyarakat Banyumas mengolah tempe dengan cara unik melahirkan kuliner yang
+                        kini dikenal sebagai mendoan. Konon, mendoan sudah ada sejak lebih dari satu abad lalu, berkembang
+                        bersamaan dengan populernya tempe sebagai sumber protein nabati di masyarakat.</p>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Bahan dan Cara Pembuatan</h2>
-                    <p>Membuat mendoan terlihat sederhana, namun diperlukan teknik khusus untuk mendapatkan tekstur yang tepat. Berikut adalah bahan-bahan dan cara pembuatannya:</p>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Bahan Utama</h5>
-                                    <ul>
-                                        <li>Tempe segar (diiris tipis, sekitar 0.5-1 cm)</li>
-                                        <li>Tepung terigu</li>
-                                        <li>Tepung beras</li>
-                                        <li>Daun bawang (diiris halus)</li>
-                                        <li>Air</li>
-                                        <li>Minyak untuk menggoreng</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Bumbu</h5>
-                                    <ul>
-                                        <li>Bawang putih (dihaluskan)</li>
-                                        <li>Ketumbar (dihaluskan)</li>
-                                        <li>Kunyit (secukupnya, dihaluskan)</li>
-                                        <li>Daun kucai (diiris halus)</li>
-                                        <li>Garam</li>
-                                        <li>Kaldu bubuk (opsional)</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="article-highlight">
+                        <p>Secara komersial, mendoan mulai dijual secara luas di Banyumas sejak tahun 1960-an. Kala itu,
+                            mendoan menjadi makanan sederhana namun mengenyangkan yang digemari oleh masyarakat dari
+                            berbagai kalangan. Keunikan cara memasaknya yang setengah matang menjadi pembeda mendoan dari
+                            olahan tempe lainnya di Indonesia. Kata "mendoan" sendiri mencerminkan filosofi masyarakat
+                            Banyumas yang luwes dan tidak kaku, karena "mendo" berarti lembek atau tidak keras.</p>
                     </div>
 
-                    <p>Langkah-langkah pembuatan mendoan:</p>
-                    <ol class="mb-4">
-                        <li class="mb-2">Persiapan tempe: Tempe segar diiris tipis dengan ketebalan sekitar 0.5-1 cm. Irisan yang terlalu tebal akan sulit matang di bagian dalam, sementara yang terlalu tipis akan cepat kering saat digoreng.</li>
-                        <li class="mb-2">Pembuatan adonan tepung: Campurkan tepung terigu dan tepung beras dengan perbandingan 2:1. Tambahkan bumbu halus, daun bawang, daun kucai, garam, dan kaldu bubuk. Tuangkan air secukupnya sambil diaduk hingga menjadi adonan yang tidak terlalu kental dan tidak terlalu encer.</li>
-                        <li class="mb-2">Pelapisan tempe: Celupkan irisan tempe ke dalam adonan tepung hingga seluruh permukaan terlapisi rata.</li>
-                        <li class="mb-2">Penggorengan: Panaskan minyak dalam wajan dengan api sedang. Goreng tempe yang sudah dilapisi adonan tepung selama 2-3 menit saja atau hingga bagian luarnya sedikit kecoklatan. Penting untuk tidak menggoreng terlalu lama agar tetap mendapatkan tekstur mendoan yang khas.</li>
-                        <li class="mb-2">Penirisan: Angkat mendoan dan tiriskan untuk mengurangi minyak berlebih.</li>
-                        <li class="mb-2">Penyajian: Sajikan mendoan selagi hangat dengan cabai rawit atau sambal kecap sebagai pelengkap.</li>
+                    <p>Pada tanggal 30 Oktober 2021, mendoan resmi ditetapkan sebagai Warisan Budaya Tak Benda Indonesia
+                        oleh Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi. Pengakuan ini semakin menegaskan
+                        posisi mendoan sebagai aset kuliner nasional yang berakar kuat dari tradisi Banyumas. Selain nilai
+                        kulinernya, mendoan juga memiliki makna sosial dan budaya bagi masyarakat Banyumas. Proses memakan
+                        mendoan yang biasanya dilakukan bersama-sama melambangkan kebersamaan dan kehangatan, menjadikannya
+                        lebih dari sekadar makanan, tetapi juga simbol interaksi sosial dan keramahtamahan.</p>
+                </div>
+            </section>
+
+            <!-- Ingredients and Preparation -->
+            <section class="article-section">
+                <h2>Bahan dan Cara Pembuatan</h2>
+
+                <div class="ingredient-container">
+                    <div class="ingredient-card">
+                        <h3>Bahan Utama</h3>
+                        <ul>
+                            <li>10 lembar tempe khusus mendoan (tipis dan lebar)</li>
+                            <li>250 gram tepung terigu</li>
+                            <li>100 gram tepung beras</li>
+                            <li>2 batang daun bawang, iris halus</li>
+                            <li>Minyak untuk menggoreng</li>
+                            <li>Air secukupnya</li>
+                        </ul>
+                    </div>
+
+                    <div class="ingredient-card">
+                        <h3>Bumbu Halus</h3>
+                        <ul>
+                            <li>5 siung bawang putih</li>
+                            <li>3 cm kunyit</li>
+                            <li>2 sendok teh ketumbar</li>
+                            <li>1 cm kencur (opsional, untuk rasa lebih autentik)</li>
+                            <li>1 sendok teh garam</li>
+                            <li>1/2 sendok teh kaldu bubuk (opsional)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="article-text">
+                    <h3>Cara Membuat</h3>
+                    <ol class="preparation-steps">
+                        <li>Campurkan tepung terigu dan tepung beras dalam sebuah wadah besar, aduk rata.</li>
+                        <li>Tambahkan bumbu halus ke dalam campuran tepung, aduk hingga tercampur merata.</li>
+                        <li>Tuangkan air sedikit demi sedikit sambil terus diaduk hingga terbentuk adonan yang tidak terlalu
+                            kental dan tidak terlalu encer. Konsistensinya harus cukup kental untuk menempel pada tempe
+                            tetapi cukup encer untuk menghasilkan lapisan tipis.</li>
+                        <li>Masukkan irisan daun bawang ke dalam adonan, aduk rata.</li>
+                        <li>Panaskan minyak dalam wajan dengan api sedang hingga cukup panas. Perlu diingat, jumlah minyak
+                            harus cukup banyak agar mendoan terendam saat digoreng.</li>
+                        <li>Celupkan lembar tempe ke dalam adonan tepung hingga seluruh permukaannya terlapisi.</li>
+                        <li>Goreng tempe dalam minyak panas dengan waktu yang singkat, hanya sekitar 1-2 menit atau hingga
+                            warnanya berubah menjadi kuning keemasan tetapi bagian dalam masih lembut. Inilah kunci utama
+                            mendoan yang autentik - penggorengan yang tidak terlalu lama.</li>
+                        <li>Angkat dan tiriskan mendoan, lalu sajikan selagi hangat dengan pelengkap sambal atau cabai
+                            rawit.</li>
                     </ol>
 
-                    <p>Kunci utama dalam membuat mendoan yang autentik adalah waktu penggorengan yang tepat dan adonan tepung yang tidak terlalu kental. Mendoan asli Banyumas biasanya menggunakan daun kucai yang memberikan aroma khas, namun saat ini banyak yang menggantinya dengan daun bawang karena lebih mudah didapat.</p>
+                    <div class="article-tip">
+                        <p><strong>Tip:</strong> Kunci utama membuat mendoan yang autentik terletak pada dua hal: adonan
+                            tepung yang tepat dan waktu penggorengan yang singkat. Adonan tidak boleh terlalu kental agar
+                            tidak menghasilkan lapisan tepung yang tebal. Sementara itu, penggorengan yang terlalu lama akan
+                            membuat mendoan kehilangan karakteristik "mendo" atau lembek yang menjadi ciri khasnya.
+                            Tambahkan sedikit kencur dalam bumbu halus untuk mendapatkan aroma khas mendoan Banyumas yang
+                            lebih autentik.</p>
+                    </div>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Variasi Mendoan</h2>
-                    <p>Meskipun mendoan tradisional terbuat dari tempe, seiring perkembangan kuliner, kini terdapat beberapa variasi mendoan:</p>
-                    <ul class="mb-4">
-                        <li>Mendoan Tempe: Versi original dan paling populer.</li>
-                        <li>Mendoan Tahu: Menggunakan tahu sebagai pengganti tempe, memiliki tekstur yang lebih lembut.</li>
-                        <li>Mendoan Jamur: Menggunakan jamur tiram yang diiris tipis, cocok untuk vegetarian.</li>
-                        <li>Mendoan Pedas: Adonan tepung dicampur dengan cabai halus untuk memberikan sensasi pedas.</li>
-                        <li>Mendoan Keju: Variasi modern di mana adonan tepung dicampur dengan keju parut.</li>
-                    </ul>
-                    <p>Meskipun terdapat berbagai variasi, mendoan tempe tetap menjadi yang paling autentik dan digemari, terutama oleh masyarakat Banyumas yang menjunjung tinggi keaslian kuliner tradisional mereka.</p>
-                </div>
+            <!-- Variations -->
+            <section class="article-section">
+                <h2>Variasi</h2>
+                <div class="article-text">
+                    <p>Meskipun mendoan dari Banyumas memiliki karakteristik yang khas, seiring perkembangan waktu, terdapat
+                        beberapa variasi yang bisa ditemui:</p>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Nilai Gizi dan Manfaat</h2>
-                    <p>Sebagai makanan berbahan dasar tempe, mendoan memiliki kandungan nutrisi yang cukup baik, meskipun melalui proses penggorengan. Berikut perkiraan kandungan gizi dalam satu porsi mendoan (3-4 potong):</p>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul>
-                                        <li>Kalori: 250-300 kkal</li>
-                                        <li>Karbohidrat: 25-30 gram</li>
-                                        <li>Protein: 10-15 gram</li>
-                                        <li>Lemak: 12-15 gram</li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <div class="variation-cards">
+                        <div class="variation-card">
+                            <h3>Mendoan Tradisional</h3>
+                            <p>Versi autentik dari Banyumas dengan tekstur yang lembut dan setengah matang, digoreng dalam
+                                waktu singkat untuk mempertahankan kelembaban di bagian dalam.</p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul>
-                                        <li>Serat: 3-5 gram</li>
-                                        <li>Kalsium: 80-100 mg</li>
-                                        <li>Zat Besi: 2-3 mg</li>
-                                        <li>Isoflavon: 20-25 mg</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="variation-card">
+                            <h3>Mendoan Krispi</h3>
+                            <p>Variasi yang digoreng lebih lama hingga bagian luarnya lebih renyah, lebih cocok bagi mereka
+                                yang menyukai tekstur garing pada gorengan tempe.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Mendoan Kunyit</h3>
+                            <p>Variasi dengan penambahan kunyit yang lebih banyak, menghasilkan warna kuning yang lebih
+                                cerah dan aroma rempah yang lebih kuat.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Sushi Mendoan</h3>
+                            <p>Kreasi modern di mana mendoan digulung dengan nasi dan bahan lain seperti sayuran atau
+                                daging, menggabungkan cita rasa tradisional dengan presentasi internasional.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Mendoan Isi</h3>
+                            <p>Variasi dimana tempe dibelah dan diisi dengan bahan lain seperti sambal oncom atau tahu
+                                sebelum dicelup ke dalam adonan tepung dan digoreng.</p>
                         </div>
                     </div>
 
-                    <p>Tempe sebagai bahan utama mendoan mengandung protein nabati berkualitas tinggi dan isoflavon yang bermanfaat untuk kesehatan. Isoflavon dalam tempe memiliki sifat antioksidan yang dapat membantu mengurangi risiko penyakit jantung dan beberapa jenis kanker. Selain itu, proses fermentasi pada tempe membuat nutrisinya lebih mudah diserap oleh tubuh.</p>
-                    <p>Meskipun mendoan digoreng, cara menggorengnya yang sebentar (setengah matang) membuat penyerapan minyak tidak sebanyak gorengan yang dimasak hingga kering. Namun, tetap disarankan untuk mengonsumsi mendoan secukupnya, terutama bagi yang sedang menjaga asupan lemak.</p>
+                    <p>Selain variasi dalam cara pengolahan, terdapat juga perbedaan mendoan berdasarkan daerah. Mendoan
+                        dari Banyumas cenderung memiliki aroma rempah yang khas karena penggunaan kencur, sementara di
+                        daerah lain di Jawa Tengah, kencur mungkin tidak digunakan atau digantikan dengan bumbu lain.
+                        Ketebalan adonan tepung juga bisa berbeda-beda, dengan beberapa tempat lebih menyukai lapisan tepung
+                        yang lebih tebal sementara yang lain lebih tipis.</p>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Mendoan dalam Budaya Banyumas</h2>
-                    <p>Mendoan bukan sekadar makanan di Banyumas, tetapi telah menjadi bagian dari identitas budaya masyarakatnya. Beberapa aspek budaya terkait mendoan antara lain:</p>
-                    <ul class="mb-4">
-                        <li>Mendoan sebagai simbol keramahan: Di Banyumas, mendoan sering disajikan sebagai suguhan untuk tamu, mencerminkan keramahan dan kehangatan masyarakat setempat.</li>
-                        <li>Tradisi ngapak: Mendoan sering dikaitkan dengan budaya "ngapak" (logat Banyumasan) dan menjadi salah satu kebanggaan masyarakat Banyumas.</li>
-                        <li>Festival Mendoan: Beberapa daerah di Banyumas rutin mengadakan festival mendoan untuk mempromosikan kuliner khas ini dan menarik wisatawan.</li>
-                        <li>Ekonomi kreatif: Mendoan telah menjadi sumber pendapatan bagi banyak UMKM di Banyumas, baik dalam bentuk warung makan maupun produsen mendoan beku yang dipasarkan lebih luas.</li>
-                    </ul>
+            <!-- Tips -->
+            <section class="article-section">
+                <h2>Tips Menikmati</h2>
+                <div class="article-text">
+                    <div class="tips-container">
+                        <div class="tip-item">
+                            <span class="tip-number">01</span>
+                            <p>Mendoan paling nikmat dinikmati selagi hangat, langsung setelah digoreng. Jangan biarkan
+                                terlalu lama karena tekstur khasnya akan berubah saat sudah dingin. Jika harus dipanaskan
+                                kembali, lebih baik dipanaskan dengan cara mengukus agar tidak menjadi terlalu kering.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">02</span>
+                            <p>Cara tradisional menikmati mendoan di Banyumas adalah dengan cabai rawit yang dimakan
+                                langsung atau sambal kecap yang dibuat dari kecap manis, potongan cabai rawit, dan sedikit
+                                jeruk limau. Cobalah menikmati mendoan dengan kedua pendamping ini untuk pengalaman
+                                autentik.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">03</span>
+                            <p>Mendoan juga bisa dinikmati sebagai pendamping makanan berkuah seperti soto atau bakso.
+                                Kelembutan mendoan memberikan kontras tekstur yang menarik dengan kuah yang gurih,
+                                menciptakan kombinasi rasa yang harmonis.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">04</span>
+                            <p>Di Purwokerto, mendoan sering dinikmati pada sore hari saat hujan, ditemani dengan secangkir
+                                teh atau kopi. Kombinasi ini sangat populer dan telah menjadi rutinitas wajib bagi banyak
+                                warga lokal, menciptakan momen kehangatan di tengah cuaca dingin.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">05</span>
+                            <p>Untuk mencicipi mendoan paling autentik di Banyumas, kunjungi warung-warung lokal seperti
+                                Warung Ripah, Sawangan, Mendoan Gang Kecil, dan Roda Mas yang telah lama dikenal dengan
+                                mendoan berkualitas tinggi. Mendoan terbaik seringkali ditemukan di tempat sederhana yang
+                                telah menjaga resep tradisional selama bertahun-tahun.</p>
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Tips Menikmati Mendoan</h2>
-                    <p>Untuk mendapatkan pengalaman terbaik saat menikmati mendoan:</p>
-                    <ul class="mb-4">
-                        <li>Nikmati mendoan selagi hangat untuk merasakan teksturnya yang lembut di dalam dan sedikit renyah di luar.</li>
-                        <li>Mendoan paling nikmat disantap dengan cabai rawit segar atau dicocol ke dalam sambal kecap.</li>
-                        <li>Mendoan bisa dinikmati sebagai camilan dengan teh hangat atau sebagai lauk pendamping nasi.</li>
-                        <li>Jika membuat mendoan di rumah, pastikan minyak cukup panas sebelum menggoreng agar adonan tepung tidak menyerap terlalu banyak minyak.</li>
-                        <li>Untuk pengalaman kuliner yang lebih lengkap, nikmati mendoan bersama dengan kuliner khas Banyumas lainnya seperti sroto atau sate Ambal.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        </article>
     </div>
 @endsection

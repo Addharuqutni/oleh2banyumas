@@ -5,21 +5,12 @@
 @section('content')
     <div class="container-fluid py-4 d-flex flex-column min-vh-100" style="background-color: #e8f5e9;">
         <div class="container">
-            <!-- Back Button and Title -->
-            <div class="container mb-4">
-                <div class="row position-relative align-items-center">
-                    <!-- Back Button (Left) -->
-                    <div class="col-auto position-absolute start-0 d-flex align-items-center" style="z-index: 10;">
-                        <a href="{{ route('shops.index') }}" class="text-dark">
-                            <i class="bi bi-chevron-left fs-4"></i>
-                        </a>
-                    </div>
-
-                    <!-- Title (Center) -->
-                    <div class="col-12 text-center">
-                        <h1 class="mb-0 fw-bold">Daftar Toko Oleh Oleh Makanan Ringan Banyumas</h1>
-                    </div>
-                </div>
+            <!-- Back Button and Header -->
+            <div class="mb-4 position-relative">
+                <a href="{{ url()->previous() }}" class="btn-back position-absolute">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <h1 class="text-center fw-bold" style="color: #2e7d32">Daftar Toko Oleh Oleh Makanan Ringan Banyumas</h1>
             </div>
 
             <!-- Search Bar (Center) -->

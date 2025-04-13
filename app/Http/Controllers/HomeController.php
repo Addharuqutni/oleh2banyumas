@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shop;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Review;
 
 class HomeController extends Controller
 {
@@ -14,7 +15,8 @@ class HomeController extends Controller
     public function index()
     {
         $shops = Shop::where('status', 'active')
-            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image')
+            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug')
+            ->orderBy('name')
             ->get();
             
         return view('index', compact('shops'));
@@ -26,7 +28,8 @@ class HomeController extends Controller
     public function welcome()
     {
         $shops = Shop::where('status', 'active')
-            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image')
+            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug')
+            ->orderBy('name')
             ->get();
             
         return view('welcome', compact('shops'));

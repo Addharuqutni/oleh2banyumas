@@ -1,159 +1,201 @@
 @extends('layouts.index')
 
-@section('title', 'Jenang Jaket - Kuliner Manis Khas Banyumas')
+@section('title', 'Jenang Jaket - Kuliner Manis Legendaris Khas Banyumas')
 
 @section('content')
-    <div class="container py-3">
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('artikel.index') }}" class="text-decoration-none">Artikel</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Jenang Jaket</li>
-            </ol>
-        </nav>
+    <div class="article-container container">
+        <article class="article-content">
+            <!-- Header -->
+            <header class="article-header">
+                <h1>Jenang Jaket: Kuliner Tradisional Khas Banyumas</h1>
+                <div class="article-featured-image">
+                    <img src="https://dolanbanyumas.banyumaskab.go.id/assets/gambar_objek/jenang-jaket.jpg"
+                        alt="Jenang Jaket Banyumas">
+                    <span class="image-caption">Jenang Jaket - Makanan tradisional khas Banyumas</span>
+                </div>
+            </header>
 
-        <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <h1 class="fw-bold mb-4 text-center">Jenang Jaket: Kuliner Manis Legit Khas Banyumas</h1>
+            <!-- Introduction -->
+            <section class="article-section">
+                <h2>Penjelasan</h2>
+                <div class="article-text">
+                    <p>Jenang Jaket adalah makanan tradisional khas Banyumas yang berasal dari daerah Mersi, Purwokerto.
+                        Nama "Jaket" merupakan singkatan dari "Jenang Asli Ketan", yang menunjukkan bahan utama pembuatannya
+                        yaitu tepung beras ketan. Makanan ini berbentuk seperti dodol dengan tekstur yang kenyal, lembut,
+                        dan tidak mudah lengket di tangan meskipun tidak dibungkus.</p>
 
-                <div class="mb-4 text-center">
-                    <img src="https://radarbanyumas.disway.id//upload/600a36d2ce150a861848b8cad106f2ee.jpg"
-                        alt="Jenang Jaket Banyumas" class="img-fluid rounded shadow-sm" style="max-height: 400px;">
+                    <p>Cita rasa Jenang Jaket sangat khas, dengan perpaduan manis dari gula merah, gurih dari santan kelapa,
+                        dan aroma khas dari tepung ketan yang membuatnya begitu menggugah selera. Teksturnya yang kenyal
+                        namun lembut memberikan sensasi yang menyenangkan saat dinikmati. Jenang ini hadir dalam dua variasi
+                        utama, yaitu polos (tanpa tambahan) dan dengan taburan biji wijen yang menambah tekstur dan cita
+                        rasa.</p>
+
+                    <p>Di Banyumas, Jenang Jaket telah menjadi salah satu oleh-oleh favorit dan identitas kuliner daerah.
+                        Sentra produksi Jenang Jaket terletak di kawasan Mersi, Purwokerto, dengan beberapa produsen
+                        terkenal seperti Mukti Sari yang telah memproduksi jenang ini secara turun-temurun. Harganya
+                        terjangkau, berkisar antara Rp 16.000 hingga Rp 25.000 per kemasan, biasanya berisi 16-20 potong
+                        jenang. Makanan ini sering dinikmati sebagai camilan pendamping teh atau kopi, dan kerap hadir dalam
+                        berbagai acara tradisional.</p>
+                </div>
+            </section>
+
+            <!-- History -->
+            <section class="article-section">
+                <h2>Sejarah</h2>
+                <div class="article-text">
+                    <p>Sejarah Jenang Jaket di Banyumas telah berlangsung sejak puluhan tahun yang lalu sebagai bagian dari
+                        kekayaan kuliner tradisional Jawa. Meskipun tidak ada catatan pasti tentang awal pembuatannya,
+                        beberapa produsen seperti Jenang Jaket Pertama telah memproduksi makanan ini sejak tahun 1979,
+                        menunjukkan bahwa makanan ini telah ada dalam masyarakat Banyumas setidaknya sejak paruh kedua abad
+                        ke-20.</p>
+
+                    <div class="article-highlight">
+                        <p>Dalam tradisi masyarakat Jawa, jenang memiliki makna filosofis yang dalam. Jenang Jaket, dengan
+                            teksturnya yang kenyal dan lengket, sering dijadikan simbol dalam upacara pernikahan dengan
+                            harapan bahwa pasangan pengantin akan "lengket" satu sama lain dalam menjalani kehidupan rumah
+                            tangga, serta sebagai simbol kerekatan hubungan antar keluarga kedua mempelai.</p>
+                    </div>
+
+                    <p>Proses pembuatan Jenang Jaket yang membutuhkan ketelatenan dan keterampilan khusus menjadikannya
+                        tidak hanya sekadar makanan, tetapi juga warisan budaya yang dilestarikan melalui pengetahuan yang
+                        diwariskan dari generasi ke generasi. Di Mersi, Purwokerto, beberapa sentra produksi Jenang Jaket
+                        telah bertahan selama puluhan tahun, dengan resep yang tetap dijaga keasliannya meskipun telah
+                        mengalami beberapa penyesuaian dalam proses produksinya untuk memenuhi permintaan pasar modern.</p>
+                </div>
+            </section>
+
+            <!-- Ingredients and Preparation -->
+            <section class="article-section">
+                <h2>Bahan dan Cara Pembuatan</h2>
+
+                <div class="ingredient-container">
+                    <div class="ingredient-card">
+                        <h3>Bahan Utama</h3>
+                        <ul>
+                            <li>1 kg tepung beras ketan</li>
+                            <li>750 gram gula merah, sisir halus</li>
+                            <li>3-4 buah kelapa (untuk santan kental)</li>
+                            <li>1/2 sendok teh garam</li>
+                        </ul>
+                    </div>
+
+                    <div class="ingredient-card">
+                        <h3>Bahan Tambahan</h3>
+                        <ul>
+                            <li>100 gram biji wijen (untuk varian wijen)</li>
+                            <li>Daun pisang atau plastik untuk pembungkus</li>
+                            <li>Minyak goreng secukupnya (untuk olesan)</li>
+                            <li>Air secukupnya</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Apa itu Jenang Jaket?</h2>
-                    <p>Jenang Jaket adalah makanan tradisional khas Banyumas yang terbuat dari tepung beras dan gula merah
-                        yang dilapisi atau "dijaket" dengan adonan tepung ketan. Makanan ini memiliki tekstur yang unik,
-                        dengan bagian dalam yang lembut dan manis serta bagian luar yang kenyal. Rasa manis dari gula merah
-                        yang dipadukan dengan kelezatan tepung ketan membuat jenang jaket menjadi salah satu kudapan favorit
-                        masyarakat Banyumas.</p>
-                    <p>Nama "jaket" pada jenang ini merujuk pada lapisan tepung ketan yang membungkus bagian dalam jenang,
-                        mirip seperti jaket yang membungkus tubuh. Jenang jaket biasanya berbentuk bulat pipih atau persegi,
-                        dengan warna cokelat kehitaman dari gula merah pada bagian dalamnya dan putih dari tepung ketan pada
-                        bagian luarnya.</p>
-                    <p>Di Banyumas, jenang jaket biasa disajikan pada acara-acara tradisional seperti selamatan, hajatan,
-                        atau sebagai suguhan untuk tamu. Harganya berkisar antara Rp 10.000 hingga Rp 15.000 per kotak,
-                        tergantung ukuran dan produsennya. Jenang jaket juga sering dijadikan sebagai buah tangan oleh
-                        wisatawan yang berkunjung ke Banyumas.</p>
-                </div>
-
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Sejarah Jenang Jaket</h2>
-                    <p>Jenang jaket telah menjadi bagian dari kuliner tradisional Banyumas sejak puluhan tahun silam.
-                        Asal-usul jenang jaket tidak terlepas dari kultur masyarakat Jawa yang gemar membuat aneka jenis
-                        jenang atau dodol sebagai makanan dalam berbagai acara adat dan ritual.</p>
-                    <p>Menurut cerita turun-temurun, jenang jaket pertama kali dibuat oleh para ibu rumah tangga di Banyumas
-                        sekitar abad ke-19. Pada masa itu, gula merah dari nira kelapa sangat melimpah di daerah Banyumas,
-                        sehingga masyarakat memanfaatkannya untuk membuat berbagai jenis makanan manis, termasuk jenang
-                        jaket.</p>
-                    <p>Awalnya, jenang jaket hanya dibuat untuk konsumsi keluarga dan acara-acara tertentu. Namun seiring
-                        berjalannya waktu, jenang jaket mulai diproduksi secara komersial dan menjadi salah satu makanan
-                        khas yang identik dengan Banyumas. Meskipun saat ini banyak makanan modern yang masuk ke Banyumas,
-                        jenang jaket tetap dipertahankan sebagai warisan kuliner yang memiliki nilai budaya tinggi.</p>
-                </div>
-
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Bahan dan Cara Pembuatan</h2>
-                    <p>Pembuatan jenang jaket membutuhkan kesabaran dan ketelatenan karena prosesnya yang cukup panjang.
-                        Berikut adalah tahapan pembuatannya:</p>
-
-                    <ol class="mb-4">
-                        <li class="mb-2">Persiapan bahan isian: Tepung beras dicampur dengan gula merah yang sudah disisir
-                            halus dan sedikit garam.</li>
-                        <li class="mb-2">Pemasakan isian: Campuran tepung beras dan gula merah dimasak dengan api kecil
-                            sambil diaduk terus menerus hingga mengental. Proses ini bisa memakan waktu 1-2 jam.</li>
-                        <li class="mb-2">Pendinginan isian: Adonan isian yang sudah matang didinginkan dan kemudian
-                            dibentuk bulat pipih atau persegi.</li>
-                        <li class="mb-2">Pembuatan "jaket": Tepung ketan dicampur dengan sedikit garam dan air hangat,
-                            kemudian diuleni hingga kalis.</li>
-                        <li class="mb-2">Pembungkusan: Adonan tepung ketan dipipihkan dan digunakan untuk membungkus isian
-                            jenang yang sudah dibentuk.</li>
-                        <li class="mb-2">Pengukusan: Jenang yang sudah dibungkus dengan adonan tepung ketan dikukus selama
-                            kurang lebih 30 menit hingga matang.</li>
-                        <li class="mb-2">Pendinginan dan pemotongan: Setelah matang, jenang jaket didinginkan dan kemudian
-                            dipotong sesuai selera.</li>
+                <div class="article-text">
+                    <h3>Cara Membuat</h3>
+                    <ol class="preparation-steps">
+                        <li>Buat santan kental dari kelapa yang sudah diparut. Saring agar bersih dari ampas.</li>
+                        <li>Masukkan santan ke dalam kuali atau wajan besar, kemudian didihkan dengan api sedang.</li>
+                        <li>Setelah santan mendidih, masukkan tepung beras ketan sedikit demi sedikit sambil terus diaduk
+                            agar tidak menggumpal.</li>
+                        <li>Masukkan gula merah yang sudah disisir dan garam, aduk terus hingga tercampur rata.</li>
+                        <li>Kecilkan api, terus aduk adonan selama sekitar 3-4 jam hingga adonan menjadi kental, berwarna
+                            kecoklatan, dan tidak lengket di tangan. Proses pengadukan ini membutuhkan kesabaran dan
+                            ketelatenan.</li>
+                        <li>Untuk varian wijen, tambahkan biji wijen saat adonan sudah mulai kental dan tercampur rata.</li>
+                        <li>Setelah matang, angkat dan tuang adonan ke dalam loyang atau nampan yang sudah diolesi minyak
+                            goreng agar tidak lengket.</li>
+                        <li>Ratakan dan diamkan hingga dingin dan mengeras.</li>
+                        <li>Setelah dingin, potong-potong sesuai ukuran yang diinginkan, biasanya berbentuk persegi panjang.
+                        </li>
+                        <li>Kemas Jenang Jaket menggunakan daun pisang atau plastik sesuai kebutuhan.</li>
                     </ol>
 
-                    <p>Proses pembuatan jenang jaket membutuhkan keahlian khusus, terutama saat memasak isian agar tidak
-                        gosong dan saat membungkus isian dengan tepung ketan agar tidak pecah. Kesabaran dalam mengaduk
-                        adonan isian sangat diperlukan untuk mendapatkan tekstur yang pas dan rasa yang merata.</p>
+                    <div class="article-tip">
+                        <p><strong>Tip:</strong> Kunci utama dalam membuat Jenang Jaket yang lezat adalah kesabaran dalam
+                            proses pengadukan yang bisa memakan waktu berjam-jam. Adonan harus terus diaduk dengan api kecil
+                            agar matang merata dan tidak gosong di bagian bawah. Penggunaan gula merah berkualitas juga
+                            sangat mempengaruhi cita rasa akhir dari Jenang Jaket.</p>
+                    </div>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Nilai Gizi dan Manfaat</h2>
-                    <p>Sebagai makanan tradisional berbahan dasar tepung beras, tepung ketan, dan gula merah, jenang jaket
-                        memiliki kandungan nutrisi sebagai berikut (dalam perkiraan per 100 gram):</p>
+            <!-- Variations -->
+            <section class="article-section">
+                <h2>Variasi</h2>
+                <div class="article-text">
+                    <p>Meskipun Jenang Jaket merupakan makanan tradisional yang tetap menjaga keaslian resepnya, terdapat
+                        beberapa variasi yang bisa ditemui:</p>
 
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul>
-                                        <li>Kalori: 250-300 kkal</li>
-                                        <li>Karbohidrat: 50-60 gram</li>
-                                        <li>Protein: 2-3 gram</li>
-                                        <li>Lemak: 1-2 gram</li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <div class="variation-cards">
+                        <div class="variation-card">
+                            <h3>Jenang Jaket Polos</h3>
+                            <p>Versi original tanpa tambahan, menampilkan cita rasa murni dari perpaduan tepung ketan, gula
+                                merah, dan santan.</p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul>
-                                        <li>Serat: 1-2 gram</li>
-                                        <li>Kalsium: 30-40 mg</li>
-                                        <li>Zat Besi: 1-2 mg</li>
-                                        <li>Kalium: 100-150 mg</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="variation-card">
+                            <h3>Jenang Jaket Wijen</h3>
+                            <p>Ditaburi biji wijen yang memberikan tekstur renyah dan aroma khas, menjadi varian yang paling
+                                populer.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Jenang Jaket Mini</h3>
+                            <p>Ukuran lebih kecil yang biasanya disajikan untuk acara-acara khusus atau sebagai suguhan.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Jenang Jaket Mukti Sari</h3>
+                            <p>Produksi dari salah satu produsen terkenal di Mersi, dengan cita rasa khas yang telah
+                                dipertahankan selama puluhan tahun.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Jenang Jaket Kemasan Modern</h3>
+                            <p>Dikemas dalam berbagai ukuran dan kemasan yang lebih modern, memudahkan untuk dibawa sebagai
+                                oleh-oleh.</p>
                         </div>
                     </div>
 
-                    <p>Meskipun jenang jaket tinggi karbohidrat dan gula, gula merah yang digunakan memiliki beberapa
-                        kelebihan dibandingkan gula putih. Gula merah mengandung mineral seperti zat besi, kalium, dan
-                        magnesium yang bermanfaat bagi tubuh. Tepung ketan juga memiliki indeks glikemik yang lebih rendah
-                        dibandingkan tepung beras biasa, sehingga pelepasan gula ke dalam darah lebih lambat. Namun, tetap
-                        disarankan untuk mengonsumsi jenang jaket secukupnya, terutama bagi penderita diabetes atau yang
-                        sedang menjaga berat badan.</p>
+                    <p>Meskipun terdapat beberapa variasi dalam penyajian dan kemasan, Jenang Jaket tetap mempertahankan
+                        cita rasa tradisionalnya yang khas. Perbedaan utama biasanya terletak pada tingkat kemanisan,
+                        tekstur, dan penambahan wijen. Beberapa produsen mungkin memiliki "rahasia dapur" tersendiri yang
+                        membuat jenang produksi mereka memiliki karakteristik khusus yang membedakannya dari produsen lain.
+                    </p>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Variasi Jenang Jaket</h2>
-                    <p>Seiring perkembangan zaman, jenang jaket mengalami beberapa variasi dalam pembuatannya:</p>
-                    <ul class="mb-4">
-                        <li>Jenang Jaket Durian: Ditambahkan daging buah durian pada isian untuk aroma dan rasa yang lebih
-                            kaya.</li>
-                        <li>Jenang Jaket Pandan: Adonan tepung ketan diberi ekstrak daun pandan sehingga berwarna hijau dan
-                            beraroma wangi.</li>
-                        <li>Jenang Jaket Mini: Versi lebih kecil yang biasanya disajikan sebagai camilan atau untuk
-                            acara-acara khusus.</li>
-                        <li>Jenang Jaket Modern: Menggunakan bahan tambahan seperti keju, cokelat, atau kacang sebagai
-                            variasi rasa.</li>
-                    </ul>
-                    <p>Meskipun terdapat berbagai variasi, jenang jaket tradisional dengan isian gula merah tetap menjadi
-                        yang paling populer dan digemari oleh masyarakat Banyumas.</p>
+            <!-- Tips -->
+            <section class="article-section">
+                <h2>Tips Menikmati</h2>
+                <div class="article-text">
+                    <div class="tips-container">
+                        <div class="tip-item">
+                            <span class="tip-number">01</span>
+                            <p>Jenang Jaket paling nikmat dinikmati sebagai teman minum teh atau kopi. Kombinasi rasa manis
+                                jenang dengan pahitnya kopi menciptakan perpaduan yang harmonis.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">02</span>
+                            <p>Untuk mendapatkan Jenang Jaket terbaik, kunjungi langsung sentra produksi di daerah Mersi,
+                                Purwokerto. Beberapa produsen terkenal seperti Mukti Sari telah memproduksi jenang ini
+                                secara turun-temurun dengan resep yang terjaga.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">03</span>
+                            <p>Simpan Jenang Jaket dalam wadah tertutup rapat pada suhu ruangan. Jenang ini bisa bertahan
+                                hingga 1-2 minggu, bahkan lebih lama jika disimpan dalam lemari pendingin.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">04</span>
+                            <p>Jika Jenang Jaket mengeras, panaskan sebentar dalam microwave atau dengan cara dikukus
+                                sebentar untuk mengembalikan kelembutan teksturnya.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">05</span>
+                            <p>Cobalah kedua varian Jenang Jaket (polos dan wijen) untuk merasakan perbedaan tekstur dan
+                                cita rasanya. Varian wijen memberikan sensasi renyah yang menarik saat dikunyah.</p>
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Tips Menikmati dan Menyimpan Jenang Jaket</h2>
-                    <p>Untuk mendapatkan pengalaman terbaik saat menikmati jenang jaket:</p>
-                    <ul class="mb-4">
-                        <li>Jenang jaket paling nikmat dinikmati dalam suhu ruangan, tidak terlalu dingin atau panas.</li>
-                        <li>Potong jenang jaket menjadi ukuran yang lebih kecil untuk memudahkan konsumsi.</li>
-                        <li>Jenang jaket sangat cocok disantap bersama teh atau kopi pahit untuk menyeimbangkan rasanya yang
-                            manis.</li>
-                        <li>Untuk menyimpan jenang jaket, letakkan dalam wadah kedap udara dan simpan di tempat sejuk.
-                            Jenang jaket dapat bertahan 3-5 hari pada suhu ruangan dan hingga seminggu jika disimpan dalam
-                            lemari pendingin.</li>
-                        <li>Jika jenang jaket mulai mengeras, hangatkan sebentar dengan cara dikukus selama beberapa menit
-                            untuk mengembalikan teksturnya yang kenyal.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        </article>
     </div>
 @endsection

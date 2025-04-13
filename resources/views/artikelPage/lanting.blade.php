@@ -3,148 +3,207 @@
 @section('title', 'Lanting - Camilan Tradisional Khas Banyumas')
 
 @section('content')
-    <div class="container py-3">
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('artikel.index') }}" class="text-decoration-none">Artikel</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Lanting</li>
-            </ol>
-        </nav>
+    <div class="article-container container">
+        <article class="article-content">
+            <!-- Header -->
+            <header class="article-header">
+                <h1>Lanting: Kuliner Tradisional Khas Banyumas</h1>
+                <div class="article-featured-image">
+                    <img src="https://radarbanyumas.disway.id/upload/fb90d540edccdbd9ddbec97968628571.jpg"
+                        alt="Lanting Banyumas">
+                    <span class="image-caption">Lanting - Camilan renyah khas Banyumas</span>
+                </div>
+            </header>
 
-        <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <h1 class="fw-bold mb-4 text-center">Lanting: Camilan Renyah Legendaris dari Banyumas</h1>
+            <!-- Introduction -->
+            <section class="article-section">
+                <h2>Penjelasan</h2>
+                <div class="article-text">
+                    <p>Lanting, yang juga sering disebut Klanting, adalah makanan tradisional khas Banyumas yang terbuat
+                        dari singkong yang diolah menjadi camilan renyah dan gurih. Camilan ini berbentuk bulat seperti
+                        cincin atau angka 8, dengan tekstur renyah di luar dan sedikit kenyal di dalam. Lanting dibuat dari
+                        bahan dasar singkong pilihan yang diparut atau dihaluskan, dicampur dengan bumbu, dibentuk,
+                        dikeringkan, dan kemudian digoreng hingga berwarna kuning kecokelatan.</p>
 
-                <div class="mb-4 text-center">
-                    <img src="https://assets.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/indizone/2023/04/17/ersjZ7P/jajanan-lebaran-gurih-oleh-oleh-khas-kebumen-yuk-cobain-lanting44.jpg"
-                        alt="Lanting Banyumas" class="img-fluid rounded shadow-sm" style="max-height: 400px;">
+                    <p>Cita rasa Lanting Banyumas sangat khas, dengan dominasi rasa gurih dari singkong yang dipadu dengan
+                        bumbu-bumbu tradisional. Teksturnya yang renyah dan tidak mudah melempem menjadikan Lanting digemari
+                        sebagai camilan sehari-hari maupun oleh-oleh khas Banyumas. Dalam perkembangannya, Lanting kini
+                        hadir dalam berbagai varian rasa, mulai dari original, pedas, keju, hingga jagung manis yang semakin
+                        memperkaya pilihan bagi penikmatnya.</p>
+
+                    <p>Di Banyumas, Lanting telah menjadi bagian dari identitas kuliner lokal dan sering dijadikan sebagai
+                        buah tangan. Camilan tradisional ini bisa dengan mudah ditemukan di pasar tradisional, toko
+                        oleh-oleh, bahkan warung-warung kecil di berbagai sudut kota. Harganya sangat terjangkau, berkisar
+                        antara Rp 10.000 hingga Rp 25.000 per kemasan, menjadikannya oleh-oleh yang ekonomis namun tetap
+                        memiliki cita rasa autentik Banyumas.</p>
+                </div>
+            </section>
+
+            <!-- History -->
+            <section class="article-section">
+                <h2>Sejarah</h2>
+                <div class="article-text">
+                    <p>Sejarah Lanting memiliki beberapa versi cerita yang berbeda. Salah satu versi menyebutkan bahwa asal
+                        mula Lanting bermula dari Kecamatan Kuwarasan di Kebumen, yang berbatasan dengan Banyumas. Sebanyak
+                        111 desa di kecamatan ini memiliki industri Lanting kecil, yang kemudian menyebar ke wilayah
+                        Banyumas dan sekitarnya. Sebagai makanan tradisional, Lanting telah menjadi bagian dari budaya
+                        kuliner masyarakat Jawa Tengah selama beberapa generasi.</p>
+
+                    <div class="article-highlight">
+                        <p>Ada cerita menarik tentang asal nama "Lanting". Konon, nama ini berasal dari masa kolonial
+                            Belanda, ketika ada orang asing yang terkagum-kagum dengan kepandaian orang-orang di wilayah
+                            tersebut dalam membuat makanan dari singkong. Mereka menyebut wilayah ini sebagai "Land Think"
+                            (tanah pemikir), yang kemudian dalam pelafalan lokal berubah menjadi "Lanting". Meski sulit
+                            diverifikasi, cerita ini telah menjadi bagian dari folklor lanting yang diturunkan dari generasi
+                            ke generasi.</p>
+                    </div>
+
+                    <p>Lanting awalnya dibuat sebagai upaya untuk memanfaatkan singkong yang melimpah di daerah Banyumas dan
+                        sekitarnya. Kemampuan singkong untuk tumbuh di berbagai kondisi tanah menjadikannya bahan pangan
+                        yang mudah didapat. Melalui proses pengolahan yang kreatif, singkong yang relatif hambar diubah
+                        menjadi camilan gurih yang tahan lama. Proses pembuatan yang membutuhkan kesabaran dan ketelatenan
+                        menjadikan Lanting lebih dari sekadar makanan, tetapi juga sebagai wujud kearifan lokal dalam
+                        mengolah sumber daya alam yang tersedia.</p>
+                </div>
+            </section>
+
+            <!-- Ingredients and Preparation -->
+            <section class="article-section">
+                <h2>Bahan dan Cara Pembuatan</h2>
+
+                <div class="ingredient-container">
+                    <div class="ingredient-card">
+                        <h3>Bahan Utama</h3>
+                        <ul>
+                            <li>1 kg singkong segar, pilih yang tidak terlalu tua</li>
+                            <li>1 sendok teh garam</li>
+                            <li>Air secukupnya untuk merebus</li>
+                            <li>Minyak goreng secukupnya</li>
+                        </ul>
+                    </div>
+
+                    <div class="ingredient-card">
+                        <h3>Bumbu</h3>
+                        <ul>
+                            <li>3-4 siung bawang putih, haluskan</li>
+                            <li>1 sendok teh ketumbar bubuk</li>
+                            <li>1/2 sendok teh merica bubuk (opsional)</li>
+                            <li>1/2 sendok teh kaldu bubuk (opsional)</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Apa itu Lanting?</h2>
-                    <p>Lanting adalah makanan ringan tradisional khas Banyumas yang terbuat dari singkong yang diparut, dibentuk seperti cincin, kemudian dikeringkan dan digoreng hingga renyah. Camilan ini memiliki tekstur yang keras dan renyah dengan rasa gurih yang khas. Bentuknya yang menyerupai cincin atau gelang dengan diameter sekitar 3-5 cm menjadi ciri khas yang mudah dikenali.</p>
-                    <p>Lanting merupakan salah satu camilan favorit masyarakat Banyumas yang biasa dinikmati sebagai teman minum teh atau kopi. Rasanya yang gurih dengan sedikit sentuhan manis alami dari singkong membuat lanting memiliki cita rasa yang unik. Aroma khas singkong yang tercium saat lanting digoreng juga menjadi daya tarik tersendiri.</p>
-                    <p>Di Banyumas, khususnya di Kecamatan Sumpiuh, lanting menjadi produk unggulan yang banyak diproduksi oleh industri rumahan. Harga lanting relatif terjangkau, berkisar antara Rp 10.000 hingga Rp 25.000 per bungkus, tergantung ukuran dan kualitasnya. Lanting memiliki daya tahan yang cukup lama, bisa mencapai 2-3 bulan jika disimpan dalam wadah kedap udara.</p>
-                </div>
-
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Sejarah Lanting</h2>
-                    <p>Sejarah lanting di Banyumas berkaitan erat dengan melimpahnya hasil panen singkong di daerah tersebut. Konon, lanting pertama kali dibuat pada masa paceklik sekitar tahun 1930-an, ketika masyarakat Banyumas harus memutar otak untuk mengolah singkong menjadi makanan yang tahan lama dan mengenyangkan.</p>
-                    <p>Nama "lanting" sendiri dipercaya berasal dari bahasa Jawa "klanting" yang berarti terlempar atau terpental. Ini mungkin merujuk pada proses pembuatannya di mana adonan singkong dibentuk dengan cara diputar-putar hingga membentuk cincin, seolah-olah terlempar dari tangan pembuatnya. Ada juga yang mengatakan bahwa nama lanting terinspirasi dari bentuknya yang menyerupai gelang atau "gelang anting" yang kemudian disingkat menjadi "lanting".</p>
-                    <p>Pada awalnya, lanting hanya dibuat untuk konsumsi keluarga atau sebagai camilan saat acara-acara tertentu. Namun seiring berjalannya waktu, lanting mulai diproduksi secara komersial dan menjadi salah satu ikon kuliner Banyumas. Desa Sumpiuh di Kabupaten Banyumas bahkan dikenal sebagai sentra produksi lanting, di mana hampir setiap rumah memproduksi camilan tradisional ini.</p>
-                </div>
-
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Bahan dan Cara Pembuatan</h2>
-                    <p>Pembuatan lanting membutuhkan kesabaran dan ketelatenan karena prosesnya yang cukup panjang. Berikut adalah tahapan pembuatannya:</p>
-
-                    <ol class="mb-4">
-                        <li class="mb-2">Persiapan bahan: Singkong segar dikupas, dicuci bersih, lalu diparut halus.</li>
-                        <li class="mb-2">Pemerasan: Hasil parutan singkong diperas untuk mengurangi kadar airnya. Air perasan tidak dibuang karena akan menghasilkan pati singkong yang berguna untuk adonan.</li>
-                        <li class="mb-2">Pembuatan adonan: Singkong parut dicampur dengan pati singkong, garam, bawang putih halus, dan sedikit ketumbar. Adonan kemudian diuleni hingga kalis dan dapat dibentuk.</li>
-                        <li class="mb-2">Pembentukan: Adonan diambil secukupnya, dibentuk menjadi bulatan panjang seperti tali, kemudian kedua ujungnya disatukan hingga membentuk cincin.</li>
-                        <li class="mb-2">Pengeringan: Lanting yang sudah dibentuk dijemur di bawah sinar matahari selama 1-2 hari hingga benar-benar kering.</li>
-                        <li class="mb-2">Penggorengan: Lanting kering digoreng dalam minyak panas hingga berwarna kecoklatan dan renyah.</li>
-                        <li class="mb-2">Penirisan dan pendinginan: Lanting yang sudah matang ditiriskan dan didinginkan sebelum dikemas.</li>
+                <div class="article-text">
+                    <h3>Cara Membuat</h3>
+                    <ol class="preparation-steps">
+                        <li>Kupas singkong, cuci bersih, dan potong-potong. Rendam dalam air bersih selama sekitar 1 jam
+                            untuk mengurangi kandungan HCN.</li>
+                        <li>Rebus atau kukus singkong hingga empuk tetapi jangan terlalu lunak. Angkat dan tiriskan,
+                            kemudian buang serat kayu yang ada di tengah singkong.</li>
+                        <li>Selagi masih hangat, tumbuk atau haluskan singkong hingga menjadi adonan yang lembut dan kalis.
+                        </li>
+                        <li>Campurkan bumbu-bumbu yang telah dihaluskan ke dalam adonan singkong. Aduk hingga rata.</li>
+                        <li>Ambil sedikit adonan, bentuk menjadi bulatan kecil kemudian pilin menjadi bentuk tali. Satukan
+                            kedua ujungnya hingga membentuk cincin atau bentuk angka 8 sesuai selera.</li>
+                        <li>Jemur Lanting di bawah sinar matahari langsung selama 1-2 hari hingga benar-benar kering. Proses
+                            penjemuran sangat penting untuk mendapatkan tekstur yang renyah.</li>
+                        <li>Setelah kering, goreng Lanting dalam minyak panas dengan api sedang hingga berwarna kuning
+                            kecoklatan. Aduk secara perlahan agar matang merata.</li>
+                        <li>Angkat, tiriskan hingga dingin, dan Lanting siap disajikan atau diberi bumbu tambahan sesuai
+                            selera.</li>
                     </ol>
 
-                    <p>Kunci utama dalam pembuatan lanting yang berkualitas adalah perbandingan singkong parut dan pati singkong yang tepat, serta proses pengeringan yang sempurna sebelum digoreng. Pengeringan yang kurang sempurna akan membuat lanting menjadi kurang renyah atau bahkan bisa meledak saat digoreng. Beberapa produsen juga menambahkan daun bawang atau seledri cincang pada adonan untuk memberikan aroma dan rasa yang lebih kaya.</p>
+                    <div class="article-tip">
+                        <p><strong>Tip:</strong> Kunci utama dalam membuat Lanting yang renyah adalah proses pengeringan
+                            yang sempurna sebelum digoreng. Pastikan Lanting benar-benar kering untuk mendapatkan hasil yang
+                            optimal. Untuk varian rasa, Anda bisa menambahkan bumbu tabur seperti bumbu balado, bubuk keju,
+                            atau gula untuk rasa manis setelah Lanting digoreng dan masih dalam keadaan hangat.</p>
+                    </div>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Variasi Lanting</h2>
-                    <p>Seiring perkembangan zaman, lanting kini hadir dalam beberapa variasi:</p>
-                    <ul class="mb-4">
-                        <li>Lanting Original: Dengan bumbu tradisional yang gurih dan aroma bawang yang khas.</li>
-                        <li>Lanting Pedas: Ditambahkan cabai dalam adonannya sehingga memiliki rasa pedas yang menggugah selera.</li>
-                        <li>Lanting Manis: Ditambahkan gula dalam adonan atau dilapisi dengan gula halus setelah digoreng.</li>
-                        <li>Lanting Balado: Setelah digoreng, lanting ditaburi atau dibalut dengan bumbu balado yang pedas.</li>
-                        <li>Lanting Keju: Variasi modern di mana lanting ditaburi bubuk keju setelah digoreng.</li>
-                    </ul>
-                    <p>Meskipun tersedia berbagai variasi, lanting original tetap menjadi yang paling populer karena mampu mempertahankan cita rasa autentik yang telah menjadi tradisi turun-temurun di Banyumas.</p>
-                </div>
+            <!-- Variations -->
+            <section class="article-section">
+                <h2>Variasi</h2>
+                <div class="article-text">
+                    <p>Meskipun Lanting tradisional Banyumas memiliki cita rasa gurih original, seiring perkembangan zaman,
+                        terdapat beberapa variasi yang bisa ditemui:</p>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Nilai Gizi dan Manfaat</h2>
-                    <p>Sebagai makanan berbahan dasar singkong, lanting memiliki kandungan nutrisi sebagai berikut (dalam perkiraan per 100 gram):</p>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul>
-                                        <li>Kalori: 350-400 kkal</li>
-                                        <li>Karbohidrat: 60-65 gram</li>
-                                        <li>Protein: 1-2 gram</li>
-                                        <li>Lemak: 15-20 gram</li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <div class="variation-cards">
+                        <div class="variation-card">
+                            <h3>Lanting Original</h3>
+                            <p>Versi tradisional dengan cita rasa gurih dan renyah dari perpaduan singkong dan bumbu
+                                sederhana seperti bawang putih dan ketumbar.</p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <ul>
-                                        <li>Serat: 2-3 gram</li>
-                                        <li>Kalsium: 20-30 mg</li>
-                                        <li>Zat Besi: 0.5-1 mg</li>
-                                        <li>Vitamin C: 15-20 mg</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="variation-card">
+                            <h3>Lanting Pedas</h3>
+                            <p>Ditambahkan cabai bubuk atau bumbu balado yang memberikan sensasi pedas, sangat cocok bagi
+                                pecinta makanan pedas.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Lanting Keju</h3>
+                            <p>Diberi taburan bubuk keju yang memberikan cita rasa gurih dan creamy, menjadi favorit
+                                anak-anak dan kaum milenial.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Lanting Jagung Manis</h3>
+                            <p>Varian dengan rasa jagung manis yang memberi sentuhan manis pada lanting, menciptakan
+                                perpaduan manis dan gurih yang unik.</p>
+                        </div>
+                        <div class="variation-card">
+                            <h3>Lanting Getuk</h3>
+                            <p>Variasi yang sedikit berbeda dalam proses pembuatan, mirip dengan getuk (makanan dari
+                                singkong yang ditumbuk) namun dikeringkan dan digoreng seperti lanting.</p>
                         </div>
                     </div>
 
-                    <p>Meskipun lanting mengalami proses penggorengan yang menambah kandungan lemak, namun bahan dasarnya yaitu singkong tetap menyumbangkan beberapa nutrisi penting. Singkong mengandung pati resisten yang berfungsi seperti serat dan baik untuk pencernaan. Namun, karena proses penggorengan, lanting sebaiknya dikonsumsi secukupnya, terutama bagi mereka yang sedang menjaga asupan lemak dan kalori.</p>
+                    <p>Selain varian rasa, Lanting juga memiliki beragam bentuk. Di Banyumas, Lanting sering berbentuk
+                        cincin, sementara di Kebumen lebih dikenal dengan bentuk angka 8. Beberapa produsen juga membuat
+                        Lanting dalam bentuk yang lebih kecil atau dengan ketebalan yang berbeda-beda. Variasi bentuk dan
+                        ketebalan ini mempengaruhi tekstur dan pengalaman mencicipi Lanting, dengan versi yang lebih tipis
+                        cenderung lebih renyah sementara yang lebih tebal memiliki tekstur yang sedikit kenyal di bagian
+                        dalam.</p>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Sentra Produksi Lanting di Banyumas</h2>
-                    <p>Banyumas memiliki beberapa daerah yang menjadi sentra produksi lanting, di antaranya:</p>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Desa Sumpiuh</h5>
-                                    <p class="card-text">Dikenal sebagai pusat produksi lanting terbesar di Banyumas. Hampir setiap rumah di desa ini memproduksi lanting dengan resep yang diwariskan secara turun-temurun.</p>
-                                    <p class="card-text"><small class="text-muted">Lokasi: Kecamatan Sumpiuh, Kabupaten Banyumas</small></p>
-                                </div>
-                            </div>
+            <!-- Tips -->
+            <section class="article-section">
+                <h2>Tips Menikmati</h2>
+                <div class="article-text">
+                    <div class="tips-container">
+                        <div class="tip-item">
+                            <span class="tip-number">01</span>
+                            <p>Lanting paling nikmat dinikmati sebagai camilan dengan secangkir teh atau kopi hangat.
+                                Kombinasi antara gurihnya Lanting dengan minuman hangat menciptakan harmoni rasa yang
+                                sempurna.</p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Desa Kemranjen</h5>
-                                    <p class="card-text">Terkenal dengan lanting yang lebih tipis dan renyah. Para produsen lanting di desa ini juga mulai mengembangkan berbagai varian rasa untuk memenuhi selera konsumen.</p>
-                                    <p class="card-text"><small class="text-muted">Lokasi: Kecamatan Kemranjen, Kabupaten Banyumas</small></p>
-                                </div>
-                            </div>
+                        <div class="tip-item">
+                            <span class="tip-number">02</span>
+                            <p>Selain sebagai camilan, Lanting juga bisa disajikan sebagai pendamping menu berkuah seperti
+                                soto atau bakso. Teksturnya yang renyah memberikan dimensi tambahan pada sajian berkuah.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">03</span>
+                            <p>Untuk menjaga kerenyahan Lanting, simpan dalam wadah kedap udara segera setelah kemasan
+                                dibuka. Jika Lanting mulai melempem, panaskan sebentar dalam oven atau wajan tanpa minyak
+                                untuk mengembalikan kerenyahannya.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">04</span>
+                            <p>Saat membeli Lanting sebagai oleh-oleh, pilihlah yang dikemas dengan baik dan kedap udara.
+                                Lanting berkualitas baik memiliki warna keemasan merata, tekstur renyah, dan tidak
+                                berminyak.</p>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-number">05</span>
+                            <p>Jelajahi berbagai varian rasa Lanting untuk menemukan favorit Anda. Beberapa tempat terkenal
+                                untuk membeli Lanting berkualitas di Banyumas antara lain pasar tradisional di Purwokerto
+                                dan toko oleh-oleh sepanjang jalan utama menuju Sokaraja.</p>
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Tips Menikmati dan Menyimpan Lanting</h2>
-                    <p>Untuk mendapatkan pengalaman terbaik saat menikmati lanting:</p>
-                    <ul class="mb-4">
-                        <li>Lanting paling nikmat dinikmati sebagai camilan saat bersantai, ditemani teh atau kopi hangat.</li>
-                        <li>Untuk menjaga kerenyahan lanting, simpan dalam wadah kedap udara dan jauhkan dari kelembaban.</li>
-                        <li>Jika lanting mulai melempem, Anda bisa mengembalikan kerenyahannya dengan cara memanaskannya sebentar di oven atau microwave.</li>
-                        <li>Lanting juga bisa dikreasikan menjadi topping untuk hidangan seperti sup atau bubur untuk menambah tekstur renyah.</li>
-                        <li>Lanting bisa bertahan hingga 2-3 bulan jika disimpan dengan baik, menjadikannya oleh-oleh yang praktis untuk dibawa dalam perjalanan jauh.</li>
-                    </ul>
-                </div>
-
-                <div class="mb-5">
-                    <h2 class="fw-semibold mb-3">Lanting dalam Budaya Banyumas</h2>
-                    <p>Lanting tidak hanya sekadar camilan di Banyumas, tetapi juga memiliki nilai budaya yang cukup penting. Dalam berbagai acara adat dan perayaan di Banyumas, lanting sering hadir sebagai salah satu hidangan yang wajib ada. Pada acara hajatan seperti pernikahan atau khitanan, lanting biasanya disajikan sebagai camilan untuk para tamu.</p>
-                    <p>Selain itu, proses pembuatan lanting yang membutuhkan kerja sama dan gotong royong juga mencerminkan nilai-nilai sosial masyarakat Banyumas. Saat musim panen singkong tiba, warga biasanya berkumpul untuk membuat lanting bersama-sama, mulai dari memarut singkong hingga menjemur dan menggorengnya.</p>
-                    <p>Dalam perkembangannya, lanting juga menjadi salah satu produk unggulan dalam program pemberdayaan ekonomi masyarakat di Banyumas. Berbagai pelatihan dan bantuan untuk meningkatkan kualitas dan pemasaran lanting telah dilakukan oleh pemerintah daerah untuk mendukung UMKM yang bergerak di bidang produksi lanting.</p>
-                </div>
-            </div>
-        </div>
+        </article>
     </div>
 @endsection

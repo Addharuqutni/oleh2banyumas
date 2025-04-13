@@ -7,7 +7,7 @@
         <div class="container mt-4">
             <div class="row mb-4">
                 <div class="col-12 col-lg-8 mx-auto text-center">
-                    <h1 class="fw-bold mb-3">Oleh-oleh khas Banyumas</h1>
+                    <h1 class="fw-bold mb-3" style="color: #2e7d32">Oleh-oleh khas Banyumas</h1>
                     <p>Apa aja sih oleh-oleh makanan ringan khas dari Banyumas? Berikut pilihannya</p>
                 </div>
             </div>
@@ -127,11 +127,9 @@
                 </div>
             </div>
 
-            <div class="row mt-5 mb-5">
+            <div class="row mt-2 mb-5">
                 <div class="col-12 text-center">
-                    <a href="{{ route('shops.index') }}"
-                        class="fw-semibold btn border rounded shadow-regular d-inline-flex justify-content-center align-items-center"
-                        style="height: 50px; width: 200px; background: #ffffff;">Lihat Toko Oleh-oleh</a>
+                    <a href="{{ route('shops.index') }}" class="btn-view-more" style="">Lihat Toko Oleh-oleh</a>
                 </div>
             </div>
         </div>

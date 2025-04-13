@@ -16,7 +16,7 @@
 </head>
 
 <body style="background-color: #DBEAD9;">
-    
+
     @include('layouts.navbar')
 
     <main>

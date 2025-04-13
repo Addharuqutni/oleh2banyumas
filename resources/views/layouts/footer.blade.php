@@ -3,13 +3,14 @@
         <div class="row align-items-center text-center text-md-start">
             <!-- Logo -->
             <div class="col-12 col-md-6 mb-4 mb-md-0 d-flex justify-content-center justify-content-md-start">
-                <img src="{{ asset('images/Logo.png') }}" alt="Snack Banyumas" class="img-fluid" style="max-width: 100%; width: 280px;">
+                <img src="{{ asset('images/Logo.png') }}" alt="Snack Banyumas" class="img-fluid"
+                    style="max-width: 100%; width: 280px;">
             </div>
-            
+
             <!-- Description and Links -->
             <div class="col-12 col-md-6">
                 <div class="py-2 text-center">
-                    <h4 class="fw-bold mb-3">Oleh-oleh khas Banyumas</h4>
+                    <h4 class="fw-bold mb-3 section-title">Oleh-oleh khas Banyumas</h4>
                 </div>
                 <div class="pb-3">
                     <p class="mb-3">
@@ -23,7 +24,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Copyright section -->
         <div class="row">
             <div class="col-12 text-center">
@@ -33,3 +34,12 @@
         </div>
     </div>
 </footer>
+
+<style>
+    .section-title {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+</style>

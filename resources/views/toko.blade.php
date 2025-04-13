@@ -7,7 +7,7 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 mx-auto text-center">
-                    <h1 class="fw-bold">Peta Toko Oleh Oleh Makanan Ringan Banyumas</h1>
+                    <h1 class="fw-bold" style="color: #2e7d32">Peta Toko Oleh Oleh Makanan Ringan Banyumas</h1>
                     <p class="w-lg-50">dimana aja sih oleh-oleh makanan ringan khas Banyumas? berikut pilihannya</p>
                 </div>
             </div>
@@ -23,8 +23,7 @@
 
         <!-- Store List -->
         <div class="container py-4 py-md-5">
-            <h2 class="fw-bold">Daftar Toko Oleh-Oleh</h2>
-            <p class="mb-5 w-lg-50">Rekomendasi</p>
+            <h2 class="fw-bold mb-4" style="color: #2e7d32">Daftar Toko Oleh-Oleh</h2>
             <div class="row g-4">
                 @forelse($featuredShops as $shop)
                     <!-- Toko Card -->
@@ -53,12 +52,9 @@
                 @endforelse
             </div>
 
-            <!-- Pagination -->
-            <div class="row justify-content-center mt-4">
+            <div class="row mt-2 mb-5">
                 <div class="col-12 text-center">
-                    <a href="{{ route('shops.list') }}"
-                        class="fw-semibold btn border rounded shadow-regular d-inline-flex justify-content-center align-items-center"
-                        style="height: 50px; width: 120px; background: #ffffff;">Selengkapnya</a>
+                    <a href="{{ route('shops.list') }}" class="btn-view-more" style="">Selengkapnya</a>
                 </div>
             </div>
         </div>
@@ -233,12 +229,16 @@
             @foreach ($shops as $shop)
                 L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
                     .bindPopup('<div class="popup-content">' +
+                        '@if ($shop->featured_image)' +
                         '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
+                        '@else' +
+                        '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
+                        '@endif' +
                         '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
                         '<div>' +
                         '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
                         '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
-                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', $shop->id) }}">Detail Toko</a>' +
+                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
                         '<div class="view-link d-flex align-items-center mt-2">' +
                         '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
                         '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
