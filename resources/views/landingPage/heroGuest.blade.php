@@ -33,7 +33,7 @@
         font-size: 2.5rem;
         line-height: 1.2;
         margin-bottom: 2.5rem;
-        color: var(--primary-color);
+        color: #2e7d32;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
 
@@ -63,8 +63,8 @@
         justify-content: center;
         align-items: center;
         background: #ffffff;
-        border: 2px solid var(--primary-color);
-        color: var(--primary-color);
+        border: 2px solid #2e7d32;
+        color: #2e7d32;
         border-radius: 50px;
         height: 70px;
         width: 220px;

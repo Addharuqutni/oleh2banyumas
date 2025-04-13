@@ -355,14 +355,14 @@
     <style>
         /* Page Title and Back Button */
         .page-title {
-            color: var(--primary-color);
+            color: #2e7d32;
             font-size: 2.25rem;
             margin-bottom: 0;
             position: relative;
         }
 
         .btn-back:hover {
-            background-color: var(--primary-color);
+            background-color: #2e7d32;
             color: white;
         }
 
@@ -372,7 +372,7 @@
         }
 
         .section-title {
-            color: var(--primary-color);
+            color: #2e7d32;
             font-size: 1.75rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
@@ -387,20 +387,20 @@
             left: 0;
             width: 60px;
             height: 3px;
-            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            background: linear-gradient(to right, #2e7d32, #81c784);
             border-radius: 3px;
         }
 
         /* Store Detail Card */
         .store-detail-card {
             background-color: white;
-            border-radius: var(--border-radius-lg);
+            border-radius: 0.75rem;
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .store-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             padding: 1.5rem;
             display: flex;
@@ -423,12 +423,12 @@
 
         .rating-badge {
             background-color: white;
-            color: var(--primary-dark);
+            color: #1b5e20;
             font-weight: 700;
             font-size: 1.25rem;
             padding: 0.3rem 0.8rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-sm);
+            border-radius: 0.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
 
         .star-rating {
@@ -452,9 +452,9 @@
 
         /* Store Carousel */
         .store-carousel {
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             margin-bottom: 1rem;
         }
 
@@ -474,7 +474,7 @@
 
         .caption-tag {
             background-color: rgba(255, 255, 255, 0.9);
-            color: var(--primary-dark);
+            color: #1b5e20;
             font-size: 0.8rem;
             font-weight: 600;
             padding: 0.3rem 0.7rem;
@@ -521,7 +521,8 @@
         .info-icon {
             width: 40px;
             height: 40px;
-            background-color: var(--primary-light);
+            background-color: #81c784;
+            /* var(--primary-light) */
             color: white;
             display: flex;
             align-items: center;
@@ -541,12 +542,12 @@
         .info-title {
             font-size: 1rem;
             font-weight: 600;
-            color: var(--primary-color);
+            color: #2e7d32;
             margin-bottom: 0.5rem;
         }
 
         .info-text {
-            color: var(--text-medium);
+            color: #555;
             margin-bottom: 0.75rem;
             line-height: 1.5;
         }
@@ -556,20 +557,20 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background-color: var(--light-color);
-            color: var(--primary-color);
+            background-color: #ffffff;
+            color: #2e7d32;
             border: none;
             padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             font-size: 0.9rem;
             font-weight: 500;
             text-decoration: none;
-            transition: var(--transition-default);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .direction-btn:hover,
         .call-btn:hover {
-            background-color: var(--primary-color);
+            background-color: #2e7d32;
             color: white;
             transform: translateY(-2px);
         }
@@ -577,10 +578,10 @@
         /* Map Section */
         .map-container {
             height: 400px;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             overflow: hidden;
             position: relative;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         #map {
@@ -614,19 +615,19 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             padding: 0.8rem 1.2rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
-            box-shadow: var(--shadow-md);
-            transition: var(--transition-default);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .navigation-btn:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             color: white;
         }
 
@@ -639,10 +640,10 @@
 
         .product-card {
             background-color: white;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition-default);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -650,13 +651,12 @@
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .product-img-container {
             position: relative;
             padding-top: 75%;
-            /* 4:3 Aspect Ratio */
             overflow: hidden;
         }
 
@@ -684,13 +684,13 @@
         .product-title {
             font-size: 1.1rem;
             font-weight: 600;
-            color: var(--text-color);
+            color: #000000;
             margin-bottom: 0.5rem;
             line-height: 1.4;
         }
 
         .product-price {
-            color: var(--primary-color);
+            color: #2e7d32;
             font-weight: 700;
             font-size: 1.1rem;
             margin-bottom: 1rem;
@@ -704,37 +704,37 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background-color: var(--primary-light);
+            background-color: #81c784;
             color: white;
             padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             font-size: 0.9rem;
             font-weight: 500;
-            transition: var(--transition-default);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .product-card:hover .product-detail-btn {
-            background-color: var(--primary-color);
+            background-color: #2e7d32;
         }
 
         /* Empty State */
         .empty-state {
             background-color: white;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             padding: 3rem 1.5rem;
             text-align: center;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
 
         .empty-state i {
             font-size: 3rem;
-            color: var(--text-muted);
+            color: #888888;
             margin-bottom: 1rem;
             display: block;
         }
 
         .empty-state p {
-            color: var(--text-muted);
+            color: #888888;
             font-size: 1.1rem;
             margin: 0;
         }
@@ -746,13 +746,13 @@
             gap: 1.5rem;
             background-color: white;
             padding: 1.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-sm);
+            border-radius: 0.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
         }
 
         .rating-badge-large {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             font-size: 2rem;
             font-weight: 700;
@@ -761,7 +761,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
         }
 
         .rating-details {
@@ -781,7 +781,7 @@
         }
 
         .review-count-large {
-            color: var(--text-muted);
+            color: #888888;
             font-size: 1rem;
         }
 
@@ -791,21 +791,21 @@
 
         .review-card {
             background-color: white;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             overflow: hidden;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             height: 100%;
-            transition: var(--transition-default);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .review-card:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .review-header {
             padding: 1.25rem;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #e0e0e0;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -820,7 +820,7 @@
         .reviewer-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             font-size: 1.2rem;
             font-weight: 600;
@@ -834,14 +834,14 @@
             font-size: 1rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
-            color: var(--text-color);
+            color: #000000;
         }
 
         .review-date {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: var(--text-muted);
+            color: #888888;
             font-size: 0.85rem;
         }
 
@@ -860,7 +860,7 @@
         }
 
         .review-text {
-            color: var(--text-muted);
+            color: #888888;
             margin: 0;
             line-height: 1.6;
         }
@@ -868,13 +868,13 @@
         /* Add Review Form */
         .add-review-container {
             background-color: white;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             padding: 2rem;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .form-title {
-            color: var(--primary-color);
+            color: #2e7d32;
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1.5rem;
@@ -889,7 +889,7 @@
             left: 0;
             width: 50px;
             height: 3px;
-            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            background: linear-gradient(to right, #2e7d32, #81c784);
             border-radius: 3px;
         }
 
@@ -905,7 +905,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: var(--text-color);
+            color: #000000;
         }
 
         .input-with-icon {
@@ -917,7 +917,7 @@
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
+            color: #888888;
         }
 
         .input-with-icon.textarea i {
@@ -928,14 +928,14 @@
         .input-with-icon input,
         .input-with-icon textarea {
             padding-left: 2.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            transition: var(--transition-default);
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .input-with-icon input:focus,
         .input-with-icon textarea:focus {
-            border-color: var(--primary-color);
+            border-color: #2e7d32;
             box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
         }
 
@@ -970,7 +970,7 @@
         }
 
         .rating-text {
-            color: var(--text-muted);
+            color: #888888;
             font-size: 0.9rem;
         }
 
@@ -978,18 +978,18 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             border: none;
             padding: 0.8rem 1.5rem;
-            border-radius: var(--border-radius);
+            border-radius: 0.5rem;
             font-weight: 600;
-            transition: var(--transition-default);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .submit-review-btn:hover {
             transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         /* Responsive Adjustments */
@@ -1150,6 +1150,7 @@
             }
         }
     </style>
+
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"

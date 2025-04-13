@@ -37,7 +37,7 @@
 
 <style>
     .section-title {
-        color: var(--primary-color);
+        color: #2e7d32;
         font-size: 1.5rem;
         margin-bottom: 1rem;
         position: relative;

@@ -361,7 +361,7 @@
             }
         }
     </style>
-    
+
     <script>
         // Image lazy loading
         document.addEventListener("DOMContentLoaded", function() {
