@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <h1 class="fw-bold" style="color: #2e7d32">Tentang Kami</h1>
+                <h1 class="judul fw-bold">Tentang Kami</h1>
             </div>
         </div>
 

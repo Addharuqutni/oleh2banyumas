@@ -5,25 +5,38 @@
 @section('content')
     <div class="container-fluid py-4 d-flex flex-column min-vh-100" style="background-color: #e8f5e9;">
         <div class="container">
+
             <!-- Back Button and Header -->
-            <div class="mb-4 position-relative">
-                <a href="{{ url()->previous() }}" class="btn-back position-absolute">
-                    <i class="bi bi-chevron-left"></i>
+            <div class="mb-5 position-relative">
+                <a href="{{ url()->previous() }}" class="btn btn-link position-absolute start-0 text-success" 
+                style="transition: transform 0.3s ease;">
+                    <i class="bi bi-chevron-left fs-4 me-1"></i>
                 </a>
-                <h1 class="text-center fw-bold" style="color: #2e7d32">Daftar Toko Oleh Oleh Makanan Ringan Banyumas</h1>
+                <div class="text-center">
+                    <h2 class="judul fw-bold mb-1">Daftar Toko Oleh Oleh Makanan Ringan Banyumas</h2>
+                </div>
             </div>
 
-            <!-- Search Bar (Center) -->
-            <div class="container mb-5">
+            <!-- Search Bar with Filters -->
+            <div class="mb-5">
                 <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <form action="{{ route('shops.list') }}" method="GET">
-                            <div class="input-group">
-                                <input type="text" class="form-control rounded-start" name="search"
-                                    placeholder="Cari toko atau produk..." value="{{ request('search') }}">
-                                <button class="btn btn-dark rounded-end" type="submit">Cari</button>
-                            </div>
-                        </form>
+                    <div class="col-md-8">
+                        <div class="search-container">
+                            <form action="{{ route('shops.list') }}" method="GET" class="d-flex flex-column flex-md-row gap-2">
+                                <div class="input-group flex-grow-1">
+                                    <span class="input-group-text bg-white border-end-0">
+                                        <i class="bi bi-search text-success"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0" name="search"
+                                        placeholder="Cari toko atau produk..." value="{{ request('search') }}"
+                                        aria-label="Search" aria-describedby="search-button">
+                                </div>
+                                <button class="btn btn-success px-4 rounded-small" type="submit">
+                                    <span class="d-none d-md-inline">Cari</span>
+                                    <i class="bi bi-search d-inline d-md-none"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,14 +79,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
     <style>
-        /* Background color */
-        body {
-            background-color: #e8f5e9;
-        }
 
         /* Store Card Styling */
         .store-card {
