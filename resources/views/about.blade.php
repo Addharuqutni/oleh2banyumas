@@ -3,10 +3,12 @@
 @section('title', 'Tentang Kami - Snack Banyumas')
 
 @section('content')
-    <div class="container mt-4">
-        <div class="row mb-4">
-            <div class="col-12 text-center">
-                <h1 class="judul fw-bold">Tentang Kami</h1>
+<div class="container py-5">
+        <div class="row mb-5">
+            <div class="col-12 col-lg-8 mx-auto text-center">
+                <div class="section-header">
+                    <h1 class="fw-bold judul">Tentang Kami</h1>
+                </div>
             </div>
         </div>
 
@@ -60,4 +62,6 @@
             </div>
         </div>
     </div>
+</div>
+    
 @endsection

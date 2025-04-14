@@ -3,7 +3,7 @@
 @section('title', 'Artikel - Snack Banyumas')
 
 @section('content')
-    <section class="products-section py-5">
+    <section class="py-5">
         <div class="container">
             <div class="row mb-5">
                 <div class="col-12 col-lg-8 mx-auto text-center">

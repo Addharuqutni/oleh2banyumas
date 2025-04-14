@@ -3,7 +3,7 @@
 @section('title', 'Toko - Oleh Oleh')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="container py-5">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 mx-auto text-center">
