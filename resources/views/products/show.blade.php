@@ -5,63 +5,62 @@
 @section('content')
     <div class="container py-5">
         <!-- Back Button and Header -->
-        <div class="mb-4 position-relative">
-            <a href="{{ url()->previous() }}" class="btn-back position-absolute">
-                <i class="bi bi-chevron-left"></i>
+        <div class="mb-5 position-relative">
+            <a href="{{ url()->previous() }}" class="btn btn-link position-absolute start-0 text-success" 
+               style="transition: transform 0.3s ease;">
+                <i class="bi bi-chevron-left fs-4 me-1"></i>
             </a>
-            <h1 class="text-center fw-bold">Detail Produk</h1>
+            <div class="text-center">
+                <h2 class="judul fw-bold mb-1">Detail Produk</h2>
+            </div>
         </div>
 
         <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-4">
+        <nav aria-label="breadcrumb" class="mb-1 mt-4">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('shops.index') }}">Toko</a></li>
                 <li class="breadcrumb-item"><a
-                        href="{{ route('shops.show', $product->shop->slug) }}">{{ $product->shop->name }}</a></li>
-                <li class="breadcrumb-item active">{{ $product->name }}</li>
+                        href="{{ route('shops.detail', $product->shop->slug) }}">{{ $product->shop->name }}</a></li>
+                <li class="breadcrumb-item active aria-current="page"">{{ $product->name }}</li>
             </ol>
         </nav>
 
         @if (isset($product) && $product)
             <!-- Product Main Section -->
-            <div class="card product-detail-card border-0 shadow-sm mb-5">
+            <div class="card border-0 shadow-sm mb-5 rounded-3 overflow-hidden">
                 <div class="row g-0">
                     <!-- Product Image -->
                     <div class="col-md-6">
-                        <div class="product-image-container">
+                        <div class="bg-light h-100">
                             @if ($product->image)
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                    class="product-main-image">
+                                    class="img-fluid w-100 h-100 object-fit-cover">
                             @else
                                 <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $product->name }}"
-                                    class="product-main-image">
+                                    class="img-fluid w-100 h-100 object-fit-cover">
                             @endif
                         </div>
                     </div>
 
                     <!-- Product Details -->
                     <div class="col-md-6">
-                        <div class="card-body product-info p-4">
-                            <span class="shop-badge">{{ $product->shop->name }}</span>
-                            <h2 class="product-title fw-bold mb-1">{{ $product->name }}</h2>
-                            <div class="price-container mb-2">
-                                <h5 class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</h5>
+                        <div class="card-body p-4">
+                            <span class="badge bg-opacity-10 text-success mb-3" style="background: #e8f5e9">{{ $product->shop->name }}</span>
+                            <h2 class="fw-bold mb-1 fw-semibold">{{ $product->name }}</h2>
+                            <div class="mb-3">
+                                <h5 class="text-success">Rp {{ number_format($product->price, 0, ',', '.') }}</h5>
                             </div>
-                            <div class="description-container">
-                                <h5 class="description-title">Deskripsi Produk</h5>
-                                <div class="product-description">
+                            <div class="mb-4">
+                                <h5 class="text-secondary">Deskripsi Produk</h5>
+                                <p class="text-muted">
                                     {{ $product->description ?? 'Belum ada deskripsi untuk produk ini.' }}
-                                </div>
+                                </p>
                             </div>
 
-                            <div class="action-buttons mt-4">
-                                <a href="{{ route('shops.detail', $product->shop->slug) }}"
-                                    class="btn btn-outline-success btn-lg me-2">
-                                    <i class="bi bi-shop me-2"></i>Lihat Toko
-                                </a>
+                            <div class="d-flex flex-column flex-md-row gap-2 mt-4">
                                 <a href="https://wa.me/?text=Lihat produk {{ $product->name }} di {{ route('shops.products.show', ['shop' => $product->shop->slug, 'product' => $product->slug]) }}"
-                                    class="btn btn-success btn-lg">
+                                    class="btn btn-success">
                                     <i class="bi bi-share me-2"></i>Bagikan
                                 </a>
                             </div>
@@ -71,29 +70,29 @@
             </div>
 
             <!-- Shop Information Card -->
-            <div class="card shop-info-card border-0 shadow-sm mb-5">
+            <div class="card border-0 shadow-sm mb-5 rounded-3">
                 <div class="card-body p-4">
                     <div class="row align-items-center">
                         <div class="col-md-3 mb-3 mb-md-0">
-                            <div class="shop-image-container">
+                            <div class="rounded-3 overflow-hidden" style="height: 120px;">
                                 @if ($product->shop->featured_image)
                                     <img src="{{ asset('storage/' . $product->shop->featured_image) }}"
-                                        alt="{{ $product->shop->name }}" class="shop-image">
+                                        alt="{{ $product->shop->name }}" class="img-fluid w-100 h-100 object-fit-cover">
                                 @else
                                     <img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $product->shop->name }}"
-                                        class="shop-image">
+                                        class="img-fluid w-100 h-100 object-fit-cover">
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-6 mb-3 mb-md-0">
-                            <h4 class="shop-name">{{ $product->shop->name }}</h4>
-                            <p class="shop-address"><i class="bi bi-geo-alt me-2"></i>{{ $product->shop->address }}</p>
+                            <h4 class="fw-semibold subjudul">{{ $product->shop->name }}</h4>
+                            <p class="text-muted mb-1"><i class="bi bi-geo-alt me-2"></i>{{ $product->shop->address }}</p>
                             @if ($product->shop->phone)
-                                <p class="shop-phone"><i class="bi bi-telephone me-2"></i>{{ $product->shop->phone }}</p>
+                                <p class="text-muted mb-0"><i class="bi bi-telephone me-2"></i>{{ $product->shop->phone }}</p>
                             @endif
                         </div>
                         <div class="col-md-3 text-md-end">
-                            <a href="{{ route('shops.detail', $product->shop->slug) }}" class="btn btn-success">
+                            <a href="{{ route('shops.detail', $product->shop->slug) }}" class="btn-detail">
                                 Kunjungi Toko
                             </a>
                         </div>
@@ -102,28 +101,28 @@
             </div>
 
             <!-- Related Products Section -->
-            <div class="related-products-section">
-                <div class="section-header d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Produk Terkait</h2>
+            <div class="mt-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0 subjudul">Produk Terkait</h2>
                 </div>
 
                 @if ($relatedProducts->count() > 0)
                     <div class="row g-4">
                         @foreach ($relatedProducts as $relatedProduct)
                             <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="product-card h-100">
-                                    <div class="card-img-container">
+                                <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+                                    <div style="height: 200px; overflow: hidden;">
                                         @if ($relatedProduct->image)
                                             <img src="{{ asset('storage/' . $relatedProduct->image) }}"
-                                                alt="{{ $relatedProduct->name }}" class="card-img">
+                                                alt="{{ $relatedProduct->name }}" class="img-fluid w-100 h-100 object-fit-cover">
                                         @else
                                             <img src="{{ asset('images/default-product.jpg') }}"
-                                                alt="{{ $relatedProduct->name }}" class="card-img">
+                                                alt="{{ $relatedProduct->name }}" class="img-fluid w-100 h-100 object-fit-cover">
                                         @endif
                                     </div>
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">{{ $relatedProduct->name }}</h5>
-                                        <p class="card-price mt-auto">Rp
+                                        <p class="text-success fw-medium mt-auto">Rp
                                             {{ number_format($relatedProduct->price, 0, ',', '.') }}</p>
                                         <a class="btn btn-outline-success w-100 mt-2"
                                             href="{{ route('shops.products.show', ['shop' => $relatedProduct->shop->slug, 'product' => $relatedProduct->slug]) }}">
@@ -146,221 +145,6 @@
             </div>
         @endif
     </div>
-
-    <style>
-        /* Product Detail Card */
-        .product-detail-card {
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .product-image-container {
-            height: 100%;
-            min-height: 400px;
-            overflow: hidden;
-            background-color: #f8f9fa;
-        }
-
-        .product-main-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-image-container:hover .product-main-image {
-            transform: scale(1.03);
-        }
-
-        .product-info {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .shop-badge {
-            display: inline-block;
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            padding: 0.25rem 0.75rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-
-        .product-price {
-            color: #2e7d32;
-        }
-
-        .divider {
-            margin: 1.5rem 0;
-            border-color: #e9ecef;
-        }
-
-        .description-title {
-            margin-bottom: 0.75rem;
-            color: #495057;
-        }
-
-        .product-description {
-            color: #6c757d;
-        }
-
-        /* Shop Info Card */
-        .shop-info-card {
-            border-radius: 8px;
-            background-color: #fff;
-        }
-
-        .shop-image-container {
-            width: 100%;
-            height: 120px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .shop-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .shop-image:hover {
-            transform: scale(1.05);
-        }
-
-        .shop-name {
-            font-weight: 600;
-            color: #212529;
-            margin-bottom: 0.5rem;
-        }
-
-        .shop-address,
-        .shop-phone {
-            color: #6c757d;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Related Products Section */
-        .related-products-section {
-            margin-top: 3rem;
-        }
-
-        /* Product Card Styling */
-        .product-card {
-            border-radius: 8px;
-            border: none;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            overflow: hidden;
-            background-color: #fff;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-img-container {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .card-img {
-            transform: scale(1.08);
-        }
-
-        .card-title {
-            color: #212529;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-price {
-            color: #2e7d32;
-        }
-
-        /* Button Styling */
-        .btn-success,
-        .btn-outline-success {
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 0.5rem 1.25rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-success {
-            background-color: #2e7d32;
-            border-color: #2e7d32;
-        }
-
-        .btn-success:hover {
-            background-color: #1b5e20;
-            border-color: #1b5e20;
-            transform: translateY(-2px);
-        }
-
-        .btn-outline-success {
-            color: #2e7d32;
-            border-color: #2e7d32;
-        }
-
-        .btn-outline-success:hover {
-            background-color: #2e7d32;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 992px) {
-            .product-title {
-                font-size: 1.7rem;
-            }
-
-            .product-price {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .product-image-container {
-                min-height: 300px;
-            }
-
-            .product-title {
-                font-size: 1.5rem;
-            }
-
-            .product-info {
-                padding: 1.5rem !important;
-            }
-
-            .action-buttons .btn {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
-
-            .action-buttons .btn:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .product-image-container {
-                min-height: 250px;
-            }
-
-            .section-title {
-                font-size: 1.3rem;
-            }
-        }
-    </style>
 
     <script>
         // Image lazy loading

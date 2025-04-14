@@ -19,8 +19,6 @@
     .hero-section {
         padding: 2rem 0;
         position: relative;
-        border-radius: 0 0 30px 30px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
     .hero-content {

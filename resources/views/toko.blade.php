@@ -7,8 +7,8 @@
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12 mx-auto text-center">
-                    <h1 class="fw-bold" style="color: #2e7d32">Peta Toko Oleh Oleh Makanan Ringan Banyumas</h1>
-                    <p class="w-lg-50">dimana aja sih oleh-oleh makanan ringan khas Banyumas? berikut pilihannya</p>
+                    <h1 class="judul fw-bold">Peta Toko Oleh Oleh Makanan Ringan Banyumas</h1>
+                    <p class="text-muted">dimana aja sih oleh-oleh makanan ringan khas Banyumas? berikut pilihannya</p>
                 </div>
             </div>
 
@@ -23,7 +23,7 @@
 
         <!-- Store List -->
         <div class="container py-4 py-md-5">
-            <h2 class="fw-bold mb-4" style="color: #2e7d32">Daftar Toko Oleh-Oleh</h2>
+            <h2 class="subjudul fw-semibold mb-4" >Daftar Toko Oleh-Oleh</h2>
             <div class="row g-4">
                 @forelse($featuredShops as $shop)
                     <!-- Toko Card -->
@@ -52,9 +52,12 @@
                 @endforelse
             </div>
 
-            <div class="row mt-2 mb-5">
+            <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <a href="{{ route('shops.list') }}" class="btn-view-more" style="">Selengkapnya</a>
+                    <a href="{{ route('shops.list') }}" class="btn btn-outline-success rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center">
+                        <span class="me-2">Semua Toko Oleh-oleh</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,6 +211,7 @@
             }
         }
     </style>
+    
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />

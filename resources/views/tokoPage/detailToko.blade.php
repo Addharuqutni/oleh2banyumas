@@ -5,15 +5,18 @@
 @section('content')
     <div class="container py-5">
         <!-- Back Button and Header -->
-        <div class="mb-4 position-relative">
-            <a href="{{ url()->previous() }}" class="btn-back position-absolute">
-                <i class="bi bi-chevron-left"></i>
+        <div class="mb-5 position-relative">
+            <a href="{{ url()->previous() }}" class="btn btn-link position-absolute start-0 text-success" 
+               style="transition: transform 0.3s ease;">
+                <i class="bi bi-chevron-left fs-4 me-1"></i>
             </a>
-            <h1 class="text-center fw-bold page-title">Toko Oleh Oleh Makanan Ringan</h1>
+            <div class="text-center">
+                <h2 class="judul fw-bold mb-1">Toko Oleh Oleh Makanan Ringan</h2>
+            </div>
         </div>
 
         <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-4 ">
+        <nav aria-label="breadcrumb" class="mb-1 mt-4">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('shops.index') }}" class="text-decoration-none"></i>Toko</a>
@@ -353,43 +356,6 @@
     </div>
 
     <style>
-        /* Page Title and Back Button */
-        .page-title {
-            color: #2e7d32;
-            font-size: 2.25rem;
-            margin-bottom: 0;
-            position: relative;
-        }
-
-        .btn-back:hover {
-            background-color: #2e7d32;
-            color: white;
-        }
-
-        /* Section Containers */
-        .section-container {
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            color: #2e7d32;
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            position: relative;
-            padding-bottom: 0.75rem;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(to right, #2e7d32, #81c784);
-            border-radius: 3px;
-        }
 
         /* Store Detail Card */
         .store-detail-card {

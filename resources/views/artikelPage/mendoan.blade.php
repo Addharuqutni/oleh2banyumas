@@ -3,22 +3,22 @@
 @section('title', 'Mendoan - Kuliner Legendaris Khas Banyumas')
 
 @section('content')
-    <div class="article-container container">
-        <article class="article-content">
+    <div class="container py-5">
+        <article>
             <!-- Header -->
-            <header class="article-header">
-                <h1>Mendoan: Kuliner Tradisional Khas Banyumas</h1>
-                <div class="article-featured-image">
+            <header class="mb-5">
+                <h1 class="fw-bold text-center mb-4 judul">Mendoan: Kuliner Tradisional Khas Banyumas</h1>
+                <div class="text-center" style="width: 100%; height: 500px;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mendoan.jpg/1200px-Mendoan.jpg"
-                        alt="Mendoan Banyumas">
-                    <span class="image-caption">Mendoan - Gorengan tempe setengah matang khas Banyumas</span>
+                        alt="Mendoan Banyumas" class="img-fluid rounded shadow-sm" style="width: 100%; height: 100%; object-fit: cover;">
+                    <p class="text-muted fst-italic">Mendoan - Gorengan tempe setengah matang khas Banyumas</p>
                 </div>
             </header>
 
             <!-- Introduction -->
-            <section class="article-section">
-                <h2>Penjelasan</h2>
-                <div class="article-text">
+            <section class="mb-5 bg-light p-4 rounded shadow-sm">
+                <h2 class="subjudul mb-4 border-bottom pb-2">Penjelasan</h2>
+                <div class="lead">
                     <p>Mendoan adalah makanan tradisional khas Banyumas yang terbuat dari tempe tipis yang dicelupkan ke
                         dalam adonan tepung berbumbu, kemudian digoreng dengan cara khusus hingga setengah matang. Nama
                         "mendoan" berasal dari kata "mendo" dalam bahasa Banyumasan yang berarti setengah matang atau
@@ -41,17 +41,17 @@
             </section>
 
             <!-- History -->
-            <section class="article-section">
-                <h2>Sejarah</h2>
-                <div class="article-text">
+            <section class="mb-5 bg-light p-4 rounded shadow-sm">
+                <h2 class="subjudul mb-4 border-bottom pb-2">Sejarah</h2>
+                <div class="lead">
                     <p>Sejarah mendoan berkaitan erat dengan masuknya kedelai ke Indonesia. Tempe sendiri mulai dikenal di
                         Indonesia sekitar abad ke-16, ketika migrasi dari Asia Tengah membawa kedelai ke Asia Tenggara.
                         Kemudian, kreativitas masyarakat Banyumas mengolah tempe dengan cara unik melahirkan kuliner yang
                         kini dikenal sebagai mendoan. Konon, mendoan sudah ada sejak lebih dari satu abad lalu, berkembang
                         bersamaan dengan populernya tempe sebagai sumber protein nabati di masyarakat.</p>
 
-                    <div class="article-highlight">
-                        <p>Secara komersial, mendoan mulai dijual secara luas di Banyumas sejak tahun 1960-an. Kala itu,
+                    <div class="alert alert-info my-4">
+                        <p class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Secara komersial, mendoan mulai dijual secara luas di Banyumas sejak tahun 1960-an. Kala itu,
                             mendoan menjadi makanan sederhana namun mengenyangkan yang digemari oleh masyarakat dari
                             berbagai kalangan. Keunikan cara memasaknya yang setengah matang menjadi pembeda mendoan dari
                             olahan tempe lainnya di Indonesia. Kata "mendoan" sendiri mencerminkan filosofi masyarakat
@@ -68,38 +68,36 @@
             </section>
 
             <!-- Ingredients and Preparation -->
-            <section class="article-section">
-                <h2>Bahan dan Cara Pembuatan</h2>
-
-                <div class="ingredient-container">
-                    <div class="ingredient-card">
-                        <h3>Bahan Utama</h3>
-                        <ul>
-                            <li>10 lembar tempe khusus mendoan (tipis dan lebar)</li>
-                            <li>250 gram tepung terigu</li>
-                            <li>100 gram tepung beras</li>
-                            <li>2 batang daun bawang, iris halus</li>
-                            <li>Minyak untuk menggoreng</li>
-                            <li>Air secukupnya</li>
-                        </ul>
+            <section class="mb-5 bg-light p-4 rounded shadow-sm">
+                <h2 class="subjudul mb-4 border-bottom pb-2">Bahan dan Cara Pembuatan</h2>
+                <div class="lead">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h3 class="h5 fw-bold">Bahan Utama</h3>
+                            <ul>
+                                <li>10 lembar tempe khusus mendoan (tipis dan lebar)</li>
+                                <li>250 gram tepung terigu</li>
+                                <li>100 gram tepung beras</li>
+                                <li>2 batang daun bawang, iris halus</li>
+                                <li>Minyak untuk menggoreng</li>
+                                <li>Air secukupnya</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="h5 fw-bold">Bumbu Halus</h3>
+                            <ul>
+                                <li>5 siung bawang putih</li>
+                                <li>3 cm kunyit</li>
+                                <li>2 sendok teh ketumbar</li>
+                                <li>1 cm kencur (opsional, untuk rasa lebih autentik)</li>
+                                <li>1 sendok teh garam</li>
+                                <li>1/2 sendok teh kaldu bubuk (opsional)</li>
+                            </ul>
+                        </div>
                     </div>
 
-                    <div class="ingredient-card">
-                        <h3>Bumbu Halus</h3>
-                        <ul>
-                            <li>5 siung bawang putih</li>
-                            <li>3 cm kunyit</li>
-                            <li>2 sendok teh ketumbar</li>
-                            <li>1 cm kencur (opsional, untuk rasa lebih autentik)</li>
-                            <li>1 sendok teh garam</li>
-                            <li>1/2 sendok teh kaldu bubuk (opsional)</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="article-text">
-                    <h3>Cara Membuat</h3>
-                    <ol class="preparation-steps">
+                    <h3 class="h5 fw-bold">Cara Membuat</h3>
+                    <ol>
                         <li>Campurkan tepung terigu dan tepung beras dalam sebuah wadah besar, aduk rata.</li>
                         <li>Tambahkan bumbu halus ke dalam campuran tepung, aduk hingga tercampur merata.</li>
                         <li>Tuangkan air sedikit demi sedikit sambil terus diaduk hingga terbentuk adonan yang tidak terlalu
@@ -116,8 +114,8 @@
                             rawit.</li>
                     </ol>
 
-                    <div class="article-tip">
-                        <p><strong>Tip:</strong> Kunci utama membuat mendoan yang autentik terletak pada dua hal: adonan
+                    <div class="alert alert-warning my-4">
+                        <p class="mb-0"><i class="bi bi-lightbulb-fill me-2"></i><strong>Tip:</strong> Kunci utama membuat mendoan yang autentik terletak pada dua hal: adonan
                             tepung yang tepat dan waktu penggorengan yang singkat. Adonan tidak boleh terlalu kental agar
                             tidak menghasilkan lapisan tepung yang tebal. Sementara itu, penggorengan yang terlalu lama akan
                             membuat mendoan kehilangan karakteristik "mendo" atau lembek yang menjadi ciri khasnya.
@@ -128,37 +126,57 @@
             </section>
 
             <!-- Variations -->
-            <section class="article-section">
-                <h2>Variasi</h2>
-                <div class="article-text">
+            <section class="mb-5 bg-light p-4 rounded shadow-sm">
+                <h2 class="subjudul mb-4 border-bottom pb-2">Variasi</h2>
+                <div class="lead">
                     <p>Meskipun mendoan dari Banyumas memiliki karakteristik yang khas, seiring perkembangan waktu, terdapat
                         beberapa variasi yang bisa ditemui:</p>
 
-                    <div class="variation-cards">
-                        <div class="variation-card">
-                            <h3>Mendoan Tradisional</h3>
-                            <p>Versi autentik dari Banyumas dengan tekstur yang lembut dan setengah matang, digoreng dalam
-                                waktu singkat untuk mempertahankan kelembaban di bagian dalam.</p>
+                    <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title h5 fw-bold">Mendoan Tradisional</h3>
+                                    <p class="card-text">Versi autentik dari Banyumas dengan tekstur yang lembut dan setengah matang, digoreng dalam
+                                        waktu singkat untuk mempertahankan kelembaban di bagian dalam.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="variation-card">
-                            <h3>Mendoan Krispi</h3>
-                            <p>Variasi yang digoreng lebih lama hingga bagian luarnya lebih renyah, lebih cocok bagi mereka
-                                yang menyukai tekstur garing pada gorengan tempe.</p>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title h5 fw-bold">Mendoan Krispi</h3>
+                                    <p class="card-text">Variasi yang digoreng lebih lama hingga bagian luarnya lebih renyah, lebih cocok bagi mereka
+                                        yang menyukai tekstur garing pada gorengan tempe.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="variation-card">
-                            <h3>Mendoan Kunyit</h3>
-                            <p>Variasi dengan penambahan kunyit yang lebih banyak, menghasilkan warna kuning yang lebih
-                                cerah dan aroma rempah yang lebih kuat.</p>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title h5 fw-bold">Mendoan Kunyit</h3>
+                                    <p class="card-text">Variasi dengan penambahan kunyit yang lebih banyak, menghasilkan warna kuning yang lebih
+                                        cerah dan aroma rempah yang lebih kuat.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="variation-card">
-                            <h3>Sushi Mendoan</h3>
-                            <p>Kreasi modern di mana mendoan digulung dengan nasi dan bahan lain seperti sayuran atau
-                                daging, menggabungkan cita rasa tradisional dengan presentasi internasional.</p>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title h5 fw-bold">Sushi Mendoan</h3>
+                                    <p class="card-text">Kreasi modern di mana mendoan digulung dengan nasi dan bahan lain seperti sayuran atau
+                                        daging, menggabungkan cita rasa tradisional dengan presentasi internasional.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="variation-card">
-                            <h3>Mendoan Isi</h3>
-                            <p>Variasi dimana tempe dibelah dan diisi dengan bahan lain seperti sambal oncom atau tahu
-                                sebelum dicelup ke dalam adonan tepung dan digoreng.</p>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title h5 fw-bold">Mendoan Isi</h3>
+                                    <p class="card-text">Variasi dimana tempe dibelah dan diisi dengan bahan lain seperti sambal oncom atau tahu
+                                        sebelum dicelup ke dalam adonan tepung dan digoreng.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -171,46 +189,50 @@
             </section>
 
             <!-- Tips -->
-            <section class="article-section">
-                <h2>Tips Menikmati</h2>
-                <div class="article-text">
-                    <div class="tips-container">
-                        <div class="tip-item">
-                            <span class="tip-number">01</span>
-                            <p>Mendoan paling nikmat dinikmati selagi hangat, langsung setelah digoreng. Jangan biarkan
-                                terlalu lama karena tekstur khasnya akan berubah saat sudah dingin. Jika harus dipanaskan
-                                kembali, lebih baik dipanaskan dengan cara mengukus agar tidak menjadi terlalu kering.</p>
-                        </div>
-                        <div class="tip-item">
-                            <span class="tip-number">02</span>
-                            <p>Cara tradisional menikmati mendoan di Banyumas adalah dengan cabai rawit yang dimakan
-                                langsung atau sambal kecap yang dibuat dari kecap manis, potongan cabai rawit, dan sedikit
-                                jeruk limau. Cobalah menikmati mendoan dengan kedua pendamping ini untuk pengalaman
-                                autentik.</p>
-                        </div>
-                        <div class="tip-item">
-                            <span class="tip-number">03</span>
-                            <p>Mendoan juga bisa dinikmati sebagai pendamping makanan berkuah seperti soto atau bakso.
-                                Kelembutan mendoan memberikan kontras tekstur yang menarik dengan kuah yang gurih,
-                                menciptakan kombinasi rasa yang harmonis.</p>
-                        </div>
-                        <div class="tip-item">
-                            <span class="tip-number">04</span>
-                            <p>Di Purwokerto, mendoan sering dinikmati pada sore hari saat hujan, ditemani dengan secangkir
-                                teh atau kopi. Kombinasi ini sangat populer dan telah menjadi rutinitas wajib bagi banyak
-                                warga lokal, menciptakan momen kehangatan di tengah cuaca dingin.</p>
-                        </div>
-                        <div class="tip-item">
-                            <span class="tip-number">05</span>
-                            <p>Untuk mencicipi mendoan paling autentik di Banyumas, kunjungi warung-warung lokal seperti
-                                Warung Ripah, Sawangan, Mendoan Gang Kecil, dan Roda Mas yang telah lama dikenal dengan
-                                mendoan berkualitas tinggi. Mendoan terbaik seringkali ditemukan di tempat sederhana yang
-                                telah menjaga resep tradisional selama bertahun-tahun.</p>
+            <section class="mb-5 bg-light p-4 rounded shadow-sm">
+                <h2 class="subjudul mb-4 border-bottom pb-2">Tips Menikmati</h2>
+                <div class="lead">
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-1-circle-fill text-success me-2"></i>Sajikan Hangat</h5>
+                                    <p class="card-text">Mendoan paling nikmat dinikmati selagi hangat, langsung setelah digoreng. Jangan biarkan terlalu lama karena tekstur khasnya akan berubah saat sudah dingin. Jika harus dipanaskan kembali, lebih baik dipanaskan dengan cara mengukus agar tidak menjadi terlalu kering.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-2-circle-fill text-success me-2"></i>Pendamping Autentik</h5>
+                                    <p class="card-text">Cara tradisional menikmati mendoan di Banyumas adalah dengan cabai rawit yang dimakan langsung atau sambal kecap yang dibuat dari kecap manis, potongan cabai rawit, dan sedikit jeruk limau. Cobalah menikmati mendoan dengan kedua pendamping ini untuk pengalaman autentik.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-3-circle-fill text-success me-2"></i>Kombinasi Makanan</h5>
+                                    <p class="card-text">Mendoan juga bisa dinikmati sebagai pendamping makanan berkuah seperti soto atau bakso. Kelembutan mendoan memberikan kontras tekstur yang menarik dengan kuah yang gurih, menciptakan kombinasi rasa yang harmonis.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-4-circle-fill text-success me-2"></i>Momen Tepat</h5>
+                                    <p class="card-text">Di Purwokerto, mendoan sering dinikmati pada sore hari saat hujan, ditemani dengan secangkir teh atau kopi. Kombinasi ini sangat populer dan telah menjadi rutinitas wajib bagi banyak warga lokal, menciptakan momen kehangatan di tengah cuaca dingin.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="bi bi-5-circle-fill text-success me-2"></i>Tempat Terbaik</h5>
+                                    <p class="card-text">Untuk mencicipi mendoan paling autentik di Banyumas, kunjungi warung-warung lokal seperti Warung Ripah, Sawangan, Mendoan Gang Kecil, dan Roda Mas yang telah lama dikenal dengan mendoan berkualitas tinggi. Mendoan terbaik seringkali ditemukan di tempat sederhana yang telah menjaga resep tradisional selama bertahun-tahun.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-
+            
         </article>
     </div>
 @endsection
