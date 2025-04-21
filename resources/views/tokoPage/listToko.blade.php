@@ -134,7 +134,6 @@
                     </div>
                 @empty
                     <div class="col-12 text-center empty-results">
-                        <img src="{{ asset('images/empty-results.svg') }}" alt="Tidak ada hasil" class="empty-img mb-3">
                         <h5>Tidak ada toko yang ditemukan</h5>
                         @if($selectedCategory)
                             <p>Tidak ada toko yang menjual produk kategori <strong>{{ $selectedCategory->name }}</strong></p>
