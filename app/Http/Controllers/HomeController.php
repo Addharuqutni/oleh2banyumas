@@ -6,6 +6,9 @@ use App\Models\Shop;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Review;
+use App\Models\SearchLog;
+use Illuminate\Http\Request;
+
 
 class HomeController extends Controller
 {
@@ -34,29 +37,38 @@ class HomeController extends Controller
             
         return view('welcome', compact('shops'));
     }
-    
-    /**
-     * Show the hero guest page.
-     */
-    public function heroGuest()
-    {
-        return view('landingPage.heroGuest');
-    }
-    
-    /**
-     * Show the kategori page.
-     */
-    public function kategori()
-    {
-        $categories = Category::orderBy('name')->get();
-        return view('landingPage.kategori', compact('categories'));
-    }
-    
-    /**
+        /**
      * Show the about page.
      */
     public function about()
     {
         return view('about');
     }
+
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+    
+    $shops = Shop::where('name', 'like', "%{$query}%")
+        ->orWhere('address', 'like', "%{$query}%")
+        ->orWhere('description', 'like', "%{$query}%")
+        ->orWhereHas('products', function($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%");
+        })
+        ->orWhereHas('products.category', function($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%");
+        })
+        ->with(['products', 'products.category'])
+        ->get();
+    
+    // Log pencarian
+    SearchLog::create([
+        'query' => $query,
+        'results_count' => $shops->count(),
+        'ip_address' => $request->ip(),
+        'has_results' => $shops->count() > 0
+    ]);
+    
+    return view('search', compact('shops', 'query'));
+}
 }

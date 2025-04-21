@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -35,6 +37,9 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
         ]);
         
+        // Automatically generate a slug from the name
+        $validated['slug'] = Str::slug($validated['name']);
+        
         Category::create($validated);
         
         return redirect()->route('admin.categories.index')
@@ -55,6 +60,11 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
         ]);
         
+        // Update slug if name has changed
+        if ($category->name != $validated['name']) {
+            $validated['slug'] = Str::slug($validated['name']);
+        }
+        
         $category->update($validated);
         
         return redirect()->route('admin.categories.index')
@@ -69,13 +79,47 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // Detach all products from this category
-        $category->products()->detach();
+        // Check if products are using this category
+        $productsCount = $category->products()->count();
+        
+        if ($productsCount > 0) {
+            // Option 1: Prevent deletion if products are using this category
+            return redirect()->route('admin.categories.index')
+                ->with('error', 'Tidak dapat menghapus kategori karena masih digunakan oleh ' . $productsCount . ' produk.');
+            
+            // Option 2: Update products to remove this category (uncomment if you want this behavior)
+            // $category->products()->update(['category_id' => null]);
+        }
         
         // Delete the category
         $category->delete();
         
         return redirect()->route('admin.categories.index')
             ->with('success', 'Kategori berhasil dihapus.');
+    }
+    
+    /**
+     * Display category usage statistics.
+     *
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\View\View
+     */
+    public function showStats(Category $category)
+    {
+        $category->loadCount('products');
+        
+        $shops = $category->products()
+            ->select('shop_id')
+            ->distinct()
+            ->with('shop:id,name,slug')
+            ->get()
+            ->pluck('shop');
+            
+        $topProducts = $category->products()
+            ->orderBy('views', 'desc')
+            ->take(5)
+            ->get();
+            
+        return view('admin.categories.stats', compact('category', 'shops', 'topProducts'));
     }
 }

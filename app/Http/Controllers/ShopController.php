@@ -27,10 +27,13 @@ class ShopController extends Controller
     }
 
     /**
-     * Display the shop list page.
+     * Display the shop list page with category filtering.
      */
     public function listToko(Request $request)
     {
+        // Get all categories for the filter dropdown
+        $categories = \App\Models\Category::orderBy('name')->get();
+        
         $query = Shop::where('status', 'active');
 
         // Handle search functionality
@@ -50,12 +53,29 @@ class ShopController extends Controller
             });
         }
 
-        // Make sure to select 'slug' field for URL generation
+        // Handle category filter
+        $selectedCategory = null;
+        if ($request->filled('category_id') && $request->category_id != '') {
+            $categoryId = $request->category_id;
+            $selectedCategory = \App\Models\Category::find($categoryId);
+            
+            $query->whereHas('products', function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            });
+
+            // Jika kategori dipilih, muat produk yang termasuk dalam kategori tersebut
+            $query->with(['products' => function ($q) use ($categoryId) {
+                $q->where('category_id', $categoryId);
+            }]);
+        }
+
+        // Make sure to select necessary fields for URL generation and display
         $shops = $query->select('id', 'name', 'address', 'featured_image', 'description', 'slug')
             ->orderBy('name')
-            ->paginate(12);
+            ->paginate(12)
+            ->appends($request->except('page')); // Keep filter parameters when paginating
 
-        return view('tokoPage.listToko', compact('shops'));
+        return view('tokoPage.listToko', compact('shops', 'categories', 'selectedCategory'));
     }
 
     /**
@@ -163,5 +183,29 @@ class ShopController extends Controller
             ->get();
 
         return view('tokoPage.detailToko', compact('shop', 'reviews'));
+    }
+
+    /**
+     * Filter toko berdasarkan kategori
+     */
+    public function filterByCategory($categoryId)
+    {
+        $category = \App\Models\Category::findOrFail($categoryId);
+        
+        $shops = Shop::where('status', 'active')
+            ->whereHas('products', function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            })
+            ->with(['products' => function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            }])
+            ->select('id', 'name', 'address', 'featured_image', 'description', 'slug')
+            ->orderBy('name')
+            ->paginate(12);
+        
+        $categories = \App\Models\Category::orderBy('name')->get();
+        $selectedCategory = $category;
+        
+        return view('tokoPage.listToko', compact('shops', 'categories', 'selectedCategory'));
     }
 }

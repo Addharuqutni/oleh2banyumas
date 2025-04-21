@@ -20,20 +20,17 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 // Landing/Home Pages
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/welcome', [HomeController::class, 'welcome'])->name('welcome');
-Route::get('/hero-guest', [HomeController::class, 'heroGuest'])->name('hero.guest');
-Route::get('/kategori', [HomeController::class, 'kategori'])->name('kategori');
 
 // Map Routes
 Route::get('/maps', [ShopController::class, 'maps'])->name('maps');
 
 // Shop Toko Routes
+Route::get('/toko/kategori/{id}', [ShopController::class, 'filterByCategory'])->name('shops.filter.category');
 Route::get('/toko', [ShopController::class, 'index'])->name('shops.index');
 Route::get('/toko/{shop}', [ShopController::class, 'show'])->name('shops.show');
 Route::get('/list-toko', [ShopController::class, 'listToko'])->name('shops.list');
 Route::get('/toko/detail-toko/{shop:slug}', [ShopController::class, 'detailToko'])->name('shops.detail');
 Route::post('/toko/{shop}/reviews', [ShopController::class, 'storeReview'])->name('shops.reviews.store');
-
 // Product Routes
 Route::get('/toko/detail-toko/{shop:slug}/produk/{product:slug}', [ProductController::class, 'show'])->name('shops.products.show');
 
@@ -79,5 +76,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 
     // Category Management
-    Route::resource('categories', AdminCategoryController::class);
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::get('/categories/{category}/stats', [AdminCategoryController::class, 'showStats'])->name('categories.stats');
 });

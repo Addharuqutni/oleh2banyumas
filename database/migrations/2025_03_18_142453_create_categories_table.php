@@ -14,9 +14,18 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
+        
+        // Tambahkan foreign key ke tabel products jika belum ada
+        if (Schema::hasTable('products') && !Schema::hasColumn('products', 'category_id')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
+            });
+        }
     }
 
     /**
@@ -24,6 +33,14 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Hapus foreign key terlebih dahulu jika ada
+        if (Schema::hasTable('products') && Schema::hasColumn('products', 'category_id')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->dropForeign(['category_id']);
+                $table->dropColumn('category_id');
+            });
+        }
+        
         Schema::dropIfExists('categories');
     }
 };

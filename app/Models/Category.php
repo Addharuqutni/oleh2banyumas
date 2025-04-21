@@ -11,7 +11,9 @@ class Category extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
+        'image',
     ];
 
     /**
@@ -19,6 +21,29 @@ class Category extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_categories');
+        return $this->hasMany(Product::class);
+    }
+
+    // Get shops that have products in this category
+    public function shops()
+    {
+        return $this->hasManyThrough(
+            Shop::class,
+            Product::class,
+            'category_id', // Foreign key on products table
+            'id', // Foreign key on shops table
+            'id', // Local key on categories table
+            'shop_id' // Local key on products table
+        );
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

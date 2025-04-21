@@ -94,4 +94,9 @@ class Shop extends Model
     {
         return $this->reviews()->where('is_approved', true)->avg('rating') ?? 0;
     }
+
+    public function visitorLogs()
+    {
+        return $this->hasMany(VisitorLog::class);
+    }
 }

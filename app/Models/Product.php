@@ -30,9 +30,9 @@ class Product extends Model
     /**
      * Get the categories for the product.
      */
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany(Category::class, 'product_categories');
+        return $this->belongsToMany(Category::class);
     }
 
     /**

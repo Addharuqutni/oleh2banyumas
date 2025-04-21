@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Shop;
-use App\Models\Product;
-use App\Models\Review;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\SearchLog;
+use App\Models\Shop;
+use App\Models\VisitorLog;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -17,31 +21,77 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // Count statistics
-        $shopCount = Shop::count();
-        $productCount = Product::count();
-        $reviewCount = Review::count();
-        $pendingReviewCount = Review::where('is_approved', false)->count();
+        // Statistik total
+        $stats = [
+            'totalShops' => Shop::count(),
+            'totalProducts' => Product::count(),
+            'totalCategories' => Category::count(),
+            'totalVisits' => VisitorLog::count(),
+            'totalSearches' => SearchLog::count(),
+            'uniqueVisitors' => VisitorLog::distinct('ip_address')->count('ip_address'),
+        ];
         
-        // Get latest shops
-        $latestShops = Shop::withCount('products')
-            ->orderBy('created_at', 'desc')
+        // Toko paling banyak dikunjungi
+        $popularShops = Shop::withCount(['visitorLogs' => function($query) {
+                $query->where('created_at', '>=', Carbon::now()->subDays(30));
+            }])
+            ->orderBy('visitor_logs_count', 'desc')
             ->take(5)
             ->get();
-            
-        // Get latest reviews
-        $latestReviews = Review::with('shop')
-            ->orderBy('created_at', 'desc')
+        
+        // Kategori produk paling populer
+        $popularCategories = Category::withCount(['products' => function($query) {
+                $query->whereHas('shop.visitorLogs');
+            }])
+            ->orderBy('products_count', 'desc')
             ->take(5)
+            ->get();
+        
+        // Pencarian populer
+        $popularSearches = SearchLog::select('query', DB::raw('count(*) as count'))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('query')
+            ->orderBy('count', 'desc')
+            ->take(10)
+            ->get();
+            
+        // Pencarian tanpa hasil
+        $noResultSearches = SearchLog::select('query', DB::raw('count(*) as count'))
+            ->where('has_results', false)
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('query')
+            ->orderBy('count', 'desc')
+            ->take(10)
+            ->get();
+        
+        // Data grafik pengunjung per hari (30 hari terakhir)
+        $visitorStats = VisitorLog::select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('count(*) as count')
+            )
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+            
+        // Data grafik pencarian per hari (30 hari terakhir)
+        $searchStats = SearchLog::select(
+                DB::raw('DATE(created_at) as date'),
+                DB::raw('count(*) as count')
+            )
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->groupBy('date')
+            ->orderBy('date')
             ->get();
         
         return view('admin.dashboard', compact(
-            'shopCount',
-            'productCount',
-            'reviewCount',
-            'pendingReviewCount',
-            'latestShops',
-            'latestReviews'
+            'stats', 
+            'popularShops', 
+            'popularCategories', 
+            'popularSearches', 
+            'noResultSearches',
+            'visitorStats',
+            'searchStats'
         ));
     }
 }

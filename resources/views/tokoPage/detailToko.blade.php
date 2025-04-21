@@ -513,7 +513,7 @@
         }
 
         .info-text {
-            color: #555;
+            color: #00000;
             margin-bottom: 0.75rem;
             line-height: 1.5;
         }
@@ -523,8 +523,8 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background-color: #ffffff;
-            color: #2e7d32;
+            background-color: #2e7d32;
+            color: #ffffff;
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 0.5rem;
@@ -532,13 +532,6 @@
             font-weight: 500;
             text-decoration: none;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .direction-btn:hover,
-        .call-btn:hover {
-            background-color: #2e7d32;
-            color: white;
-            transform: translateY(-2px);
         }
 
         /* Map Section */
@@ -581,7 +574,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            background: #2e7d32;
             color: white;
             padding: 0.8rem 1.2rem;
             border-radius: 50px;
@@ -589,12 +582,6 @@
             font-weight: 600;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .navigation-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            color: white;
         }
 
         /* Product Cards */
@@ -718,7 +705,7 @@
         }
 
         .rating-badge-large {
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            background: #2e7d32;
             color: white;
             font-size: 2rem;
             font-weight: 700;
@@ -786,7 +773,7 @@
         .reviewer-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            background: #2e7d32;
             color: white;
             font-size: 1.2rem;
             font-weight: 600;
@@ -855,7 +842,7 @@
             left: 0;
             width: 50px;
             height: 3px;
-            background: linear-gradient(to right, #2e7d32, #81c784);
+            background: #2e7d32;
             border-radius: 3px;
         }
 
@@ -902,7 +889,7 @@
         .input-with-icon input:focus,
         .input-with-icon textarea:focus {
             border-color: #2e7d32;
-            box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
+            box-shadow: #2e7d32;
         }
 
         /* Star Rating Input */
@@ -944,7 +931,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            background: #2e7d32;
             color: white;
             border: none;
             padding: 0.8rem 1.5rem;
@@ -953,10 +940,6 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .submit-review-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
