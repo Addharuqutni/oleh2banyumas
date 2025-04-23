@@ -90,7 +90,7 @@ class ProductController extends Controller
         $product = Product::create($validated);
 
         // Attach categories
-        if ($request->has('categories')) {
+        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
             $product->categories()->attach($request->categories);
         }
 
@@ -167,7 +167,7 @@ class ProductController extends Controller
         $product->update($validated);
 
         // Sync categories
-        if ($request->has('categories')) {
+        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
             $product->categories()->sync($request->categories);
         } else {
             $product->categories()->detach();

@@ -11,7 +11,7 @@
                 <i class="bi bi-chevron-left fs-4 me-1"></i>
             </a>
             <div class="text-center">
-                <h2 class="judul fw-bold mb-1">Toko Oleh Oleh Makanan Ringan</h2>
+                <h2 class="judul fw-bold mb-1">Toko Oleh Oleh Makanan Ringan Banyumas</h2>
             </div>
         </div>
 

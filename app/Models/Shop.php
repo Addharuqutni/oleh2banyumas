@@ -99,4 +99,9 @@ class Shop extends Model
     {
         return $this->hasMany(VisitorLog::class);
     }
+
+    public function getCategoryAttribute()
+    {
+        return $this->products ? $this->products->pluck('category')->unique() : collect();
+    }
 }

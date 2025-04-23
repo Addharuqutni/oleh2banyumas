@@ -54,17 +54,14 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
-                            <label for="categories" class="form-label">Kategori</label>
-                            <select class="form-select @error('categories') is-invalid @enderror" id="categories"
-                                name="categories[]" multiple>
+                            <label for="categories" class="form-label">Kategori <span class="text-muted">(Pilih satu atau lebih)</span></label>
+                            <select class="form-select select2-multiple @error('categories') is-invalid @enderror" id="categories" name="categories[]" multiple>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
-                                        {{ $category->name }}</option>
+                                    <option value="{{ $category->id }}" {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
                                 @endforeach
                             </select>
-                            <small class="text-muted">Tahan tombol Ctrl (Windows) atau Command (Mac) untuk memilih beberapa
-                                kategori.</small>
                             @error('categories')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -108,4 +105,19 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2-multiple').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Pilih kategori...',
+                allowClear: true,
+                width: '100%',
+                minimumResultsForSearch: Infinity // Hides the search box if not needed
+            });
+        });
+    </script>
 @endsection

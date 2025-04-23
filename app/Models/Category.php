@@ -20,9 +20,9 @@ class Category extends Model
      * Get the products for the category.
      */
     public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
+{
+    return $this->belongsToMany(Product::class, 'product_categories');
+}
 
     // Get shops that have products in this category
     public function shops()
@@ -35,15 +35,5 @@ class Category extends Model
             'id', // Local key on categories table
             'shop_id' // Local key on products table
         );
-    }
-
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
     }
 }

@@ -8,7 +8,7 @@
             <div class="row mb-5">
                 <div class="col-12 col-lg-8 mx-auto text-center">
                     <div class="section-header">
-                        <h1 class="fw-bold judul">Oleh-oleh khas Banyumas</h1>
+                        <h1 class="fw-bold judul">Oleh Oleh Makanan Ringan Banyumas</h1>
                         <p class="text-muted">Apa aja sih oleh-oleh makanan ringan khas dari Banyumas? Berikut pilihannya</p>
                     </div>
                 </div>

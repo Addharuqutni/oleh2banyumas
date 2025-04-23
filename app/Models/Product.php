@@ -30,10 +30,10 @@ class Product extends Model
     /**
      * Get the categories for the product.
      */
-    public function category()
-    {
-        return $this->belongsToMany(Category::class);
-    }
+    public function categories()
+{
+    return $this->belongsToMany(Category::class, 'product_categories');
+}
 
     /**
      * Override the default route key binding.
