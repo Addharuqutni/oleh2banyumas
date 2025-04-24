@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-5">
                 <div class="col-12">
                     <div class="map-container shadow-sm rounded">
                         <div id="map"></div>
@@ -38,9 +38,9 @@
                                         class="card-img">
                                 @endif
                             </div>
-                            <div class="card-content">
-                                <h5 class="card-title">{{ $shop->name }}</h5>
-                                <p class="card-address">{{ $shop->address }}</p>
+                            <div class="card-content p-3">
+                                <h5 class="card-title subjudul">{{ $shop->name }}</h5>
+                                <p class="card-address text-muted">{{ $shop->address }}</p>
                                 <a href="{{ route('shops.detail', ['shop' => $shop]) }}" class="btn-detail">Detail Toko</a>
                             </div>
                         </div>
@@ -56,8 +56,7 @@
                 <div class="col-12 text-center">
                     <a href="{{ route('shops.list') }}" class="btn btn-outline-success rounded-pill px-4 py-2 d-inline-flex align-items-center justify-content-center">
                         <span class="me-2">Semua Toko Oleh-oleh</span>
-                        </a>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
