@@ -57,6 +57,16 @@ class ShopController extends Controller
             'slug' => 'nullable|string|unique:shops,slug',
         ]);
 
+        // Generate slug from the name
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        
+        // Ensure slug is unique
+        $count = 2;
+        $originalSlug = $validated['slug'];
+        while (Shop::where('slug', $validated['slug'])->exists()) {
+            $validated['slug'] = $originalSlug . '-' . $count++;
+        }
+
         // Handle featured image upload
         if ($request->hasFile('featured_image')) {
             $path = $request->file('featured_image')->store('shops', 'public');

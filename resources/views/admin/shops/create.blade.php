@@ -38,7 +38,7 @@
                             @enderror
                         </div>
                         <!-- Add this new slug field -->
-                        <div class="col-md-6 mb-3">
+                        <!-- <div class="col-md-6 mb-3">
                             <label for="slug" class="form-label">Slug URL</label>
                             <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug"
                                 name="slug" value="{{ old('slug') }}">
@@ -47,7 +47,7 @@
                             @error('slug')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
