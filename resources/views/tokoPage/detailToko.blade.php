@@ -234,7 +234,7 @@
                     <div class="col-12">
                         <div class="empty-state">
                             <i class="bi bi-bag-x"></i>
-                            <p>Belum ada produk yang tersedia di toko ini.</p>
+                            <p>Produk belum terdaftar pada sistem.</p>
                         </div>
                     </div>
                 @endforelse

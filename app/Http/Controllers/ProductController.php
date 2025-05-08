@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use app\Models\Shop;
-use app\Http\Controllers\ShopController;
+use App\Models\Shop;
+use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
