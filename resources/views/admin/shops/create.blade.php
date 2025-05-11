@@ -37,17 +37,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <!-- Add this new slug field -->
-                        <!-- <div class="col-md-6 mb-3">
-                            <label for="slug" class="form-label">Slug URL</label>
-                            <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug"
-                                name="slug" value="{{ old('slug') }}">
-                            <small class="text-muted">Akan digunakan di URL: example.com/detail-toko/[slug]. Kosongi untuk
-                                generate otomatis.</small>
-                            @error('slug')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div> -->
 
                         <div class="col-md-6 mb-3">
                             <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
@@ -150,6 +139,7 @@
                         @error('featured_image')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <div id="featured_image_preview" class="mt-2"></div>
                     </div>
 
                     <div class="mb-3">
@@ -163,6 +153,7 @@
                         @error('images.*')
                             <div class="text-danger small mt-1">{{ $message }}</div>
                         @enderror
+                        <div id="images_preview" class="row mt-2"></div>
                     </div>
 
                     <div class="d-flex justify-content-end mt-4">
@@ -231,6 +222,37 @@
                     marker = L.marker(e.latlng).addTo(map);
                 }
             });
+        });
+    </script>
+    <script>
+        // Preview for featured image
+        document.getElementById('featured_image').addEventListener('change', function(event) {
+            const preview = document.getElementById('featured_image_preview');
+            preview.innerHTML = '';
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">`;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+        // Preview for multiple images
+        document.getElementById('images').addEventListener('change', function(event) {
+            const preview = document.getElementById('images_preview');
+            preview.innerHTML = '';
+            if (event.target.files) {
+                Array.from(event.target.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const col = document.createElement('div');
+                        col.className = 'col-md-3 mb-2';
+                        col.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 120px; max-height: 120px;">`;
+                        preview.appendChild(col);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
         });
     </script>
 @endsection

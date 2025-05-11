@@ -69,7 +69,7 @@
                                     <div class="carousel-inner">
                                         @if ($shop->featured_image)
                                             <div class="carousel-item active">
-                                                <img src="{{ asset('storage/' . $shop->featured_image) }}"
+                                                <img src="{{ Storage::url($shop->featured_image) }}"
                                                     alt="Tampak depan {{ $shop->name }}"
                                                     class="d-block w-100 carousel-img">
                                                 <div class="carousel-caption">

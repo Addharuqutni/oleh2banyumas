@@ -59,8 +59,6 @@ class ShopController extends Controller
 
         // Generate slug from the name
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-        
-        // Ensure slug is unique
         $count = 2;
         $originalSlug = $validated['slug'];
         while (Shop::where('slug', $validated['slug'])->exists()) {
@@ -69,7 +67,9 @@ class ShopController extends Controller
 
         // Handle featured image upload
         if ($request->hasFile('featured_image')) {
-            $path = $request->file('featured_image')->store('shops', 'public');
+            $file = $request->file('featured_image');
+            $filename = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('shops', $filename, 'public');
             $validated['featured_image'] = $path;
         }
 
@@ -79,7 +79,8 @@ class ShopController extends Controller
         // Handle multiple images upload
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $path = $image->store('shop_images', 'public');
+                $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
+                $path = $image->storeAs('shop_images', $filename, 'public');
                 $shop->images()->create([
                     'image_path' => $path,
                     'caption' => null,
