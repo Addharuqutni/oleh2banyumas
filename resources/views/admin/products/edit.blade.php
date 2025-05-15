@@ -13,7 +13,7 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <form action="{{ route('admin.products.update', $product->id) }}" method="POST"
+                <form action="{{ route('admin.products.update', $product->slug) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

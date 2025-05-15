@@ -116,9 +116,8 @@
                     </table>
                 </div>
                 
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $products->appends(request()->query())->links() }}
-                </div>
+                {{ $products->onEachSide(1)->links('pagination::bootstrap-5') }}
+
             </div>
         </div>
     </div>

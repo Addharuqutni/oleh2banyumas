@@ -81,7 +81,7 @@
                                         @foreach ($shop->images as $index => $image)
                                             <div
                                                 class="carousel-item {{ !$shop->featured_image && $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ asset('storage/' . $image->image_path) }}"
+                                                <img src="{{ Storage::url( $image->image_path) }}"
                                                     alt="{{ $image->caption ?? $shop->name }}"
                                                     class="d-block w-100 carousel-img">
                                                 @if ($image->caption)

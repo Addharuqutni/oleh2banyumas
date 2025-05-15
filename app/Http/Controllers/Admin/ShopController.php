@@ -80,7 +80,7 @@ class ShopController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
-                $path = $image->storeAs('shop_images', $filename, 'public');
+                $path = $image->storeAs('shops', $filename, 'public');
                 $shop->images()->create([
                     'image_path' => $path,
                     'caption' => null,

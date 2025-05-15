@@ -14,10 +14,10 @@
         <div class="card border-0 shadow-sm">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>No</th>
                                 <th>Gambar</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
@@ -29,8 +29,8 @@
                         <tbody>
                             @forelse($shops as $shop)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>
+                                    <td>{{ ($shops->currentPage() - 1) * $shops->perPage() + $loop->iteration }}</td>
+                                    <td class="text-center">
                                         @if ($shop->featured_image)
                                             <img src="{{ asset('storage/' . $shop->featured_image) }}"
                                                 alt="{{ $shop->name }}" width="50" height="50" class="rounded"
@@ -109,10 +109,7 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $shops->links() }}
-                </div>
+                {{ $shops->onEachSide(1)->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
