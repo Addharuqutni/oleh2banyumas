@@ -72,64 +72,43 @@
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get loading overlay
-        const mapOverlay = document.querySelector('.position-absolute');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map centered on Banyumas
+            var map = L.map('map').setView([-7.4312, 109.2350], 11);
 
-        // Initialize map centered on Banyumas
-        var map = L.map('map', {
-            zoomControl: false
-        }).setView([-7.4292, 109.2297], 12);
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
 
-        // Add custom zoom control to top-right
-        L.control.zoom({
-            position: 'topright'
-        }).addTo(map);
+            // Add markers for each shop from database
+            @foreach ($shops as $shop)
+                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+                    .bindPopup('<div class="popup-content">' +
+                        '@if ($shop->featured_image)' +
+                        '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
+                        '@else' +
+                        '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
+                        '@endif' +
+                        '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
+                        '<div>' +
+                        '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
+                        '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
+                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
+                        '<div class="view-link d-flex align-items-center mt-2">' +
+                        '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
+                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
+                        '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>')
+                    .addTo(map);
+            @endforeach
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-            maxZoom: 19
-        }).addTo(map);
-
-        // Add markers for each location from database
-        @foreach ($shops as $shop)
-            L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
-                .bindPopup('<div class="popup-content">' +
-                    '@if ($shop->featured_image)' +
-                    '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
-                    '@else' +
-                    '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
-                    '@endif' +
-                    '<h3 class="fw-bold">{{ $shop->name }}</h3>' +
-                    '<div>' +
-                    '<h5 class="fw-semibold">Alamat:</h5>' +
-                    '<p class="mb-3">{{ $shop->address }}</p>' +
-                    '<a class="btn btn-success btn-sm rounded" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
-                    '<div class="view-link">' +
-                    '<small>Klik untuk melihat di Google Maps:</small>' +
-                    '<a class="badge bg-success" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
-                    'Lihat di Maps <i class="bi bi-box-arrow-up-right"></i></a>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>', {
-                        maxWidth: 300,
-                        minWidth: 200
-                    })
-                .addTo(map);
-        @endforeach
-
-        // Hide loading overlay after 1.5 seconds
-        setTimeout(function() {
-            mapOverlay.style.opacity = '0';
-            setTimeout(function() {
-                mapOverlay.style.display = 'none';
-            }, 500);
-        }, 1500);
-
-        // Make map responsive
-        window.addEventListener('resize', function() {
-            map.invalidateSize();
+            // Make map responsive
+            window.addEventListener('resize', function() {
+                map.invalidateSize();
+            });
         });
-    });
-</script>
+    </script>
