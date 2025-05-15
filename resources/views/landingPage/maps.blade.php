@@ -11,14 +11,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="position-relative border rounded shadow-sm">
-                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex justify-content-center align-items-center" style="z-index: 1000;">
-                        <div class="text-center text-success">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                            <p class="mt-2">Memuat peta...</p>
-                        </div>
-                    </div>
+                    
                     <div id="map" style="width: 100%; height: 70vh;"></div>
                 </div>
             </div>
