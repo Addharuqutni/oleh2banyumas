@@ -245,7 +245,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a href="{{ route('shop.show', $review->shop) }}" target="_blank" class="btn btn-outline-secondary">
+                                                    <a href="{{ route('shops.show', $review->shop) }}" target="_blank" class="btn btn-outline-secondary">
                                                         <i class="bi bi-eye me-1"></i> Lihat Toko
                                                     </a>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>

@@ -124,7 +124,7 @@
                     </div>
                     
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <a href="{{ route('shop.show', $review->shop) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                        <a href="{{ route('shops.show', $review->shop) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
                             <i class="bi bi-eye me-1"></i> Lihat Toko
                         </a>
                         <div class="review-actions">
