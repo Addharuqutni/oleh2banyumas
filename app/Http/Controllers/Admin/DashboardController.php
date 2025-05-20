@@ -31,6 +31,7 @@ class DashboardController extends Controller
             'totalSearches' => SearchLog::count(),
             'uniqueVisitors' => VisitorLog::distinct('ip_address')->count('ip_address'),
             'pendingReviews' => Review::where('is_approved', false)->count(),
+            'totalReviews' => Review::count(),
         ];
         
         // Toko paling banyak dikunjungi

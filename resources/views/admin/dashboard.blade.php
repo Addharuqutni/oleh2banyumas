@@ -96,6 +96,23 @@
         </div>
     </div>
     
+    <!-- Baris Tambahan untuk Total Ulasan -->
+    <div class="row mb-4">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card stats-card border-0">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Total Ulasan</h6>
+                        <h3 class="mb-0">{{ number_format($stats['totalReviews']) }}</h3>
+                    </div>
+                    <div class="stats-icon text-warning">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Grafik dan Tabel -->
     <div class="row mb-4">
         <div class="col-lg-8 mb-3">

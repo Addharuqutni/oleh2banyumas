@@ -114,7 +114,7 @@ class ShopController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('shops.show', compact('shop', 'reviews'));
+        return view('tokoPage.detailToko', compact('shop', 'reviews'));
     }
 
     /**
