@@ -20,20 +20,19 @@ class Category extends Model
      * Get the products for the category.
      */
     public function products()
-{
-    return $this->belongsToMany(Product::class, 'product_categories');
-}
+    {
+        return $this->belongsToMany(Product::class, 'product_categories');
+    }
 
-    // Get shops that have products in this category
+    /**
+     * Get shops that have products in this category.
+     */
     public function shops()
     {
-        return $this->hasManyThrough(
-            Shop::class,
-            Product::class,
-            'category_id', // Foreign key on products table
-            'id', // Foreign key on shops table
-            'id', // Local key on categories table
-            'shop_id' // Local key on products table
-        );
+        return Shop::whereHas('products', function($query) {
+            $query->whereHas('categories', function($q) {
+                $q->where('categories.id', $this->id);
+            });
+        });
     }
 }

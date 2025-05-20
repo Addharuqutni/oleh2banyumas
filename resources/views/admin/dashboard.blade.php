@@ -1,82 +1,107 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Dashboard Statistik')
+@section('title', 'Dashboard')
 
 @section('styles')
 <style>
     .stats-card {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        transition: all 0.2s ease;
     }
     .stats-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
     }
     .stats-icon {
-        font-size: 2rem;
+        font-size: 1.8rem;
         opacity: 0.8;
     }
     .chart-container {
         position: relative;
-        height: 300px;
-        margin-bottom: 2rem;
+        height: 280px;
+        margin-bottom: 1rem;
+    }
+    .table-simple th, .table-simple td {
+        padding: 0.5rem;
+    }
+    .card-header {
+        background-color: rgba(0, 0, 0, 0.02);
     }
 </style>
 @endsection
 
 @section('content')
-<div class="container-fluid py-4">
-    <h1 class="mb-4">Dashboard Statistik</h1>
+<div class="container-fluid py-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0">Dashboard</h1>
+        <a href="{{ route('admin.reviews.pending') }}" class="btn btn-sm btn-primary">
+            Ulasan Pending <span class="badge bg-light text-dark ms-1">{{ $stats['pendingReviews'] }}</span>
+        </a>
+    </div>
     
-    <!-- Cards statistik -->
+    <!-- Statistik Utama -->
     <div class="row mb-4">
-        <div class="col-md-4 mb-3">
-            <div class="card stats-card bg-primary text-white">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card stats-card border-0">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="card-title">Total Kunjungan</h5>
-                        <h2 class="mb-0">{{ number_format($stats['totalVisits']) }}</h2>
+                        <h6 class="card-subtitle text-muted mb-1">Total Kunjungan</h6>
+                        <h3 class="mb-0">{{ number_format($stats['totalVisits']) }}</h3>
                     </div>
-                    <div class="stats-icon">
+                    <div class="stats-icon text-primary">
                         <i class="fas fa-eye"></i>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <div class="card stats-card bg-success text-white">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card stats-card border-0">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="card-title">Pengunjung Unik</h5>
-                        <h2 class="mb-0">{{ number_format($stats['uniqueVisitors']) }}</h2>
+                        <h6 class="card-subtitle text-muted mb-1">Total Toko</h6>
+                        <h3 class="mb-0">{{ number_format($stats['totalShops']) }}</h3>
                     </div>
-                    <div class="stats-icon">
-                        <i class="fas fa-users"></i>
+                    <div class="stats-icon text-danger">
+                        <i class="fas fa-store"></i>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <div class="card stats-card bg-info text-white">
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card stats-card border-0">
                 <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="card-title">Total Pencarian</h5>
-                        <h2 class="mb-0">{{ number_format($stats['totalSearches']) }}</h2>
+                        <h6 class="card-subtitle text-muted mb-1">Total Produk</h6>
+                        <h3 class="mb-0">{{ number_format($stats['totalProducts']) }}</h3>
                     </div>
-                    <div class="stats-icon">
-                        <i class="fas fa-search"></i>
+                    <div class="stats-icon text-success">
+                        <i class="fas fa-box"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="card stats-card border-0">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Total Kategori</h6>
+                        <h3 class="mb-0">{{ number_format($stats['totalCategories']) }}</h3>
+                    </div>
+                    <div class="stats-icon text-info">
+                        <i class="fas fa-tag"></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Grafik kunjungan -->
+    <!-- Grafik dan Tabel -->
     <div class="row mb-4">
-        <div class="col-md-12">
+        <div class="col-lg-8 mb-3">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Kunjungan Website (30 Hari Terakhir)</h5>
+                <div class="card-header py-3">
+                    <h5 class="card-title mb-0">Tren Kunjungan (30 Hari Terakhir)</h5>
                 </div>
                 <div class="card-body">
                     <div class="chart-container">
@@ -85,45 +110,29 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Grafik pencarian -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Pencarian Website (30 Hari Terakhir)</h5>
-                </div>
-                <div class="card-body">
-                    <div class="chart-container">
-                        <canvas id="searchChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Toko populer dan pencarian populer -->
-    <div class="row mb-4">
-        <div class="col-md-6 mb-3">
+        <div class="col-lg-4 mb-3">
             <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="card-title">Toko Paling Banyak Dikunjungi</h5>
+                <div class="card-header py-3">
+                    <h5 class="card-title mb-0">Toko Populer</h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-simple">
                             <thead>
                                 <tr>
                                     <th>Nama Toko</th>
-                                    <th>Kunjungan</th>
+                                    <th class="text-end">Kunjungan</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($popularShops as $shop)
                                 <tr>
-                                    <td>{{ $shop->name }}</td>
-                                    <td>{{ number_format($shop->visitor_logs_count) }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.shops.show', $shop) }}" class="text-decoration-none">
+                                            {{ $shop->name }}
+                                        </a>
+                                    </td>
+                                    <td class="text-end">{{ number_format($shop->visitor_logs_count) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -132,25 +141,29 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="card-title">Pencarian Paling Populer</h5>
+    </div>
+    
+    <!-- Pencarian dan Kategori -->
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+            <div class="card">
+                <div class="card-header py-3">
+                    <h5 class="card-title mb-0">Pencarian Populer</h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-simple">
                             <thead>
                                 <tr>
                                     <th>Kata Kunci</th>
-                                    <th>Jumlah</th>
+                                    <th class="text-end">Jumlah</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($popularSearches as $search)
                                 <tr>
                                     <td>{{ $search->query }}</td>
-                                    <td>{{ number_format($search->count) }}</td>
+                                    <td class="text-end">{{ number_format($search->count) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -159,56 +172,25 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Kategori populer dan pencarian tanpa hasil -->
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="card-title">Kategori Produk Paling Populer</h5>
+        <div class="col-lg-6 mb-3">
+            <div class="card">
+                <div class="card-header py-3">
+                    <h5 class="card-title mb-0">Kategori Populer</h5>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-striped">
+                        <table class="table table-simple">
                             <thead>
                                 <tr>
                                     <th>Kategori</th>
-                                    <th>Produk</th>
+                                    <th class="text-end">Jumlah Produk</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($popularCategories as $category)
                                 <tr>
                                     <td>{{ $category->name }}</td>
-                                    <td>{{ number_format($category->products_count) }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-header">
-                    <h5 class="card-title">Pencarian Tanpa Hasil</h5>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Kata Kunci</th>
-                                    <th>Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($noResultSearches as $search)
-                                <tr>
-                                    <td>{{ $search->query }}</td>
-                                    <td>{{ number_format($search->count) }}</td>
+                                    <td class="text-end">{{ number_format($category->products_count) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -227,7 +209,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Data untuk grafik kunjungan
         var visitorData = @json($visitorStats);
-        var visitorDates = visitorData.map(item => item.date);
+        var visitorDates = visitorData.map(item => {
+            // Format tanggal menjadi lebih singkat (contoh: 01 Jan)
+            var date = new Date(item.date);
+            return date.getDate() + '/' + (date.getMonth() + 1);
+        });
         var visitorCounts = visitorData.map(item => item.count);
         
         // Chart kunjungan
@@ -242,7 +228,8 @@
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2,
-                    tension: 0.4
+                    tension: 0.3,
+                    fill: true
                 }]
             },
             options: {
@@ -254,56 +241,21 @@
                         ticks: {
                             precision: 0
                         }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Data untuk grafik pencarian
-        var searchData = @json($searchStats);
-        var searchDates = searchData.map(item => item.date);
-        var searchCounts = searchData.map(item => item.count);
-        
-        // Chart pencarian
-        var searchCtx = document.getElementById('searchChart').getContext('2d');
-        var searchChart = new Chart(searchCtx, {
-            type: 'line',
-            data: {
-                labels: searchDates,
-                datasets: [{
-                    label: 'Jumlah Pencarian',
-                    data: searchCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
+                    },
+                    x: {
+                        grid: {
+                            display: false
                         }
                     }
                 },
                 plugins: {
+                    legend: {
+                        display: false
+                    },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y.toLocaleString();
+                                return 'Kunjungan: ' + context.parsed.y.toLocaleString();
                             }
                         }
                     }

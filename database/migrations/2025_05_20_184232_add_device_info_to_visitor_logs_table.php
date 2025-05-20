@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->timestamps();
+        Schema::table('visitor_logs', function (Blueprint $table) {
+            $table->string('device_type')->nullable()->after('referrer');
+            $table->string('browser')->nullable()->after('device_type');
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::table('visitor_logs', function (Blueprint $table) {
+            $table->dropColumn(['device_type', 'browser']);
+        });
     }
 };

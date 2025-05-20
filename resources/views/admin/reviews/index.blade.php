@@ -1,240 +1,283 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Kelola Ulasan')
+@section('title', 'Manajemen Ulasan')
+
+@section('styles')
+<style>
+    .filter-card {
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+    }
+    .review-status {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .review-status.approved {
+        background-color: #198754;
+    }
+    .review-status.pending {
+        background-color: #dc3545;
+    }
+    .rating {
+        color: #ffc107;
+    }
+    .rating-empty {
+        color: #e9ecef;
+    }
+    .review-table th, .review-table td {
+        vertical-align: middle;
+    }
+    .badge-shop {
+        background-color: #e9f7fe;
+        color: #0d6efd;
+        font-weight: normal;
+    }
+    .badge-pending {
+        background-color: #fff4e5;
+        color: #fd7e14;
+        font-weight: normal;
+    }
+    .badge-approved {
+        background-color: #e7f6e7;
+        color: #198754;
+        font-weight: normal;
+    }
+</style>
+@endsection
 
 @section('content')
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="h3">Kelola Ulasan</h1>
-            <a href="{{ route('admin.reviews.pending') }}" class="btn btn-warning">
-                <i class="bi bi-clock-history me-1"></i> Ulasan Pending
-                @if ($pendingCount > 0)
-                    <span class="badge bg-light text-dark ms-1">{{ $pendingCount }}</span>
-                @endif
-            </a>
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">Manajemen Ulasan</h1>
+            <p class="text-muted">Kelola semua ulasan toko di platform</p>
         </div>
+        @if($pendingCount > 0)
+        <a href="{{ route('admin.reviews.pending') }}" class="btn btn-primary">
+            <i class="bi bi-clock-history me-1"></i> Moderasi Ulasan
+            <span class="badge bg-white text-primary ms-1">{{ $pendingCount }}</span>
+        </a>
+        @endif
+    </div>
 
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <div class="mb-4">
-                    <form action="{{ route('admin.reviews.index') }}" method="GET" class="row g-3">
-                        <div class="col-md-4">
-                            <select name="shop_id" class="form-select">
-                                <option value="">-- Semua Toko --</option>
-                                @foreach ($shops as $shop)
-                                    <option value="{{ $shop->id }}"
-                                        {{ request('shop_id') == $shop->id ? 'selected' : '' }}>{{ $shop->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select name="status" class="form-select">
-                                <option value="">-- Semua Status --</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui
-                                </option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
-                                </option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Cari nama..."
-                                    value="{{ request('search') }}">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="{{ route('admin.reviews.index') }}" class="btn btn-secondary w-100">Reset</a>
-                        </div>
-                    </form>
+    <!-- Filter Card -->
+    <div class="card filter-card">
+        <div class="card-body">
+            <form action="{{ route('admin.reviews.index') }}" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Cari</label>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Nama reviewer..." value="{{ request('search') }}">
                 </div>
+                <div class="col-md-3">
+                    <label for="shop_id" class="form-label">Toko</label>
+                    <select class="form-select" id="shop_id" name="shop_id">
+                        <option value="">Semua Toko</option>
+                        @foreach($shops as $shop)
+                            <option value="{{ $shop->id }}" {{ request('shop_id') == $shop->id ? 'selected' : '' }}>
+                                {{ $shop->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option value="">Semua Status</option>
+                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-filter me-1"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
+    <!-- Reviews Table -->
+    <div class="card">
+        <div class="card-body">
+            @if($reviews->isEmpty())
+                <div class="text-center py-5">
+                    <i class="bi bi-chat-square-text text-muted" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">Tidak Ada Ulasan</h4>
+                    <p class="text-muted">Belum ada ulasan yang sesuai dengan filter yang dipilih.</p>
+                </div>
+            @else
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover review-table">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Toko</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Rating</th>
-                                <th>Ulasan</th>
-                                <th>Status</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
+                                <th style="width: 5%">#</th>
+                                <th style="width: 20%">Toko</th>
+                                <th style="width: 15%">Reviewer</th>
+                                <th style="width: 10%">Rating</th>
+                                <th style="width: 25%">Ulasan</th>
+                                <th style="width: 10%">Status</th>
+                                <th style="width: 15%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($reviews as $review)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $review->shop->name }}</td>
-                                    <td>{{ $review->name }}</td>
-                                    <td>{{ $review->email }}</td>
-                                    <td>
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            @if ($i <= $review->rating)
-                                                <i class="bi bi-star-fill text-warning small"></i>
+                            @foreach($reviews as $review)
+                            <tr>
+                                <td>{{ ($reviews->currentPage() - 1) * $reviews->perPage() + $loop->iteration }}</td>
+                                <td>
+                                    <span class="badge badge-shop">
+                                        <i class="bi bi-shop me-1"></i> {{ $review->shop->name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div>{{ $review->name }}</div>
+                                    <small class="text-muted">{{ $review->email }}</small>
+                                </td>
+                                <td>
+                                    <div class="rating">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $review->rating)
+                                                <i class="bi bi-star-fill"></i>
                                             @else
-                                                <i class="bi bi-star text-warning small"></i>
+                                                <i class="bi bi-star rating-empty"></i>
                                             @endif
                                         @endfor
-                                    </td>
-                                    <td>{{ Str::limit($review->comment, 50) }}</td>
-                                    <td>
-                                        @if ($review->is_approved)
-                                            <span class="badge bg-success">Disetujui</span>
-                                        @else
-                                            <span class="badge bg-warning">Pending</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="d-inline-block text-truncate" style="max-width: 200px;">
+                                        {{ $review->comment }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($review->is_approved)
+                                        <span class="badge badge-approved">
+                                            <i class="bi bi-check-circle me-1"></i> Disetujui
+                                        </span>
+                                    @else
+                                        <span class="badge badge-pending">
+                                            <i class="bi bi-clock-history me-1"></i> Menunggu
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewModal{{ $review->id }}">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        @if(!$review->is_approved)
+                                            <form action="{{ route('admin.reviews.approve', $review) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                                    <i class="bi bi-check-lg"></i>
+                                                </button>
+                                            </form>
                                         @endif
-                                    </td>
-                                    <td>{{ $review->created_at->format('d M Y') }}</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-sm btn-info text-white"
-                                                data-bs-toggle="modal" data-bs-target="#viewModal{{ $review->id }}"
-                                                data-bs-toggle="tooltip" title="Lihat">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-
-                                            @if (!$review->is_approved)
-                                                <form action="{{ route('admin.reviews.approve', $review->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="btn btn-sm btn-success"
-                                                        data-bs-toggle="tooltip" title="Setujui">
-                                                        <i class="bi bi-check-lg"></i>
-                                                    </button>
-                                                </form>
-                                            @endif
-
-                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#deleteModal{{ $review->id }}" data-bs-toggle="tooltip"
-                                                title="Hapus">
+                                        <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus ulasan ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
                                                 <i class="bi bi-trash"></i>
                                             </button>
-                                        </div>
-
-                                        <!-- View Modal -->
-                                        <div class="modal fade" id="viewModal{{ $review->id }}" tabindex="-1"
-                                            aria-labelledby="viewModalLabel{{ $review->id }}" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="viewModalLabel{{ $review->id }}">
-                                                            Detail Ulasan</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                        </form>
+                                    </div>
+                                    
+                                    <!-- View Modal -->
+                                    <div class="modal fade" id="viewModal{{ $review->id }}" tabindex="-1" aria-labelledby="viewModalLabel{{ $review->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="viewModalLabel{{ $review->id }}">Detail Ulasan</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <span class="badge badge-shop">
+                                                            <i class="bi bi-shop me-1"></i> {{ $review->shop->name }}
+                                                        </span>
+                                                        <small class="text-muted">{{ $review->created_at->format('d M Y, H:i') }}</small>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <h6>Toko</h6>
-                                                            <p>{{ $review->shop->name }}</p>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <h6>Nama</h6>
-                                                            <p>{{ $review->name }}</p>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <h6>Email</h6>
-                                                            <p>{{ $review->email }}</p>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <h6>Rating</h6>
-                                                            <p>
-                                                                @for ($i = 1; $i <= 5; $i++)
-                                                                    @if ($i <= $review->rating)
-                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                    @else
-                                                                        <i class="bi bi-star text-warning"></i>
-                                                                    @endif
-                                                                @endfor
-                                                                ({{ $review->rating }}/5)
-                                                            </p>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <h6>Ulasan</h6>
-                                                            <p>{{ $review->comment }}</p>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <h6>Tanggal</h6>
-                                                            <p>{{ $review->created_at->format('d M Y H:i') }}</p>
-                                                        </div>
-                                                        <div>
-                                                            <h6>Status</h6>
-                                                            <p>
-                                                                @if ($review->is_approved)
-                                                                    <span class="badge bg-success">Disetujui</span>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label text-muted">Nama</label>
+                                                        <div class="fw-bold">{{ $review->name }}</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label text-muted">Email</label>
+                                                        <div>{{ $review->email }}</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label text-muted">Rating</label>
+                                                        <div class="rating">
+                                                            @for($i = 1; $i <= 5; $i++)
+                                                                @if($i <= $review->rating)
+                                                                    <i class="bi bi-star-fill"></i>
                                                                 @else
-                                                                    <span class="badge bg-warning">Pending</span>
+                                                                    <i class="bi bi-star rating-empty"></i>
                                                                 @endif
-                                                            </p>
+                                                            @endfor
+                                                            <span class="ms-2">({{ $review->rating }}/5)</span>
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Tutup</button>
-                                                        @if (!$review->is_approved)
-                                                            <form
-                                                                action="{{ route('admin.reviews.approve', $review->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit"
-                                                                    class="btn btn-success">Setujui</button>
-                                                            </form>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label text-muted">Ulasan</label>
+                                                        <div class="p-3 bg-light rounded">
+                                                            {{ $review->comment }}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label class="form-label text-muted">Status</label>
+                                                        @if($review->is_approved)
+                                                            <span class="badge badge-approved">
+                                                                <i class="bi bi-check-circle me-1"></i> Disetujui
+                                                            </span>
+                                                        @else
+                                                            <span class="badge badge-pending">
+                                                                <i class="bi bi-clock-history me-1"></i> Menunggu
+                                                            </span>
                                                         @endif
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Delete Modal -->
-                                        <div class="modal fade" id="deleteModal{{ $review->id }}" tabindex="-1"
-                                            aria-labelledby="deleteModalLabel{{ $review->id }}" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel{{ $review->id }}">
-                                                            Konfirmasi Hapus</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Apakah Anda yakin ingin menghapus ulasan dari
-                                                        <strong>{{ $review->name }}</strong>?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Batal</button>
-                                                        <form action="{{ route('admin.reviews.destroy', $review->id) }}"
-                                                            method="POST">
+                                                <div class="modal-footer">
+                                                    <a href="{{ route('shop.show', $review->shop) }}" target="_blank" class="btn btn-outline-secondary">
+                                                        <i class="bi bi-eye me-1"></i> Lihat Toko
+                                                    </a>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                                    @if(!$review->is_approved)
+                                                        <form action="{{ route('admin.reviews.approve', $review) }}" method="POST">
                                                             @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">Hapus</button>
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="bi bi-check-circle me-1"></i> Setujui
+                                                            </button>
                                                         </form>
-                                                    </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="text-center">Belum ada data ulasan</td>
-                                </tr>
-                            @endforelse
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
-
-                <div class="d-flex justify-content-center mt-4">
-                    {{ $reviews->withQueryString()->links() }}
+                
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div>
+                        Menampilkan {{ $reviews->firstItem() ?? 0 }} hingga {{ $reviews->lastItem() ?? 0 }} dari {{ $reviews->total() }} ulasan
+                    </div>
+                    <div>
+                        {{ $reviews->links() }}
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
+</div>
 @endsection

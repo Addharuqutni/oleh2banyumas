@@ -10,7 +10,7 @@
                 <h1 class="fw-bold text-center mb-4 judul">Getuk Goreng: Kuliner Tradisional Khas Banyumas</h1>
                 <div class="text-center" style="width: 100%; height: 500px;">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Getuk_goreng_Sokaraja.jpg/1200px-Getuk_goreng_Sokaraja.jpg"
-                        alt="Getuk Goreng Banyumas" class="img-fluid rounded shadow-sm" style="width: 100%; height: 100%; object-fit: cover;">
+                        alt="Getuk Goreng Banyumas" class="img-fluid rounded shadow-sm mb-2" style="width: 100%; height: 100%; object-fit: cover;">
                     <p class="text-muted fst-italic">Getuk Goreng - Oleh-oleh legendaris khas Sokaraja, Banyumas</p>
                 </div>
             </header>
@@ -201,75 +201,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">Getuk Goreng Premium</h5>
-                                    <p class="card-text">Dibuat dengan formulasi khusus dan bahan-bahan berkualitas tinggi, biasanya diproduksi oleh
-                                        merek-merek terkenal seperti Haji Tohirin.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p>Selain variasi rasa, getuk goreng juga hadir dalam berbagai merek dan produsen. Beberapa nama yang
-                        terkenal antara lain Getuk Goreng Haji Tohirin, Sari Murni, dan Eka yang masing-masing memiliki
-                        karakter dan penggemar setia tersendiri. Meskipun demikian, getuk goreng dengan rasa gula merah
-                        original tetap menjadi pilihan utama bagi kebanyakan penikmat makanan khas ini.</p>
-                </div>
-            </section>
-
-            <!-- Tips -->
-            <section class="mb-5 bg-light p-4 rounded shadow-sm">
-                <h2 class="subjudul mb-4 border-bottom pb-2">Tips Menikmati</h2>
-                <div class="lead">
-                    <div class="row mb-4">
-                        <div class="col-md-12">
-                            <div class="card mb-3 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="bi bi-1-circle-fill text-success me-2"></i>Waktu Terbaik</h5>
-                                    <p class="card-text">Getuk goreng paling nikmat dinikmati saat masih hangat, ketika bagian luarnya masih renyah
-                                        dan bagian dalamnya lembut. Jika sudah dingin, panaskan sebentar dalam oven atau air fryer
-                                        untuk mendapatkan kembali tekstur yang renyah.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="bi bi-2-circle-fill text-success me-2"></i>Paduan Minuman</h5>
-                                    <p class="card-text">Sajikan getuk goreng dengan teh atau kopi hitam tanpa gula untuk menyeimbangkan rasa manis
-                                        dari getuk. Kombinasi ini menjadi paduan sempurna untuk camilan sore hari.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="bi bi-3-circle-fill text-success me-2"></i>Penyimpanan</h5>
-                                    <p class="card-text">Untuk menjaga kesegaran getuk goreng, simpan dalam wadah kedap udara pada suhu ruangan. Getuk
-                                        goreng dapat bertahan 3-5 hari, meskipun teksturnya akan berubah seiring waktu.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="bi bi-4-circle-fill text-success me-2"></i>Memilih Oleh-oleh</h5>
-                                    <p class="card-text">Jika membeli sebagai oleh-oleh, carilah produsen yang mengemas getuk goreng dengan baik dan
-                                        mencantumkan tanggal produksi. Pilih yang baru dibuat untuk mendapatkan kualitas terbaik.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="card mb-3 border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="bi bi-5-circle-fill text-success me-2"></i>Kunjungan ke Sokaraja</h5>
-                                    <p class="card-text">Saat berkunjung ke Sokaraja, Banyumas, kunjungi langsung sentra getuk goreng di sepanjang
-                                        Jalan Jenderal Sudirman, Sokaraja, untuk mencicipi beragam varian dari berbagai produsen
-                                        legendaris seperti Haji Tohirin yang telah berdiri sejak 1918.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
+
         </article>
     </div>
 @endsection

@@ -1,26 +1,29 @@
-<footer class="bg-light text-dark mt-auto" style="height: auto;">
+<footer class="bg-white text-dark mt-auto border-top">
     <div class="container py-4 py-md-5">
         <div class="row align-items-center text-center text-md-start">
             <!-- Logo -->
-            <div class="col-12 col-md-6 mb-4 mb-md-0 d-flex justify-content-center justify-content-md-start">
-                <img src="{{ asset('images/Logo.png') }}" alt="Snack Banyumas" class="img-fluid"
-                    style="max-width: 100%; width: 280px;">
+            <div class="col-12 col-md-4 mb-4 mb-md-0 d-flex justify-content-center justify-content-md-start">
+                <a href="/" class="footer-logo">
+                    <img src="{{ asset('images/Logo.png') }}" alt="Oleh-oleh Banyumas" class="img-fluid"
+                        style="max-width: 100%; width: 220px;">
+                </a>
             </div>
 
             <!-- Description and Links -->
-            <div class="col-12 col-md-6">
-                <div class="py-2 text-center">
-                    <h4 class="fw-bold mb-3 section-title">Oleh-oleh khas Banyumas</h4>
+            <div class="col-12 col-md-8">
+                <div class="py-2 text-center text-md-start">
+                    <h4 class="fw-bold mb-3 text-success">Oleh-oleh Makanan Ringan Khas Banyumas</h4>
                 </div>
                 <div class="pb-3">
                     <p class="mb-3">
-                        Website sebagai penghubung antara penjual dan pembeli oleh-oleh makanan ringan khas Banyumas.
+                        Website sebagai penghubung antara penjual dan pembeli oleh-oleh makanan ringan khas Banyumas. 
+                        Dapatkan informasi lengkap tentang toko-toko oleh-oleh di Banyumas.
                     </p>
                 </div>
-                <div class="d-flex flex-wrap justify-content-center justify-content-md-center gap-3">
-                    <a href="#" class="text-dark fw-semibold text-decoration-none">Kebijakan Privasi</a>
-                    <a href="#" class="text-dark fw-semibold text-decoration-none">Pengembang</a>
-                    <a href="#" class="text-dark fw-semibold text-decoration-none">Hubungi Kami</a>
+                <div class="footer-links d-flex flex-wrap justify-content-center justify-content-md-start gap-4">
+                    <a href="#" class="footer-link">Kebijakan Privasi</a>
+                    <a href="#" class="footer-link">Pengembang</a>
+                    <a href="#" class="footer-link">Hubungi Kami</a>
                 </div>
             </div>
         </div>
@@ -28,18 +31,37 @@
         <!-- Copyright section -->
         <div class="row">
             <div class="col-12 text-center">
-                <hr class="my-3">
-                <p class="text-muted small">&copy; 2025 Snack Banyumas. Hak Cipta Dilindungi.</p>
+                <hr class="my-4">
+                <p class="text-muted small mb-0">&copy; 2025 Oleh-oleh Banyumas. Hak Cipta Dilindungi.</p>
             </div>
         </div>
     </div>
 </footer>
 
 <style>
-    .section-title {
-        color: #2e7d32;
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+    .footer-link {
+        color: var(--text-dark);
+        font-weight: 500;
         position: relative;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-link:hover {
+        color: var(--primary-green);
+    }
+    
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--primary-green);
+        transition: width 0.3s ease;
+    }
+    
+    .footer-link:hover::after {
+        width: 100%;
     }
 </style>

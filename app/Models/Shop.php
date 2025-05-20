@@ -100,8 +100,13 @@ class Shop extends Model
         return $this->hasMany(VisitorLog::class);
     }
 
-    public function getCategoryAttribute()
+    /**
+     * Get all categories associated with this shop's products.
+     */
+    public function getCategoriesAttribute()
     {
-        return $this->products ? $this->products->pluck('category')->unique() : collect();
+        return Category::whereHas('products', function($query) {
+            $query->where('shop_id', $this->id);
+        })->get();
     }
 }

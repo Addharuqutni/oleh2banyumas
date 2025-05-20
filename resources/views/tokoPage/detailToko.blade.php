@@ -72,9 +72,6 @@
                                                 <img src="{{ Storage::url($shop->featured_image) }}"
                                                     alt="Tampak depan {{ $shop->name }}"
                                                     class="d-block w-100 carousel-img">
-                                                <div class="carousel-caption">
-                                                    <span class="caption-tag">Tampak Depan</span>
-                                                </div>
                                             </div>
                                         @endif
 
@@ -427,15 +424,6 @@
         .carousel-img {
             height: 300px;
             object-fit: cover;
-        }
-
-        .carousel-caption {
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
-            padding: 1rem;
-            text-align: left;
         }
 
         .caption-tag {

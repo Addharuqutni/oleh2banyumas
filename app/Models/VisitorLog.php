@@ -14,7 +14,9 @@ class VisitorLog extends Model
         'user_agent', 
         'page_visited', 
         'shop_id', 
-        'referrer'
+        'referrer',
+        'device_type',
+        'browser'
     ];
 
     public function shop()

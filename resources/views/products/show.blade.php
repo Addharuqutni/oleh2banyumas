@@ -16,13 +16,12 @@
         </div>
 
         <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb" class="mb-1 mt-4">
+        <nav aria-label="breadcrumb" class="mb-4 mt-4">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('shops.index') }}">Toko</a></li>
-                <li class="breadcrumb-item"><a
-                        href="{{ route('shops.detail', $product->shop->slug) }}">{{ $product->shop->name }}</a></li>
-                <li class="breadcrumb-item active aria-current="page"">{{ $product->name }}</li>
+                <li class="breadcrumb-item"><a href="{{ route('shops.detail', $product->shop->slug) }}">{{ $product->shop->name }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
             </ol>
         </nav>
 
@@ -32,7 +31,7 @@
                 <div class="row g-0">
                     <!-- Product Image -->
                     <div class="col-md-6">
-                        <div class="bg-light h-100">
+                        <div class="bg-light h-100 position-relative">
                             @if ($product->image)
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                     class="img-fluid w-100 h-100 object-fit-cover">
@@ -40,19 +39,28 @@
                                 <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $product->name }}"
                                     class="img-fluid w-100 h-100 object-fit-cover">
                             @endif
+                            
+                            <!-- Categories badges overlay -->
+                            @if($product->categories && $product->categories->count() > 0)
+                                <div class="position-absolute bottom-0 start-0 p-3">
+                                    @foreach($product->categories as $category)
+                                        <span class="badge bg-success me-1 mb-1">{{ $category->name }}</span>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
 
                     <!-- Product Details -->
                     <div class="col-md-6">
                         <div class="card-body p-4">
-                            <span class="badge bg-opacity-10 text-success mb-3" style="background: #e8f5e9">{{ $product->shop->name }}</span>
-                            <h2 class="fw-bold mb-1 fw-semibold">{{ $product->name }}</h2>
+                            <span class="badge bg-light-green text-success mb-3 rounded-pill">{{ $product->shop->name }}</span>
+                            <h2 class="fw-bold mb-2">{{ $product->name }}</h2>
                             <div class="mb-3">
-                                <h5 class="text-success">Rp {{ number_format($product->price, 0, ',', '.') }}</h5>
+                                <h5 class="fw-semibold text-success">Rp {{ number_format($product->price, 0, ',', '.') }}</h5>
                             </div>
                             <div class="mb-4">
-                                <h5 class="text-secondary">Deskripsi Produk</h5>
+                                <h5 class="fw-semibold text-dark-green">Deskripsi Produk</h5>
                                 <p class="text-muted">
                                     {{ $product->description ?? 'Belum ada deskripsi untuk produk ini.' }}
                                 </p>
@@ -62,6 +70,9 @@
                                 <a href="https://wa.me/?text=Lihat produk {{ $product->name }} di {{ route('shops.products.show', ['shop' => $product->shop->slug, 'product' => $product->slug]) }}"
                                     class="btn btn-success">
                                     <i class="bi bi-share me-2"></i>Bagikan
+                                </a>
+                                <a href="{{ route('shops.detail', $product->shop->slug) }}" class="btn btn-outline-success">
+                                    <i class="bi bi-shop me-2"></i>Lihat Toko
                                 </a>
                             </div>
                         </div>
@@ -93,7 +104,7 @@
                         </div>
                         <div class="col-md-3 text-md-end">
                             <a href="{{ route('shops.detail', $product->shop->slug) }}" class="btn-detail">
-                                Kunjungi Toko
+                                <i class="bi bi-shop me-1"></i> Kunjungi Toko
                             </a>
                         </div>
                     </div>
@@ -101,44 +112,21 @@
             </div>
 
             <!-- Related Products Section -->
-            <div class="mt-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0 subjudul">Produk Terkait</h2>
-                </div>
+            @if ($relatedProducts->count() > 0)
+                <div class="mt-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0 subjudul">Produk Terkait</h2>
+                    </div>
 
-                @if ($relatedProducts->count() > 0)
                     <div class="row g-4">
                         @foreach ($relatedProducts as $relatedProduct)
                             <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
-                                    <div style="height: 200px; overflow: hidden;">
-                                        @if ($relatedProduct->image)
-                                            <img src="{{ asset('storage/' . $relatedProduct->image) }}"
-                                                alt="{{ $relatedProduct->name }}" class="img-fluid w-100 h-100 object-fit-cover">
-                                        @else
-                                            <img src="{{ asset('images/default-product.jpg') }}"
-                                                alt="{{ $relatedProduct->name }}" class="img-fluid w-100 h-100 object-fit-cover">
-                                        @endif
-                                    </div>
-                                    <div class="card-body d-flex flex-column">
-                                        <h5 class="card-title">{{ $relatedProduct->name }}</h5>
-                                        <p class="text-success fw-medium mt-auto">Rp
-                                            {{ number_format($relatedProduct->price, 0, ',', '.') }}</p>
-                                        <a class="btn btn-outline-success w-100 mt-2"
-                                            href="{{ route('shops.products.show', ['shop' => $relatedProduct->shop->slug, 'product' => $relatedProduct->slug]) }}">
-                                            Lihat Detail
-                                        </a>
-                                    </div>
-                                </div>
+                                @include('partials.product-card', ['product' => $relatedProduct])
                             </div>
                         @endforeach
                     </div>
-                @else
-                    <div class="alert alert-light text-center">
-                        <i class="bi bi-info-circle me-2"></i>Tidak ada produk terkait saat ini.
-                    </div>
-                @endif
-            </div>
+                </div>
+            @endif
         @else
             <div class="alert alert-warning">
                 <i class="bi bi-exclamation-triangle me-2"></i>Produk tidak ditemukan atau tidak tersedia.

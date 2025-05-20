@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\SearchLog;
 use App\Models\Shop;
 use App\Models\VisitorLog;
@@ -29,6 +30,7 @@ class DashboardController extends Controller
             'totalVisits' => VisitorLog::count(),
             'totalSearches' => SearchLog::count(),
             'uniqueVisitors' => VisitorLog::distinct('ip_address')->count('ip_address'),
+            'pendingReviews' => Review::where('is_approved', false)->count(),
         ];
         
         // Toko paling banyak dikunjungi
@@ -83,6 +85,49 @@ class DashboardController extends Controller
             ->groupBy('date')
             ->orderBy('date')
             ->get();
+            
+        // Statistik perangkat
+        $deviceStats = VisitorLog::select('device_type', DB::raw('count(*) as count'))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->whereNotNull('device_type')
+            ->groupBy('device_type')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item['device_type'] => $item['count']];
+            });
+            
+        // Statistik browser
+        $browserStats = VisitorLog::select('browser', DB::raw('count(*) as count'))
+            ->where('created_at', '>=', Carbon::now()->subDays(30))
+            ->whereNotNull('browser')
+            ->groupBy('browser')
+            ->orderBy('count', 'desc')
+            ->take(5)
+            ->get();
+            
+        // Tren pengunjung (perbandingan dengan periode sebelumnya)
+        $currentPeriodVisits = VisitorLog::where('created_at', '>=', Carbon::now()->subDays(7))->count();
+        $previousPeriodVisits = VisitorLog::where('created_at', '>=', Carbon::now()->subDays(14))
+            ->where('created_at', '<', Carbon::now()->subDays(7))
+            ->count();
+            
+        $visitorsGrowth = $previousPeriodVisits > 0 
+            ? round((($currentPeriodVisits - $previousPeriodVisits) / $previousPeriodVisits) * 100, 1)
+            : 0;
+            
+        // Tren pencarian
+        $currentPeriodSearches = SearchLog::where('created_at', '>=', Carbon::now()->subDays(7))->count();
+        $previousPeriodSearches = SearchLog::where('created_at', '>=', Carbon::now()->subDays(14))
+            ->where('created_at', '<', Carbon::now()->subDays(7))
+            ->count();
+            
+        $searchesGrowth = $previousPeriodSearches > 0 
+            ? round((($currentPeriodSearches - $previousPeriodSearches) / $previousPeriodSearches) * 100, 1)
+            : 0;
+            
+        // Tambahkan data tren ke statistik
+        $stats['visitorsGrowth'] = $visitorsGrowth;
+        $stats['searchesGrowth'] = $searchesGrowth;
         
         return view('admin.dashboard', compact(
             'stats', 
@@ -91,7 +136,9 @@ class DashboardController extends Controller
             'popularSearches', 
             'noResultSearches',
             'visitorStats',
-            'searchStats'
+            'searchStats',
+            'deviceStats',
+            'browserStats'
         ));
     }
 }

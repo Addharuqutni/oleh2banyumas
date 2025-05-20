@@ -87,8 +87,8 @@ class CategoryController extends Controller
             return redirect()->route('admin.categories.index')
                 ->with('error', 'Tidak dapat menghapus kategori karena masih digunakan oleh ' . $productsCount . ' produk.');
             
-            // Option 2: Update products to remove this category (uncomment if you want this behavior)
-            // $category->products()->update(['category_id' => null]);
+            // Option 2: Detach this category from all products (uncomment if you want this behavior)
+            // $category->products()->detach();
         }
         
         // Delete the category
