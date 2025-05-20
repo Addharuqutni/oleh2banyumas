@@ -137,6 +137,7 @@
                             </form>
                             <form action="{{ route('admin.reviews.approve', $review) }}" method="POST">
                                 @csrf
+                                @method('PATCH')
                                 <button type="submit" class="btn btn-sm btn-success">
                                     <i class="bi bi-check-circle me-1"></i> Setujui
                                 </button>
