@@ -59,13 +59,18 @@ class ShopController extends Controller
             $categoryId = $request->category_id;
             $selectedCategory = \App\Models\Category::find($categoryId);
             
+            // Perbaikan: Menggunakan relasi many-to-many yang benar
             $query->whereHas('products', function ($q) use ($categoryId) {
-                $q->where('category_id', $categoryId);
+                $q->whereHas('categories', function($cq) use ($categoryId) {
+                    $cq->where('categories.id', $categoryId);
+                });
             });
 
             // Jika kategori dipilih, muat produk yang termasuk dalam kategori tersebut
             $query->with(['products' => function ($q) use ($categoryId) {
-                $q->where('category_id', $categoryId);
+                $q->whereHas('categories', function($cq) use ($categoryId) {
+                    $cq->where('categories.id', $categoryId);
+                });
             }]);
         }
 
@@ -194,10 +199,16 @@ class ShopController extends Controller
         
         $shops = Shop::where('status', 'active')
             ->whereHas('products', function ($query) use ($categoryId) {
-                $query->where('category_id', $categoryId);
+                // Perbaikan: Menggunakan relasi many-to-many yang benar
+                $query->whereHas('categories', function($cq) use ($categoryId) {
+                    $cq->where('categories.id', $categoryId);
+                });
             })
             ->with(['products' => function ($query) use ($categoryId) {
-                $query->where('category_id', $categoryId);
+                // Perbaikan: Menggunakan relasi many-to-many yang benar
+                $query->whereHas('categories', function($cq) use ($categoryId) {
+                    $cq->where('categories.id', $categoryId);
+                });
             }])
             ->select('id', 'name', 'address', 'featured_image', 'description', 'slug')
             ->orderBy('name')
