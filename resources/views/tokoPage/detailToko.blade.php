@@ -366,6 +366,7 @@
                 </form>
             </div>
         </div>
+
     </div>
 
     <style>
@@ -1313,57 +1314,6 @@
                 .catch(error => {
                     console.error('Error fetching nearby shops:', error);
                 });
-        }
-
-        // Fungsi untuk menampilkan toko terdekat
-        function displayNearbyShops(shops) {
-            // Pastikan ada toko untuk ditampilkan dan bukan toko yang sedang dilihat
-            const currentShopId = {{ $shop->id }};
-            const nearbyShops = shops.filter(shop => shop.id !== currentShopId);
-
-            if (nearbyShops.length === 0) {
-                return;
-            }
-
-            // Buat container untuk rekomendasi toko jika belum ada
-            if (!document.getElementById('nearby-shops-container')) {
-                const container = document.createElement('div');
-                container.id = 'nearby-shops-container';
-                container.className = 'section-container mb-5';
-                container.innerHTML = `
-            <h2 class="section-title">Rekomendasi Toko Terdekat</h2>
-            <div class="row g-4" id="nearby-shops-list"></div>
-        `;
-
-                // Tambahkan sebelum section review atau di tempat yang sesuai
-                const reviewSection = document.querySelector('.section-container:last-child');
-                reviewSection.parentNode.insertBefore(container, reviewSection);
-            }
-
-            // Tampilkan toko terdekat
-            const shopsList = document.getElementById('nearby-shops-list');
-            shopsList.innerHTML = '';
-
-            nearbyShops.forEach(shop => {
-                const shopCard = document.createElement('div');
-                shopCard.className = 'col-md-4';
-                shopCard.innerHTML = `
-            <div class="store-card">
-                <a href="/toko/${shop.slug}" class="store-card-link">
-                    <div class="store-img-container">
-                        <img src="${shop.featured_image ? '/storage/' + shop.featured_image : '/images/default-shop.jpg'}" 
-                             alt="${shop.name}" class="store-img">
-                    </div>
-                    <div class="store-body">
-                        <h5 class="store-title">${shop.name}</h5>
-                        <p class="store-address">${shop.address}</p>
-                        <p class="store-distance"><i class="bi bi-geo-alt"></i> ${shop.distance} km dari lokasi Anda</p>
-                    </div>
-                </a>
-            </div>
-        `;
-                shopsList.appendChild(shopCard);
-            });
         }
 
         // Panggil fungsi untuk mendapatkan toko terdekat saat lokasi pengguna tersedia
