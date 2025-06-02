@@ -1180,7 +1180,7 @@
             // Add OpenStreetMap tile layer with custom styling
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-                maxZoom: 19
+                maxZoom: 15
             }).addTo(map);
 
             // Add marker for the shop
@@ -1193,7 +1193,7 @@
                     '<a href="https://www.google.com/maps/dir/?api=1&destination={{ $shop->latitude }},{{ $shop->longitude }}" target="_blank" class="popup-nav-btn">' +
                     '<i class="bi bi-signpost-split"></i> Navigasi</a>' +
                     '</div>', {
-                        maxWidth: 250,
+                        maxWidth: 200,
                         className: 'custom-popup'
                     }
                 );
@@ -1303,29 +1303,6 @@
                 });
             }
         });
-
-        // Fungsi untuk mendapatkan toko terdekat
-        function getNearbyShops(userLat, userLng) {
-            fetch(`/api/shops/nearby?latitude=${userLat}&longitude=${userLng}&limit=3`)
-                .then(response => response.json())
-                .then(data => {
-                    displayNearbyShops(data.shops);
-                })
-                .catch(error => {
-                    console.error('Error fetching nearby shops:', error);
-                });
-        }
-
-        // Panggil fungsi untuk mendapatkan toko terdekat saat lokasi pengguna tersedia
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
-
-                // Dapatkan toko terdekat
-                getNearbyShops(userLat, userLng);
-            });
-        }
     </script>
 
 @endsection
