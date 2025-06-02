@@ -71,9 +71,6 @@
                                     class="btn btn-success">
                                     <i class="bi bi-share me-2"></i>Bagikan
                                 </a>
-                                <a href="{{ route('shops.detail', $product->shop->slug) }}" class="btn btn-outline-success">
-                                    <i class="bi bi-shop me-2"></i>Lihat Toko
-                                </a>
                             </div>
                         </div>
                     </div>

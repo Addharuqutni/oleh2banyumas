@@ -223,6 +223,35 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="has_delivery" class="form-label">Layanan Antar Jemput</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="has_delivery" name="has_delivery" value="1" 
+                                    {{ old('has_delivery', $shop->has_delivery) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="has_delivery">Tersedia</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row delivery-links" id="deliveryLinksContainer" style="{{ old('has_delivery', $shop->has_delivery) ? '' : 'display: none;' }}">
+                        <div class="col-md-6 mb-3">
+                            <label for="grab_link" class="form-label">Link Grab</label>
+                            <input type="url" class="form-control @error('grab_link') is-invalid @enderror" id="grab_link"
+                                name="grab_link" value="{{ old('grab_link', $shop->grab_link) }}" placeholder="https://grab.com/...">
+                            <small class="text-muted">Link untuk pemesanan via Grab</small>
+                            @error('grab_link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="gojek_link" class="form-label">Link Gojek</label>
+                            <input type="url" class="form-control @error('gojek_link') is-invalid @enderror" id="gojek_link"
+                                name="gojek_link" value="{{ old('gojek_link', $shop->gojek_link) }}" placeholder="https://gojek.com/...">
+                            <small class="text-muted">Link untuk pemesanan via Gojek</small>
+                            @error('gojek_link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="mb-3">

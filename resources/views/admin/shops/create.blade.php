@@ -118,7 +118,36 @@
                             @enderror
                         </div>
                         <div class="col-md-6 mb-3">
-                            <!-- Possibly add another field here -->
+                            <label for="has_delivery" class="form-label">Layanan Antar Jemput</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="has_delivery" name="has_delivery"
+                                    value="1" {{ old('has_delivery') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="has_delivery">Tersedia</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row delivery-links" id="deliveryLinksContainer"
+                        style="{{ old('has_delivery') ? '' : 'display: none;' }}">
+                        <div class="col-md-6 mb-3">
+                            <label for="grab_link" class="form-label">Link Grab</label>
+                            <input type="url" class="form-control @error('grab_link') is-invalid @enderror"
+                                id="grab_link" name="grab_link" value="{{ old('grab_link') }}"
+                                placeholder="https://grab.com/...">
+                            <small class="text-muted">Link untuk pemesanan via Grab</small>
+                            @error('grab_link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="gojek_link" class="form-label">Link Gojek</label>
+                            <input type="url" class="form-control @error('gojek_link') is-invalid @enderror"
+                                id="gojek_link" name="gojek_link" value="{{ old('gojek_link') }}"
+                                placeholder="https://gojek.com/...">
+                            <small class="text-muted">Link untuk pemesanan via Gojek</small>
+                            @error('gojek_link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -222,6 +251,18 @@
                     marker = L.marker(e.latlng).addTo(map);
                 }
             });
+            
+            // Toggle delivery links container
+            const hasDeliveryCheckbox = document.getElementById('has_delivery');
+            const deliveryLinksContainer = document.getElementById('deliveryLinksContainer');
+
+            hasDeliveryCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    deliveryLinksContainer.style.display = 'flex';
+                } else {
+                    deliveryLinksContainer.style.display = 'none';
+                }
+            });
         });
     </script>
     <script>
@@ -232,7 +273,8 @@
             if (event.target.files && event.target.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">`;
+                    preview.innerHTML =
+                        `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">`;
                 };
                 reader.readAsDataURL(event.target.files[0]);
             }
@@ -247,7 +289,8 @@
                     reader.onload = function(e) {
                         const col = document.createElement('div');
                         col.className = 'col-md-3 mb-2';
-                        col.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 120px; max-height: 120px;">`;
+                        col.innerHTML =
+                            `<img src="${e.target.result}" class="img-thumbnail" style="max-width: 120px; max-height: 120px;">`;
                         preview.appendChild(col);
                     };
                     reader.readAsDataURL(file);

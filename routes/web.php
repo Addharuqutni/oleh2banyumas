@@ -49,6 +49,9 @@ Route::get('/artikel/mireng', [ArticleController::class, 'mireng'])->name('artik
 // Other Pages
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
+// Tambahkan route ini di bagian yang sesuai
+Route::get('/api/shops/nearby', [ShopController::class, 'getNearbyShops']);
+
 // Admin Authentication Routes
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AuthController::class, 'login']);
@@ -56,15 +59,14 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 
 // Admin Protected Routes
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
-
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
     // Shop Management
     Route::resource('shops', AdminShopController::class);
     Route::delete('/shop-images/{id}', [AdminShopController::class, 'deleteImage'])->name('shop-images.destroy');
     Route::get('/shops-regenerate-slugs', [AdminShopController::class, 'regenerateSlugs'])->name('shops.regenerate-slugs');
-    Route::put('/shops/{shop}', [AdminShopController::class, 'update'])->name('shops.update');
+    // Remove this line below as it's already defined by the resource controller
+    // Route::put('/shops/{shop}', [AdminShopController::class, 'update'])->name('shops.update');
 
     // Product Management
     Route::resource('products', AdminProductController::class);

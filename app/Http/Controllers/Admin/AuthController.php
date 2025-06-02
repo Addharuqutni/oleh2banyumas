@@ -5,18 +5,26 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class AuthController extends Controller
+class AuthController extends Controller implements HasMiddleware
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * Get the middleware that should be assigned to the controller.
      */
-    public function __construct()
+    public static function middleware(): array
     {
-        // $this->middleware('guest:admin')->except('logout');
+        return [
+            new Middleware('guest:admin', except: ['logout']),
+        ];
     }
+    
+    // Remove the constructor with the old middleware call
+    // public function __construct()
+    // {
+    //     $this->middleware('guest:admin')->except('logout');
+    // }
 
     /**
      * Show the login form.

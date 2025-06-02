@@ -109,6 +109,37 @@
                                         <p class="mb-0">{{ $shop->operating_hours }}</p>
                                     </div>
                                 @endif
+
+                                <div class="col-md-6 mb-3">
+                                    <p class="mb-1 fw-bold">Layanan Antar Jemput</p>
+                                    <p class="mb-0">
+                                        @if($shop->has_delivery)
+                                            <span class="badge bg-success">Tersedia</span>
+                                        @else
+                                            <span class="badge bg-secondary">Tidak Tersedia</span>
+                                        @endif
+                                    </p>
+                                </div>
+
+                                @if($shop->has_delivery)
+                                    @if($shop->grab_link)
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-1 fw-bold">Link Grab</p>
+                                            <p class="mb-0"><a href="{{ $shop->grab_link }}" target="_blank" class="text-success">
+                                                <i class="bi bi-car-front-fill"></i> Pesan via Grab
+                                            </a></p>
+                                        </div>
+                                    @endif
+                                    
+                                    @if($shop->gojek_link)
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-1 fw-bold">Link Gojek</p>
+                                            <p class="mb-0"><a href="{{ $shop->gojek_link }}" target="_blank" class="text-success">
+                                                <i class="bi bi-car-front-fill"></i> Pesan via Gojek
+                                            </a></p>
+                                        </div>
+                                    @endif
+                                @endif
                             </div>
                         </div>
 

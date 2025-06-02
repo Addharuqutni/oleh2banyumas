@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Shop;
 use App\Models\Review;
+use App\Helpers\LocationHelper;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -16,7 +17,7 @@ class ShopController extends Controller
         // Get all active shops for both map and card display
         // Added 'slug' to the select fields to ensure it's available for URL generation
         $shops = Shop::where('status', 'active')
-            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug')
+            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug', 'has_delivery')
             ->orderBy('name')
             ->get();
 
@@ -33,7 +34,7 @@ class ShopController extends Controller
     {
         // Get all categories for the filter dropdown
         $categories = \App\Models\Category::orderBy('name')->get();
-        
+
         $query = Shop::where('status', 'active');
 
         // Handle search functionality
@@ -58,24 +59,24 @@ class ShopController extends Controller
         if ($request->filled('category_id') && $request->category_id != '') {
             $categoryId = $request->category_id;
             $selectedCategory = \App\Models\Category::find($categoryId);
-            
+
             // Perbaikan: Menggunakan relasi many-to-many yang benar
             $query->whereHas('products', function ($q) use ($categoryId) {
-                $q->whereHas('categories', function($cq) use ($categoryId) {
+                $q->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             });
 
             // Jika kategori dipilih, muat produk yang termasuk dalam kategori tersebut
             $query->with(['products' => function ($q) use ($categoryId) {
-                $q->whereHas('categories', function($cq) use ($categoryId) {
+                $q->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             }]);
         }
 
         // Make sure to select necessary fields for URL generation and display
-        $shops = $query->select('id', 'name', 'address', 'featured_image', 'description', 'slug')
+        $shops = $query->select('id', 'name', 'address', 'featured_image', 'description', 'slug', 'has_delivery')
             ->orderBy('name')
             ->paginate(12)
             ->appends($request->except('page')); // Keep filter parameters when paginating
@@ -196,27 +197,78 @@ class ShopController extends Controller
     public function filterByCategory($categoryId)
     {
         $category = \App\Models\Category::findOrFail($categoryId);
-        
+
         $shops = Shop::where('status', 'active')
             ->whereHas('products', function ($query) use ($categoryId) {
                 // Perbaikan: Menggunakan relasi many-to-many yang benar
-                $query->whereHas('categories', function($cq) use ($categoryId) {
+                $query->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             })
             ->with(['products' => function ($query) use ($categoryId) {
                 // Perbaikan: Menggunakan relasi many-to-many yang benar
-                $query->whereHas('categories', function($cq) use ($categoryId) {
+                $query->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             }])
             ->select('id', 'name', 'address', 'featured_image', 'description', 'slug')
             ->orderBy('name')
             ->paginate(12);
-        
+
         $categories = \App\Models\Category::orderBy('name')->get();
         $selectedCategory = $category;
-        
+
         return view('tokoPage.listToko', compact('shops', 'categories', 'selectedCategory'));
+    }
+
+    /**
+     * Mendapatkan daftar toko terdekat berdasarkan lokasi pengguna
+     */
+    public function getNearbyShops(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'limit' => 'nullable|integer|min:1|max:20'
+        ]);
+
+        $userLat = $request->input('latitude');
+        $userLng = $request->input('longitude');
+        $limit = $request->input('limit', 5); // Default 5 toko terdekat
+
+        // Ambil semua toko aktif
+        $shops = Shop::where('status', 'active')
+            ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug', 'description')
+            ->get();
+
+        // Hitung jarak untuk setiap toko
+        $shopsWithDistance = $shops->map(function ($shop) use ($userLat, $userLng) {
+            $distance = LocationHelper::calculateDistance(
+                $userLat,
+                $userLng,
+                $shop->latitude,
+                $shop->longitude
+            );
+
+            return [
+                'id' => $shop->id,
+                'name' => $shop->name,
+                'address' => $shop->address,
+                'latitude' => $shop->latitude,
+                'longitude' => $shop->longitude,
+                'featured_image' => $shop->featured_image,
+                'slug' => $shop->slug,
+                'description' => $shop->description,
+                'distance' => round($distance, 2) // Bulatkan ke 2 desimal
+            ];
+        });
+
+        // Urutkan berdasarkan jarak terdekat
+        $sortedShops = $shopsWithDistance->sortBy('distance')->take($limit);
+
+        return response()->json([
+            'shops' => $sortedShops->values()->all()
+        ]);
     }
 }

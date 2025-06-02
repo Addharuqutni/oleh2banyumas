@@ -55,6 +55,9 @@ class ShopController extends Controller
             'status' => 'required|in:active,inactive',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'slug' => 'nullable|string|unique:shops,slug',
+            'has_delivery' => 'boolean',
+            'grab_link' => 'nullable|url',
+            'gojek_link' => 'nullable|url',
         ]);
 
         // Generate slug from the name
@@ -140,6 +143,9 @@ class ShopController extends Controller
             'status' => 'required|in:active,inactive',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'slug' => 'nullable|string|unique:shops,slug,' . $shop->id,
+            'has_delivery' => 'boolean',
+            'grab_link' => 'nullable|url',
+            'gojek_link' => 'nullable|url',
         ]);
 
         // Update slug if name changed and slug not manually set

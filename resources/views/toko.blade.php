@@ -28,22 +28,7 @@
                 @forelse($featuredShops as $shop)
                     <!-- Toko Card -->
                     <div class="col-md-3 col-sm-6">
-                        <div class="store-card">
-                            <div class="card-img-container">
-                                @if ($shop->featured_image)
-                                    <img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}"
-                                        class="card-img">
-                                @else
-                                    <img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}"
-                                        class="card-img">
-                                @endif
-                            </div>
-                            <div class="card-content p-3">
-                                <h5 class="card-title subjudul">{{ $shop->name }}</h5>
-                                <p class="card-address text-muted">{{ $shop->address }}</p>
-                                <a href="{{ route('shops.detail', ['shop' => $shop]) }}" class="btn-detail">Detail Toko</a>
-                            </div>
-                        </div>
+                        @include('partials.store-card', ['shop' => $shop, 'selectedCategory' => $selectedCategory ?? null])
                     </div>
                 @empty
                     <div class="col-12 text-center">

@@ -6,8 +6,8 @@
     <div class="container py-5">
         <!-- Back Button and Header -->
         <div class="mb-5 position-relative">
-            <a href="{{ url()->previous() }}" class="btn btn-link position-absolute start-0 text-success" 
-               style="transition: transform 0.3s ease;">
+            <a href="{{ url()->previous() }}" class="btn btn-link position-absolute start-0 text-success"
+                style="transition: transform 0.3s ease;">
                 <i class="bi bi-chevron-left fs-4 me-1"></i>
             </a>
             <div class="text-center">
@@ -78,7 +78,7 @@
                                         @foreach ($shop->images as $index => $image)
                                             <div
                                                 class="carousel-item {{ !$shop->featured_image && $index == 0 ? 'active' : '' }}">
-                                                <img src="{{ Storage::url( $image->image_path) }}"
+                                                <img src="{{ Storage::url($image->image_path) }}"
                                                     alt="{{ $image->caption ?? $shop->name }}"
                                                     class="d-block w-100 carousel-img">
                                                 @if ($image->caption)
@@ -169,6 +169,39 @@
                                                 {{ $shop->description ?? 'Belum ada deskripsi untuk toko ini.' }}</p>
                                         </div>
                                     </div>
+
+                                    <!-- Delivery Service -->
+                                    <div class="info-item">
+                                        <div class="info-icon">
+                                            <i class="bi bi-truck"></i>
+                                        </div>
+                                        <div class="info-content">
+                                            <h6 class="info-title">Layanan Antar Jemput</h6>
+                                            <p class="info-text">
+                                                @if($shop->has_delivery)
+                                                    <span class="badge bg-success">Tersedia</span>
+                                                @else
+                                                    <span class="badge bg-secondary">Tidak Tersedia</span>
+                                                @endif
+                                            </p>
+                                            @if($shop->has_delivery)
+                                                <div class="delivery-links mt-2">
+                                                    @if($shop->grab_link)
+                                                        <a href="{{ $shop->grab_link }}" target="_blank" class="btn btn-sm delivery-btn grab-btn me-2">
+                                                            <i class="bi bi-car-front-fill"></i>
+                                                            <span>Pesan via Grab</span>
+                                                        </a>
+                                                    @endif
+                                                    @if($shop->gojek_link)
+                                                        <a href="{{ $shop->gojek_link }}" target="_blank" class="btn btn-sm delivery-btn gojek-btn">
+                                                            <i class="bi bi-car-front-fill"></i>
+                                                            <span>Pesan via Gojek</span>
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -205,26 +238,9 @@
             <div class="row g-4">
                 @forelse($shop->products as $product)
                     <div class="col-md-3 col-sm-6">
-                        <a href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}"
-                            class="product-card-link">
-                            <div class="product-card">
-                                <div class="product-img-container">
-                                    @if ($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                            class="product-img">
-                                    @else
-                                        <img src="{{ asset('images/default-product.jpg') }}" alt="{{ $product->name }}"
-                                            class="product-img">
-                                    @endif
-                                </div>
-                                <div class="product-body">
-                                    <h5 class="product-title">{{ $product->name }}</h5>
-                                    <p class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                                    <div class="product-action">
-                                        <span class="product-detail-btn">Detail</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <a href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}" 
+                           class="product-card-link">
+                            @include('partials.product-card', ['product' => $product])
                         </a>
                     </div>
                 @empty
@@ -353,6 +369,54 @@
     </div>
 
     <style>
+        .delivery-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .grab-btn {
+            background-color: #00b14f;
+            color: white;
+            border: none;
+        }
+
+        .grab-btn:hover {
+            background-color: #009a43;
+            color: white;
+        }
+
+        .gojek-btn {
+            background-color: #00aa13;
+            color: white;
+            border: none;
+        }
+
+        .gojek-btn:hover {
+            background-color: #009510;
+            color: white;
+        }
+
+        .store-distance {
+            color: #2e7d32;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .store-distance i {
+            font-size: 1rem;
+        }
 
         /* Store Detail Card */
         .store-detail-card {
@@ -1238,6 +1302,80 @@
                 });
             }
         });
+
+        // Fungsi untuk mendapatkan toko terdekat
+        function getNearbyShops(userLat, userLng) {
+            fetch(`/api/shops/nearby?latitude=${userLat}&longitude=${userLng}&limit=3`)
+                .then(response => response.json())
+                .then(data => {
+                    displayNearbyShops(data.shops);
+                })
+                .catch(error => {
+                    console.error('Error fetching nearby shops:', error);
+                });
+        }
+
+        // Fungsi untuk menampilkan toko terdekat
+        function displayNearbyShops(shops) {
+            // Pastikan ada toko untuk ditampilkan dan bukan toko yang sedang dilihat
+            const currentShopId = {{ $shop->id }};
+            const nearbyShops = shops.filter(shop => shop.id !== currentShopId);
+
+            if (nearbyShops.length === 0) {
+                return;
+            }
+
+            // Buat container untuk rekomendasi toko jika belum ada
+            if (!document.getElementById('nearby-shops-container')) {
+                const container = document.createElement('div');
+                container.id = 'nearby-shops-container';
+                container.className = 'section-container mb-5';
+                container.innerHTML = `
+            <h2 class="section-title">Rekomendasi Toko Terdekat</h2>
+            <div class="row g-4" id="nearby-shops-list"></div>
+        `;
+
+                // Tambahkan sebelum section review atau di tempat yang sesuai
+                const reviewSection = document.querySelector('.section-container:last-child');
+                reviewSection.parentNode.insertBefore(container, reviewSection);
+            }
+
+            // Tampilkan toko terdekat
+            const shopsList = document.getElementById('nearby-shops-list');
+            shopsList.innerHTML = '';
+
+            nearbyShops.forEach(shop => {
+                const shopCard = document.createElement('div');
+                shopCard.className = 'col-md-4';
+                shopCard.innerHTML = `
+            <div class="store-card">
+                <a href="/toko/${shop.slug}" class="store-card-link">
+                    <div class="store-img-container">
+                        <img src="${shop.featured_image ? '/storage/' + shop.featured_image : '/images/default-shop.jpg'}" 
+                             alt="${shop.name}" class="store-img">
+                    </div>
+                    <div class="store-body">
+                        <h5 class="store-title">${shop.name}</h5>
+                        <p class="store-address">${shop.address}</p>
+                        <p class="store-distance"><i class="bi bi-geo-alt"></i> ${shop.distance} km dari lokasi Anda</p>
+                    </div>
+                </a>
+            </div>
+        `;
+                shopsList.appendChild(shopCard);
+            });
+        }
+
+        // Panggil fungsi untuk mendapatkan toko terdekat saat lokasi pengguna tersedia
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+
+                // Dapatkan toko terdekat
+                getNearbyShops(userLat, userLng);
+            });
+        }
     </script>
 
 @endsection
