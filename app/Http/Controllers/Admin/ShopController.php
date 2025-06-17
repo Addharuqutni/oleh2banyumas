@@ -11,13 +11,12 @@ use Illuminate\Support\Facades\Storage;
 class ShopController extends Controller
 {
     /**
-     * Display a listing of the shops.
-     *
-     * @return \Illuminate\View\View
+     * Menampilkan daftar semua toko yang telah terdaftar,
+     * lengkap dengan jumlah produk yang dimiliki masing-masing toko.
      */
     public function index()
     {
-        $shops = Shop::withCount('products')
+        $shops = Shop::withCount('products') // Hitung total produk per toko
             ->orderBy('name')
             ->paginate(10);
 
@@ -25,9 +24,7 @@ class ShopController extends Controller
     }
 
     /**
-     * Show the form for creating a new shop.
-     *
-     * @return \Illuminate\View\View
+     * Menampilkan form pembuatan toko baru.
      */
     public function create()
     {
@@ -35,40 +32,38 @@ class ShopController extends Controller
     }
 
     /**
-     * Store a newly created shop in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Menyimpan data toko yang baru ditambahkan ke sistem.
      */
     public function store(Request $request)
     {
+        // Validasi data input
         $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'address' => 'required|string',
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
-            'description' => 'nullable|string',
-            'phone' => 'nullable|string|max:15',
-            'email' => 'nullable|email|max:100',
-            'operating_hours' => 'nullable|string',
-            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:active,inactive',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'slug' => 'nullable|string|unique:shops,slug',
-            'has_delivery' => 'boolean',
-            'grab_link' => 'nullable|url',
-            'gojek_link' => 'nullable|url',
+            'name'             => 'required|string|max:100',
+            'address'          => 'required|string',
+            'latitude'         => 'required|numeric|between:-90,90',
+            'longitude'        => 'required|numeric|between:-180,180',
+            'description'      => 'nullable|string',
+            'phone'            => 'nullable|string|max:15',
+            'email'            => 'nullable|email|max:100',
+            'operating_hours'  => 'nullable|string',
+            'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status'           => 'required|in:active,inactive',
+            'images.*'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug'             => 'nullable|string|unique:shops,slug',
+            'has_delivery'     => 'boolean',
+            'grab_link'        => 'nullable|url',
+            'gojek_link'       => 'nullable|url',
         ]);
 
-        // Generate slug from the name
+        // Buat slug dari nama toko, pastikan unik
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-        $count = 2;
         $originalSlug = $validated['slug'];
+        $count = 2;
         while (Shop::where('slug', $validated['slug'])->exists()) {
             $validated['slug'] = $originalSlug . '-' . $count++;
         }
 
-        // Handle featured image upload
+        // Upload gambar utama toko
         if ($request->hasFile('featured_image')) {
             $file = $request->file('featured_image');
             $filename = uniqid() . '_' . time() . '.' . $file->getClientOriginalExtension();
@@ -76,10 +71,10 @@ class ShopController extends Controller
             $validated['featured_image'] = $path;
         }
 
-        // Create the shop
+        // Simpan data toko
         $shop = Shop::create($validated);
 
-        // Handle multiple images upload
+        // Upload dan simpan banyak gambar jika disediakan
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
@@ -96,10 +91,7 @@ class ShopController extends Controller
     }
 
     /**
-     * Display the specified shop.
-     *
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\View\View
+     * Menampilkan detail lengkap sebuah toko, termasuk produk, galeri gambar, dan ulasan.
      */
     public function show(Shop $shop)
     {
@@ -109,10 +101,7 @@ class ShopController extends Controller
     }
 
     /**
-     * Show the form for editing the specified shop.
-     *
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\View\View
+     * Menampilkan form pengeditan untuk toko tertentu.
      */
     public function edit(Shop $shop)
     {
@@ -122,65 +111,55 @@ class ShopController extends Controller
     }
 
     /**
-     * Update the specified shop in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\Http\RedirectResponse
+     * Memperbarui data toko berdasarkan perubahan form.
      */
     public function update(Request $request, Shop $shop)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'address' => 'required|string',
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
-            'description' => 'nullable|string',
-            'phone' => 'nullable|string|max:15',
-            'email' => 'nullable|email|max:100',
-            'operating_hours' => 'nullable|string',
-            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:active,inactive',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'slug' => 'nullable|string|unique:shops,slug,' . $shop->id,
-            'has_delivery' => 'boolean',
-            'grab_link' => 'nullable|url',
-            'gojek_link' => 'nullable|url',
+            'name'             => 'required|string|max:100',
+            'address'          => 'required|string',
+            'latitude'         => 'required|numeric|between:-90,90',
+            'longitude'        => 'required|numeric|between:-180,180',
+            'description'      => 'nullable|string',
+            'phone'            => 'nullable|string|max:15',
+            'email'            => 'nullable|email|max:100',
+            'operating_hours'  => 'nullable|string',
+            'featured_image'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'status'           => 'required|in:active,inactive',
+            'images.*'         => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'slug'             => 'nullable|string|unique:shops,slug,' . $shop->id,
+            'has_delivery'     => 'boolean',
+            'grab_link'        => 'nullable|url',
+            'gojek_link'       => 'nullable|url',
         ]);
 
-        // Update slug if name changed and slug not manually set
+        // Regenerasi slug jika nama berubah dan slug tidak diisi manual
         if ($shop->name !== $validated['name'] && (!isset($validated['slug']) || empty($validated['slug']))) {
             $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-
-            // Ensure slug is unique
-            $count = 2;
             $originalSlug = $validated['slug'];
+            $count = 2;
             while (Shop::where('slug', $validated['slug'])->where('id', '!=', $shop->id)->exists()) {
                 $validated['slug'] = $originalSlug . '-' . $count++;
             }
         }
 
-        // Handle featured image
+        // Ganti gambar utama jika baru diupload
         if ($request->hasFile('featured_image')) {
-            // Delete old image if exists
             if ($shop->featured_image) {
                 Storage::disk('public')->delete($shop->featured_image);
             }
-
             $path = $request->file('featured_image')->store('shops', 'public');
             $validated['featured_image'] = $path;
         } elseif ($request->has('remove_featured_image')) {
-            // Remove featured image if requested
             if ($shop->featured_image) {
                 Storage::disk('public')->delete($shop->featured_image);
                 $validated['featured_image'] = null;
             }
         }
 
-        // Update the shop
         $shop->update($validated);
 
-        // Handle multiple images upload
+        // Tambahkan gambar baru jika ada
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $path = $image->store('shop_images', 'public');
@@ -196,24 +175,21 @@ class ShopController extends Controller
     }
 
     /**
-     * Remove the specified shop from storage.
-     *
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\Http\RedirectResponse
+     * Menghapus toko beserta semua gambar yang terkait dengannya.
      */
     public function destroy(Shop $shop)
     {
-        // Delete featured image
+        // Hapus gambar utama jika ada
         if ($shop->featured_image) {
             Storage::disk('public')->delete($shop->featured_image);
         }
 
-        // Delete shop images
+        // Hapus semua gambar galeri
         foreach ($shop->images as $image) {
             Storage::disk('public')->delete($image->image_path);
         }
 
-        // Delete shop (will cascade delete related records)
+        // Hapus data toko
         $shop->delete();
 
         return redirect()->route('admin.shops.index')
@@ -221,25 +197,22 @@ class ShopController extends Controller
     }
 
     /**
-     * Delete a shop image.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
+     * Menghapus salah satu gambar toko berdasarkan ID gambar.
      */
     public function deleteImage($id)
     {
-        // Cari image berdasarkan ID, bukan slug
         $image = ShopImage::findOrFail($id);
 
-        // Delete image file
         Storage::disk('public')->delete($image->image_path);
 
-        // Delete database record
         $image->delete();
 
         return back()->with('success', 'Foto berhasil dihapus.');
     }
 
+    /**
+     * Membuat ulang slug semua toko berdasarkan nama mereka agar tetap unik.
+     */
     public function regenerateSlugs()
     {
         $shops = Shop::all();

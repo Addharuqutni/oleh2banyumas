@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     /**
-     * Display the main article index page with all snack options.
+     * Menampilkan halaman utama indeks artikel yang berisi daftar pilihan oleh-oleh khas.
      */
     public function index()
     {
-        // You could add more data here if needed
+        // Jika dibutuhkan, data tambahan bisa disisipkan di sini
         return view('artikel');
     }
 
     /**
-     * Display the Getuk Goreng article page.
+     * Menampilkan artikel yang membahas tentang Getuk Goreng.
      */
     public function getukgoreng()
     {
@@ -24,7 +24,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Jenang Jaket article page.
+     * Menampilkan artikel seputar Jenang Jaket sebagai jajanan tradisional.
      */
     public function jenangjaket()
     {
@@ -32,7 +32,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Nopia article page.
+     * Menampilkan halaman artikel khusus tentang makanan khas Nopia.
      */
     public function nopia()
     {
@@ -40,7 +40,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Keripik Tempe article page.
+     * Menyediakan konten artikel yang membahas Keripik Tempe.
      */
     public function keripiktempe()
     {
@@ -48,7 +48,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Lanting article page.
+     * Menampilkan artikel kuliner tentang camilan Lanting.
      */
     public function lanting()
     {
@@ -56,7 +56,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Mendoan article page.
+     * Halaman artikel khusus yang menjelaskan makanan khas Mendoan.
      */
     public function mendoan()
     {
@@ -64,7 +64,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Cimplung article page.
+     * Menampilkan informasi dalam bentuk artikel mengenai Cimplung.
      */
     public function cimplung()
     {
@@ -72,7 +72,7 @@ class ArticleController extends Controller
     }
 
     /**
-     * Display the Mireng article page.
+     * Menyajikan artikel tentang makanan tradisional bernama Mireng.
      */
     public function mireng()
     {

@@ -12,68 +12,76 @@ use Illuminate\Support\Facades\Cache;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the products.
+     * Fungsi ini digunakan untuk menampilkan daftar produk yang tersedia.
+     * Termasuk fitur filter berdasarkan kategori dan pagination untuk membatasi jumlah tampilan per halaman.
      */
     public function index(Request $request)
     {
-        // Base query to get active shops and available products
+        // Inisialisasi query untuk mengambil produk yang tersedia dan berasal dari toko yang aktif
         $query = Product::with('shop')
             ->whereHas('shop', function ($query) {
-                $query->where('status', 'active');
+                $query->where('status', 'active'); // Pastikan toko tempat produk berada masih aktif
             })
-            ->where('is_available', true);
+            ->where('is_available', true); // Hanya ambil produk yang tersedia untuk dibeli
 
-        // Filter by category if provided
+        // Jika terdapat filter kategori dari request, terapkan filter tersebut
         if ($request->filled('category')) {
             $categoryId = $request->input('category');
+
+            // Pastikan produk memiliki kategori sesuai yang dipilih oleh pengguna
             $query->whereHas('categories', function ($q) use ($categoryId) {
                 $q->where('categories.id', $categoryId);
             });
         }
 
-        // Paginate products
+        // Urutkan hasil berdasarkan nama produk dan tampilkan dalam bentuk halaman (12 item per halaman)
         $products = $query->orderBy('name')->paginate(12);
+
+        // Ambil semua kategori untuk ditampilkan sebagai filter di halaman
         $categories = Category::orderBy('name')->get();
 
+        // Kirim data produk dan kategori ke tampilan view
         return view('products.index', compact('products', 'categories'));
     }
 
     /**
-     * Display the specified product.
+     * Fungsi ini menampilkan detail dari suatu produk berdasarkan slug toko dan slug produk.
+     * Digunakan pada halaman detail produk, sekaligus menampilkan produk terkait sebagai rekomendasi.
      */
     public function show($shopSlug, $productSlug)
     {
-        // Find the product with eager loading
+        // Ambil data produk beserta relasi kategorinya
         $product = Product::with(['categories'])
             ->whereHas('shop', function ($query) use ($shopSlug) {
+                // Pastikan produk berasal dari toko yang sesuai slug dan masih aktif
                 $query->where('slug', $shopSlug)
                     ->where('status', 'active');
             })
-            ->where('slug', $productSlug)
-            ->where('is_available', true)
-            ->firstOrFail();
+            ->where('slug', $productSlug)      // Cocokkan slug produk
+            ->where('is_available', true)      // Pastikan produk tersedia
+            ->firstOrFail();                   // Gagal jika tidak ditemukan
 
-        // Get related products
+        // Ambil daftar produk lain yang memiliki kemiripan kategori
         $relatedProducts = $this->getRelatedProducts($product);
 
-        // Return view with product data
+        // Kirim data produk utama dan produk terkait ke tampilan
         return view('products.show', compact('product', 'relatedProducts'));
     }
 
-
     /**
-     * Get related products from the same shop.
+     * Mengambil produk lain yang berasal dari toko yang sama dengan produk yang sedang ditampilkan.
+     * Digunakan sebagai rekomendasi produk serupa di halaman detail produk.
      *
-     * @param Product $product
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param Product $product Produk utama yang sedang ditampilkan
+     * @return \Illuminate\Database\Eloquent\Collection Koleksi produk yang relevan
      */
     protected function getRelatedProducts(Product $product)
     {
-        return Product::with('shop') // Eager load shop untuk menghindari N+1 query
-            ->where('shop_id', $product->shop_id)
-            ->where('id', '!=', $product->id)
+        return Product::with('shop') // Muat relasi toko sekaligus untuk mencegah query berulang (N+1)
+            ->where('shop_id', $product->shop_id)      // Ambil hanya produk dari toko yang sama
+            ->where('id', '!=', $product->id)          // Kecualikan produk itu sendiri dari hasil
             ->where('is_available', true)
-            ->inRandomOrder() // Tampilkan produk secara acak untuk variasi
+            ->inRandomOrder()
             ->limit(4)
             ->get();
     }

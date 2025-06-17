@@ -11,7 +11,9 @@ use Illuminate\Routing\Controllers\Middleware;
 class AuthController extends Controller implements HasMiddleware
 {
     /**
-     * Get the middleware that should be assigned to the controller.
+     * Menentukan middleware yang akan diterapkan pada controller ini.
+     * Digunakan untuk memastikan bahwa hanya tamu (belum login sebagai admin) yang bisa mengakses halaman tertentu,
+     * kecuali untuk aksi logout.
      */
     public static function middleware(): array
     {
@@ -19,15 +21,15 @@ class AuthController extends Controller implements HasMiddleware
             new Middleware('guest:admin', except: ['logout']),
         ];
     }
-    
-    // Remove the constructor with the old middleware call
+
+    // Middleware versi lama yang dipindahkan ke metode statis di atas
     // public function __construct()
     // {
     //     $this->middleware('guest:admin')->except('logout');
     // }
 
     /**
-     * Show the login form.
+     * Menampilkan halaman formulir login untuk admin.
      *
      * @return \Illuminate\View\View
      */
@@ -37,42 +39,52 @@ class AuthController extends Controller implements HasMiddleware
     }
 
     /**
-     * Handle a login request.
+     * Memproses permintaan login dari form admin.
+     * Jika berhasil, redirect ke dashboard. Jika gagal, kembalikan ke form dengan pesan error.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function login(Request $request)
     {
+        // Validasi input login untuk memastikan email dan password telah diisi dengan benar
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
+        // Coba lakukan proses otentikasi menggunakan guard khusus admin
         if (Auth::guard('admin')->attempt($credentials, $request->filled('remember'))) {
+            // Jika sukses, perbarui sesi untuk mencegah serangan session fixation
             $request->session()->regenerate();
 
+            // Arahkan ke dashboard admin
             return redirect()->intended(route('admin.dashboard'));
         }
 
+        // Jika gagal login, kembalikan ke halaman sebelumnya dengan error pada input email
         return back()->withErrors([
             'email' => 'Data salah !!!',
         ])->onlyInput('email');
     }
 
     /**
-     * Log the user out of the application.
+     * Keluar dari sesi login admin.
+     * Semua data sesi dihapus, token diamankan kembali, lalu redirect ke halaman login admin.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function logout(Request $request)
     {
+        // Jalankan proses logout menggunakan guard admin
         Auth::guard('admin')->logout();
 
+        // Kosongkan sesi dan buat ulang token CSRF untuk keamanan
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Arahkan kembali ke halaman login admin
         return redirect()->route('admin.login');
     }
 }

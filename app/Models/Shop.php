@@ -10,6 +10,9 @@ class Shop extends Model
 {
     use HasFactory;
 
+    /**
+     * Atribut-atribut yang dapat diisi secara massal saat pembuatan atau pembaruan toko.
+     */
     protected $fillable = [
         'name',
         'address',
@@ -27,38 +30,44 @@ class Shop extends Model
         'slug',
     ];
 
+    /**
+     * Gunakan kolom 'slug' sebagai pengenal utama pada route (route model binding).
+     */
     public function getRouteKeyName()
     {
         return 'slug';
     }
 
     /**
-     * Boot the model.
+     * Fungsi boot digunakan saat model pertama kali dimuat.
+     * Menambahkan logika otomatis untuk menghasilkan slug unik dari nama toko.
      */
     protected static function boot()
     {
         parent::boot();
 
+        // Saat toko baru dibuat
         static::creating(function ($shop) {
             if (empty($shop->slug)) {
                 $shop->slug = Str::slug($shop->name);
-
-                // Ensure slug is unique
                 $count = 2;
                 $originalSlug = $shop->slug;
+
+                // Pastikan slug tidak duplikat
                 while (static::where('slug', $shop->slug)->exists()) {
                     $shop->slug = $originalSlug . '-' . $count++;
                 }
             }
         });
 
+        // Saat toko diperbarui dan nama berubah, slug ikut diperbarui
         static::updating(function ($shop) {
             if ($shop->isDirty('name') && !$shop->isDirty('slug')) {
                 $shop->slug = Str::slug($shop->name);
-
-                // Ensure slug is unique
                 $count = 2;
                 $originalSlug = $shop->slug;
+
+                // Pastikan slug tetap unik saat update
                 while (static::where('slug', $shop->slug)->where('id', '!=', $shop->id)->exists()) {
                     $shop->slug = $originalSlug . '-' . $count++;
                 }
@@ -67,7 +76,7 @@ class Shop extends Model
     }
 
     /**
-     * Get the products for the shop.
+     * Relasi satu toko memiliki banyak produk.
      */
     public function products()
     {
@@ -75,7 +84,7 @@ class Shop extends Model
     }
 
     /**
-     * Get the images for the shop.
+     * Relasi satu toko dapat memiliki beberapa gambar tambahan (galeri).
      */
     public function images()
     {
@@ -83,7 +92,7 @@ class Shop extends Model
     }
 
     /**
-     * Get the reviews for the shop.
+     * Relasi satu toko memiliki banyak ulasan dari pengguna.
      */
     public function reviews()
     {
@@ -91,24 +100,29 @@ class Shop extends Model
     }
 
     /**
-     * Get the average rating for the shop.
+     * Mendapatkan rata-rata rating dari ulasan yang disetujui.
+     * Jika belum ada, akan mengembalikan nilai 0.
      */
     public function getAverageRatingAttribute()
     {
         return $this->reviews()->where('is_approved', true)->avg('rating') ?? 0;
     }
 
+    /**
+     * Relasi ke log kunjungan pengguna ke toko ini.
+     */
     public function visitorLogs()
     {
         return $this->hasMany(VisitorLog::class);
     }
 
     /**
-     * Get all categories associated with this shop's products.
+     * Mengambil semua kategori produk yang dimiliki oleh toko ini.
+     * Ini bukan relasi Eloquent langsung, tapi query dinamis.
      */
     public function getCategoriesAttribute()
     {
-        return Category::whereHas('products', function($query) {
+        return Category::whereHas('products', function ($query) {
             $query->where('shop_id', $this->id);
         })->get();
     }

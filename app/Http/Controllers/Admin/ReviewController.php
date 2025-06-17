@@ -10,21 +10,19 @@ use Illuminate\Http\Request;
 class ReviewController extends Controller
 {
     /**
-     * Display a listing of the reviews.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
+     * Menampilkan halaman daftar ulasan yang masuk dari pengguna.
+     * Admin dapat memfilter berdasarkan toko, status, atau nama pengulas.
      */
     public function index(Request $request)
     {
-        $query = Review::with('shop');
-        
-        // Filter by shop
+        $query = Review::with('shop'); // Sertakan data toko untuk setiap ulasan
+
+        // Jika dipilih toko tertentu, tampilkan hanya ulasan untuk toko tersebut
         if ($request->filled('shop_id')) {
             $query->where('shop_id', $request->shop_id);
         }
-        
-        // Filter by status
+
+        // Filter berdasarkan status persetujuan
         if ($request->filled('status')) {
             if ($request->status === 'approved') {
                 $query->where('is_approved', true);
@@ -32,57 +30,49 @@ class ReviewController extends Controller
                 $query->where('is_approved', false);
             }
         }
-        
-        // Search by name
+
+        // Pencarian berdasarkan nama pengulas
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
-        
+
         $reviews = $query->orderBy('created_at', 'desc')->paginate(10);
-        $shops = Shop::orderBy('name')->get();
-        $pendingCount = Review::where('is_approved', false)->count();
-        
+        $shops = Shop::orderBy('name')->get(); // Untuk dropdown filter toko
+        $pendingCount = Review::where('is_approved', false)->count(); // Total ulasan menunggu
+
         return view('admin.reviews.index', compact('reviews', 'shops', 'pendingCount'));
     }
-    
+
     /**
-     * Display a listing of pending reviews.
-     *
-     * @return \Illuminate\View\View
+     * Menampilkan daftar ulasan yang masih dalam status menunggu konfirmasi admin.
      */
     public function pending()
     {
         $reviews = Review::with('shop')
             ->where('is_approved', false)
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'asc') // Tampilkan yang paling lama terlebih dahulu
             ->paginate(10);
-            
+
         return view('admin.reviews.pending', compact('reviews'));
     }
-    
+
     /**
-     * Approve a review.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\RedirectResponse
+     * Menandai ulasan sebagai telah disetujui.
      */
     public function approve(Review $review)
     {
-        $review->update(['is_approved' => true]);
-        
+        $review->update(['is_approved' => true]); // Ubah status menjadi disetujui
+
         return back()->with('success', 'Ulasan berhasil disetujui.');
     }
-    
+
     /**
-     * Remove the specified review from storage.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\RedirectResponse
+     * Menghapus ulasan dari sistem.
      */
     public function destroy(Review $review)
     {
         $review->delete();
-        
+
         return back()->with('success', 'Ulasan berhasil dihapus.');
     }
 }

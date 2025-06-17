@@ -9,6 +9,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    /**
+     * Atribut-atribut yang diizinkan untuk diisi secara massal (bulk assignment).
+     * Digunakan saat membuat atau memperbarui kategori lewat form atau request.
+     */
     protected $fillable = [
         'name',
         'slug',
@@ -17,7 +21,8 @@ class Category extends Model
     ];
 
     /**
-     * Get the products for the category.
+     * Relasi many-to-many: Mengambil semua produk yang terhubung dengan kategori ini.
+     * Relasi ini melalui tabel pivot `product_categories`.
      */
     public function products()
     {
@@ -25,12 +30,13 @@ class Category extends Model
     }
 
     /**
-     * Get shops that have products in this category.
+     * Mengambil toko-toko yang memiliki produk dalam kategori ini.
+     * Ini bukan relasi langsung, melainkan menggunakan query `whereHas` secara dinamis.
      */
     public function shops()
     {
-        return Shop::whereHas('products', function($query) {
-            $query->whereHas('categories', function($q) {
+        return Shop::whereHas('products', function ($query) {
+            $query->whereHas('categories', function ($q) {
                 $q->where('categories.id', $this->id);
             });
         });

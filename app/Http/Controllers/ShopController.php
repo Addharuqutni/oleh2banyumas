@@ -13,42 +13,50 @@ use Illuminate\Support\Facades\Cache;
 class ShopController extends Controller
 {
     /**
-     * Display a listing of the shops on the main toko page.
+     * Fungsi ini menampilkan daftar toko pada halaman utama pengguna.
+     * Jika tersedia, lokasi pengguna akan digunakan untuk mengurutkan toko berdasarkan jarak terdekat.
      */
     public function index(Request $request)
     {
-        // Cek apakah ada parameter lokasi pengguna
+        // Ambil data lokasi pengguna dari parameter request (jika tersedia)
         $userLat = $request->input('latitude');
         $userLng = $request->input('longitude');
+
+        // Tentukan apakah informasi lokasi pengguna dapat digunakan
         $useLocation = $userLat && $userLng;
 
-        // Get all active shops for both map and card display
+        // Ambil semua toko yang berstatus aktif untuk ditampilkan dalam daftar dan peta
         $shops = Shop::where('status', 'active')
             ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug', 'has_delivery')
-            ->orderBy('name')
+            ->orderBy('name') // Urutkan berdasarkan nama toko
             ->get();
 
-        // Dapatkan toko populer (yang sering dikunjungi)
+        // Ambil daftar toko yang populer berdasarkan jumlah kunjungan
         $popularShops = $this->getPopularShops(4);
 
-        // Jika ada lokasi pengguna, urutkan toko berdasarkan jarak
+        // Jika lokasi pengguna diketahui, lakukan pengurutan toko berdasarkan jarak dan ambil 4 toko terdekat
         if ($useLocation) {
             $shops = $this->sortShopsByDistance($shops, $userLat, $userLng);
-            $nearbyShops = $shops->take(4);
+            $nearbyShops = $shops->take(4); // Ambil hanya 4 toko terdekat
         } else {
-            $nearbyShops = collect(); // Kosong jika tidak ada lokasi
+            // Jika tidak ada informasi lokasi, variabel toko terdekat diisi dengan koleksi kosong
+            $nearbyShops = collect();
         }
 
+        // Tampilkan tampilan 'toko' dengan data toko lengkap, toko populer, dan toko terdekat (jika ada)
         return view('toko', compact('shops', 'popularShops', 'nearbyShops', 'useLocation'));
     }
 
     /**
-     * Mengurutkan toko berdasarkan jarak dari lokasi pengguna
+     * Fungsi ini digunakan untuk mengurutkan daftar toko berdasarkan jarak dari posisi pengguna.
+     * Diperlukan koordinat latitude dan longitude pengguna untuk menghitung estimasi jarak ke tiap toko.
      */
     private function sortShopsByDistance($shops, $userLat, $userLng)
     {
-        // Hitung jarak untuk setiap toko
+        // Lakukan perhitungan jarak antara tiap toko dan lokasi pengguna
         $shopsWithDistance = $shops->map(function ($shop) use ($userLat, $userLng) {
+
+            // Gunakan helper untuk mengukur jarak antara dua koordinat
             $distance = LocationHelper::calculateDistance(
                 $userLat,
                 $userLng,
@@ -56,35 +64,40 @@ class ShopController extends Controller
                 $shop->longitude
             );
 
-            $shop->distance = round($distance, 2); // Tambahkan properti distance
+            // Simpan hasil perhitungan jarak ke dalam properti baru di setiap objek toko
+            $shop->distance = round($distance, 2);
+
             return $shop;
         });
 
-        // Urutkan berdasarkan jarak terdekat
+        // Setelah jarak diketahui, urutkan seluruh toko dari yang paling dekat ke yang paling jauh
         return $shopsWithDistance->sortBy('distance');
     }
 
     /**
-     * Display the shop list page with category filtering.
+     * Menampilkan halaman daftar toko lengkap dengan fitur pencarian dan filter kategori.
+     * Fungsi ini juga mendukung pengurutan berdasarkan jarak jika koordinat pengguna tersedia.
      */
     public function listToko(Request $request)
     {
-        // Get all categories for the filter dropdown
+        // Ambil seluruh kategori yang tersedia untuk ditampilkan di menu dropdown filter
         $categories = Category::orderBy('name')->get();
 
+        // Mulai query toko aktif sebagai dasar pencarian
         $query = Shop::where('status', 'active');
 
-        // Handle search functionality
+        // Jika pengguna mengisi kolom pencarian, lakukan pencocokan kata kunci
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $this->logSearchQuery($search); // Log pencarian untuk analisis
 
+            // Simpan data pencarian untuk kebutuhan statistik
+            $this->logSearchQuery($search);
+
+            // Terapkan filter pencarian terhadap nama, alamat, deskripsi toko, dan produk terkait
             $query->where(function ($q) use ($search) {
-                // Search in shop name and address
                 $q->where('name', 'like', '%' . $search . '%')
                     ->orWhere('address', 'like', '%' . $search . '%')
                     ->orWhere('description', 'like', '%' . $search . '%')
-                    // Search in related products
                     ->orWhereHas('products', function ($productQuery) use ($search) {
                         $productQuery->where('name', 'like', '%' . $search . '%')
                             ->orWhere('description', 'like', '%' . $search . '%');
@@ -92,20 +105,22 @@ class ShopController extends Controller
             });
         }
 
-        // Handle category filter
+        // Inisialisasi variabel kategori yang sedang dipilih
         $selectedCategory = null;
+
+        // Jika pengguna memilih kategori tertentu, filter toko berdasarkan produk dalam kategori tersebut
         if ($request->filled('category_id') && $request->category_id != '') {
             $categoryId = $request->category_id;
             $selectedCategory = Category::find($categoryId);
 
-            // Menggunakan relasi many-to-many yang benar
+            // Cari toko yang memiliki produk dengan kategori tersebut menggunakan relasi many-to-many
             $query->whereHas('products', function ($q) use ($categoryId) {
                 $q->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             });
 
-            // Jika kategori dipilih, muat produk yang termasuk dalam kategori tersebut
+            // Muat produk yang sesuai dengan kategori agar dapat langsung digunakan di view
             $query->with(['products' => function ($q) use ($categoryId) {
                 $q->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
@@ -113,20 +128,30 @@ class ShopController extends Controller
             }]);
         }
 
-        // Cek apakah ada parameter lokasi pengguna
+        // Ambil koordinat lokasi pengguna jika tersedia (biasanya dari browser)
         $userLat = $request->input('latitude');
         $userLng = $request->input('longitude');
         $useLocation = $userLat && $userLng;
 
-        // Make sure to select necessary fields for URL generation and display
-        $shops = $query->select('id', 'name', 'address', 'featured_image', 'description', 'slug', 'has_delivery', 'latitude', 'longitude');
+        // Pilih field-field penting dari setiap toko untuk ditampilkan
+        $shops = $query->select(
+            'id',
+            'name',
+            'address',
+            'featured_image',
+            'description',
+            'slug',
+            'has_delivery',
+            'latitude',
+            'longitude'
+        );
 
-        // Jika ada lokasi pengguna, urutkan berdasarkan jarak
+        // Jika lokasi pengguna tersedia, urutkan toko berdasarkan jarak terdekat
         if ($useLocation) {
             $allShops = $shops->get();
             $sortedShops = $this->sortShopsByDistance($allShops, $userLat, $userLng);
 
-            // Konversi collection ke paginator
+            // Lakukan pemisahan hasil berdasarkan halaman untuk keperluan pagination
             $page = $request->input('page', 1);
             $perPage = 12;
             $offset = ($page - 1) * $perPage;
@@ -141,235 +166,292 @@ class ShopController extends Controller
 
             $shops = $paginatedShops;
         } else {
-            // Jika tidak ada lokasi, gunakan pagination biasa
+            // Jika tidak ada lokasi pengguna, urutkan alfabetis dan paginasi biasa
             $shops = $shops->orderBy('name')
                 ->paginate(12)
-                ->appends($request->except('page')); // Keep filter parameters when paginating
+                ->appends($request->except('page')); // Tambahan untuk menjaga filter saat pindah halaman
         }
 
+        // Kirim data ke view untuk ditampilkan ke pengguna
         return view('tokoPage.listToko', compact('shops', 'categories', 'selectedCategory', 'useLocation'));
     }
 
     /**
-     * Log pencarian untuk analisis
+     * Fungsi ini bertujuan untuk menyimpan log pencarian pengguna
+     * Tujuannya adalah untuk menganalisis pola pencarian yang dilakukan melalui fitur pencarian toko.
      */
     private function logSearchQuery($query)
     {
         try {
+            // Buat entri baru ke dalam tabel SearchLog untuk merekam kata kunci yang dicari,
+            // alamat IP pengguna, dan informasi perangkat yang digunakan
             \App\Models\SearchLog::create([
                 'query' => $query,
                 'ip_address' => request()->ip(),
                 'user_agent' => request()->userAgent()
             ]);
         } catch (\Exception $e) {
-            Log::error('Error logging search query: ' . $e->getMessage());
+            // Jika terjadi kesalahan saat proses penyimpanan log, catat pesan error ke dalam sistem log Laravel
+            Log::error('Gagal mencatat log pencarian: ' . $e->getMessage());
         }
     }
 
     /**
-     * Display a map of all shops.
+     * Menampilkan tampilan peta yang berisi lokasi semua toko aktif.
+     * Jika pengguna memberikan lokasi mereka, maka informasi jarak akan dihitung dan digunakan untuk pengurutan.
      */
     public function maps(Request $request)
     {
-        // Cek apakah ada parameter lokasi pengguna
+        // Ambil koordinat lokasi pengguna jika tersedia dari parameter permintaan
         $userLat = $request->input('latitude');
         $userLng = $request->input('longitude');
+
+        // Tentukan apakah lokasi pengguna valid untuk dipakai
         $useLocation = $userLat && $userLng;
 
-        // Include slug field for URL generation if needed
+        // Ambil semua data toko yang statusnya aktif, termasuk informasi lokasi dan gambar utamanya
         $shops = Shop::where('status', 'active')
             ->select('id', 'name', 'address', 'latitude', 'longitude', 'slug', 'featured_image')
             ->get();
 
-        // Jika ada lokasi pengguna, tambahkan informasi jarak
+        // Jika tersedia data koordinat pengguna, hitung jarak dari setiap toko ke lokasi tersebut
         if ($useLocation) {
             $shops = $this->sortShopsByDistance($shops, $userLat, $userLng);
         }
 
+        // Kirim data toko dan lokasi ke view peta untuk ditampilkan ke pengguna
         return view('landingPage.maps', compact('shops', 'useLocation', 'userLat', 'userLng'));
     }
 
     /**
-     * Display the specified shop.
-     * Uses Route Model Binding - will automatically work with slug
+     * Menampilkan detail dari sebuah toko berdasarkan data model yang di-inject melalui slug (Route Model Binding).
+     * Jika toko tidak aktif, pengguna akan diarahkan ke halaman 404.
      */
     public function show(Shop $shop)
     {
+        // Jika status toko bukan "active", maka tampilkan halaman tidak ditemukan
         if ($shop->status !== 'active') {
             abort(404);
         }
 
-        // Log kunjungan toko
+        // Catat kunjungan pengguna ke toko ini untuk kebutuhan statistik atau analisis
         $this->logShopVisit($shop);
 
-        $shop->load(['products' => function ($query) {
-            $query->where('is_available', true);
-        }, 'images']);
+        // Muat relasi produk (hanya yang tersedia) dan gambar-gambar toko untuk ditampilkan di halaman detail
+        $shop->load([
+            'products' => function ($query) {
+                $query->where('is_available', true);
+            },
+            'images'
+        ]);
 
+        // Ambil semua ulasan yang telah disetujui untuk toko ini dan urutkan berdasarkan waktu pembuatan
         $reviews = $shop->reviews()
             ->where('is_approved', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Dapatkan toko lain dengan kategori serupa
+        // Temukan toko lain yang berada dalam kategori produk yang serupa
         $relatedShops = $this->getRelatedShops($shop);
 
+        // Tampilkan halaman detail toko dengan data toko, ulasan, dan toko lain yang relevan
         return view('tokoPage.detailToko', compact('shop', 'reviews', 'relatedShops'));
     }
 
     /**
-     * Log kunjungan toko untuk analisis
+     * Fungsi ini mencatat setiap kunjungan pengguna ke halaman detail toko.
+     * Data ini bisa digunakan untuk keperluan analitik, seperti mengukur tingkat popularitas toko.
      */
     private function logShopVisit($shop)
     {
         try {
+            // Simpan informasi kunjungan ke dalam tabel visitor_logs
+            // Informasi yang dicatat meliputi ID toko, alamat IP, user agent, dan jenis perangkat pengguna
             \App\Models\VisitorLog::create([
-                'shop_id' => $shop->id,
-                'ip_address' => request()->ip(),
-                'user_agent' => request()->userAgent(),
+                'shop_id'     => $shop->id,
+                'ip_address'  => request()->ip(),
+                'user_agent'  => request()->userAgent(),
                 'device_type' => $this->getDeviceType(request()->userAgent())
             ]);
         } catch (\Exception $e) {
-            Log::error('Error logging shop visit: ' . $e->getMessage());
+            // Jika terjadi kesalahan selama pencatatan kunjungan, tulis log error-nya agar bisa dianalisis nanti
+            Log::error('Terjadi kesalahan saat mencatat kunjungan toko: ' . $e->getMessage());
         }
     }
 
     /**
-     * Mendeteksi jenis perangkat dari user agent
+     * Fungsi ini berfungsi untuk mendeteksi jenis perangkat yang digunakan pengguna berdasarkan user agent-nya.
+     * Tujuannya adalah mengkategorikan perangkat menjadi: mobile, tablet, atau desktop.
      */
     private function getDeviceType($userAgent)
     {
-        if (preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i', $userAgent) || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i', substr($userAgent, 0, 4))) {
-            return 'mobile';
+        // Cek apakah user agent cocok dengan pola umum perangkat mobile
+        if (
+            preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i', $userAgent)
+            || preg_match('/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|...|zte\-/i', substr($userAgent, 0, 4)) // Pola tambahan prefix dari string awal
+        ) {
+            return 'mobile'; // Kembalikan jenis perangkat sebagai mobile
         }
 
+        // Jika cocok dengan pola umum tablet
         if (preg_match('/tablet|ipad|playbook|silk|android(?!.*mobile)/i', $userAgent)) {
-            return 'tablet';
+            return 'tablet'; // Kembalikan nilai tablet jika cocok
         }
 
+        // Jika tidak cocok dengan keduanya, anggap sebagai desktop
         return 'desktop';
     }
 
     /**
-     * Mendapatkan toko lain dengan kategori serupa
+     * Fungsi ini bertujuan untuk mengambil daftar toko lain yang menjual produk dengan kategori yang sama
+     * seperti toko yang sedang ditampilkan. Digunakan untuk menampilkan rekomendasi toko serupa.
      */
     private function getRelatedShops($shop, $limit = 4)
     {
-        // Dapatkan kategori dari produk toko ini
+        // Ambil daftar kategori yang terkait dengan produk milik toko ini
         $categories = Category::whereHas('products', function ($query) use ($shop) {
             $query->where('shop_id', $shop->id);
-        })->pluck('id');
+        })->pluck('id'); // Ambil hanya ID kategorinya
 
+        // Jika tidak ditemukan kategori, kembalikan koleksi kosong
         if ($categories->isEmpty()) {
             return collect();
         }
 
-        // Dapatkan toko lain dengan kategori yang sama
+        // Ambil toko lain (selain toko ini) yang memiliki produk dalam kategori yang sama
         return Shop::where('status', 'active')
-            ->where('id', '!=', $shop->id)
+            ->where('id', '!=', $shop->id) // Hindari menampilkan toko yang sama
             ->whereHas('products', function ($query) use ($categories) {
+                // Filter produk yang memiliki relasi kategori sesuai
                 $query->whereHas('categories', function ($q) use ($categories) {
                     $q->whereIn('categories.id', $categories);
                 });
             })
-            ->select('id', 'name', 'address', 'featured_image', 'slug', 'has_delivery')
-            ->inRandomOrder()
-            ->take($limit)
+            ->select('id', 'name', 'address', 'featured_image', 'slug', 'has_delivery') // Ambil kolom penting saja
+            ->inRandomOrder()  // Acak hasil agar variasi rekomendasi muncul
+            ->take($limit)     // Batasi jumlah toko yang ditampilkan
             ->get();
     }
 
     /**
-     * Display the detailed shop page.
-     * Uses Route Model Binding - will automatically work with slug
+     * Fungsi ini bertugas menampilkan halaman detail toko berdasarkan slug yang diberikan.
+     * Karena menggunakan Route Model Binding, parameter $shop langsung terisi dengan data toko terkait.
+     * Fungsi ini hanyalah pembungkus (alias) yang memanggil fungsi utama `show()`.
      */
     public function detailToko(Shop $shop)
     {
+        // Delegasikan proses tampilan detail toko ke fungsi show()
         return $this->show($shop);
     }
 
     /**
-     * Store a new review for a shop.
-     * Uses Route Model Binding - will automatically work with slug
+     * Fungsi ini menyimpan ulasan baru yang diberikan oleh pengguna untuk sebuah toko tertentu.
+     * Parameter $shop akan otomatis terisi berkat fitur Route Model Binding berdasarkan slug di URL.
      */
     public function storeReview(Request $request, Shop $shop)
     {
+        // Validasi input dari formulir ulasan agar sesuai dengan format yang ditentukan
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'rating' => 'required|integer|between:1,5',
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'rating'  => 'required|integer|between:1,5',
             'comment' => 'required|string',
         ]);
 
+        // Hubungkan ulasan ini dengan toko yang sedang dituju
         $validated['shop_id'] = $shop->id;
-        $validated['is_approved'] = false; // Require admin approval
 
+        // Tandai bahwa ulasan masih menunggu persetujuan admin sebelum ditampilkan
+        $validated['is_approved'] = false;
+
+        // Simpan ulasan baru ke database
         Review::create($validated);
 
-        // Invalidate cache untuk rata-rata rating
+        // Hapus cache rating toko agar diperbarui saat data ulasan berubah
         Cache::forget('shop_rating_' . $shop->id);
 
+        // Kembalikan pengguna ke halaman sebelumnya dengan pesan sukses
         return back()->with('success', 'Terima kasih atas ulasan Anda. Ulasan akan ditampilkan setelah disetujui.');
     }
 
     /**
-     * Optional: Add backward compatibility for old ID-based URLs
-     * This can help during transition to slug-based URLs
+     * Fungsi ini digunakan sebagai fallback untuk mendukung URL lama yang masih menggunakan ID toko.
+     * Fungsinya berguna saat sedang melakukan migrasi dari sistem ID ke slug agar tautan lama tetap dapat diakses.
      */
     public function detailTokoFallback($identifier)
     {
-        // Try to find by slug first
+        // Pertama-tama coba cari toko berdasarkan slug (string unik di URL)
         $shop = Shop::where('slug', $identifier)->first();
 
-        // If not found and identifier is numeric, try to find by ID
+        // Jika slug tidak ditemukan dan nilai identifier adalah angka, coba cari berdasarkan ID numerik
         if (!$shop && is_numeric($identifier)) {
             $shop = Shop::find($identifier);
         }
 
+        // Jika toko tidak ditemukan atau statusnya tidak aktif, tampilkan halaman 404
         if (!$shop || $shop->status !== 'active') {
             abort(404);
         }
 
-        // Redirect ke URL berbasis slug untuk SEO
+        // Jika pengguna mengakses lewat ID numerik dan toko memiliki slug, arahkan ulang ke URL berbasis slug
+        // Ini dilakukan untuk meningkatkan struktur URL agar lebih ramah mesin pencari (SEO-friendly)
         if (is_numeric($identifier) && $shop->slug) {
             return redirect()->route('shops.detail', ['shop' => $shop]);
         }
 
+        // Tampilkan detail toko seperti biasa menggunakan fungsi show()
         return $this->show($shop);
     }
 
     /**
-     * Filter toko berdasarkan kategori
+     * Fungsi ini menampilkan daftar toko yang memiliki produk dalam kategori tertentu.
+     * Lokasi pengguna juga dapat digunakan untuk menyusun daftar toko berdasarkan jarak.
      */
     public function filterByCategory($categoryId, Request $request)
     {
+        // Ambil data kategori berdasarkan ID, dan hentikan jika tidak ditemukan
         $category = Category::findOrFail($categoryId);
 
-        // Cek apakah ada parameter lokasi pengguna
+        // Ambil data lokasi pengguna jika tersedia dari request
         $userLat = $request->input('latitude');
         $userLng = $request->input('longitude');
         $useLocation = $userLat && $userLng;
 
+        // Mulai query untuk mencari toko aktif yang memiliki produk sesuai kategori
         $query = Shop::where('status', 'active')
             ->whereHas('products', function ($query) use ($categoryId) {
-                // Menggunakan relasi many-to-many yang benar
+                // Gunakan relasi many-to-many untuk filter produk berdasarkan kategori
                 $query->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             })
             ->with(['products' => function ($query) use ($categoryId) {
-                // Menggunakan relasi many-to-many yang benar
+                // Muat hanya produk yang berada dalam kategori yang dipilih
                 $query->whereHas('categories', function ($cq) use ($categoryId) {
                     $cq->where('categories.id', $categoryId);
                 });
             }])
-            ->select('id', 'name', 'address', 'featured_image', 'description', 'slug', 'latitude', 'longitude', 'has_delivery');
+            ->select(
+                'id',
+                'name',
+                'address',
+                'featured_image',
+                'description',
+                'slug',
+                'latitude',
+                'longitude',
+                'has_delivery'
+            );
 
-        // Jika ada lokasi pengguna, urutkan berdasarkan jarak
+        // Jika data lokasi pengguna tersedia, urutkan berdasarkan jarak
         if ($useLocation) {
+            // Ambil semua toko terlebih dahulu untuk diproses manual
             $allShops = $query->get();
+
+            // Hitung jarak dan urutkan dari yang terdekat
             $sortedShops = $this->sortShopsByDistance($allShops, $userLat, $userLng);
 
-            // Konversi collection ke paginator
+            // Buat pagination manual dari hasil yang sudah diurutkan
             $page = $request->input('page', 1);
             $perPage = 12;
             $offset = ($page - 1) * $perPage;
@@ -382,38 +464,43 @@ class ShopController extends Controller
                 ['path' => $request->url(), 'query' => $request->query()]
             );
         } else {
+            // Jika tidak ada lokasi, gunakan pagination standar dengan urutan nama toko
             $shops = $query->orderBy('name')->paginate(12);
         }
 
+        // Ambil semua kategori untuk menu filter, dan tetapkan kategori yang dipilih
         $categories = Category::orderBy('name')->get();
         $selectedCategory = $category;
 
+        // Tampilkan hasil pada halaman daftar toko
         return view('tokoPage.listToko', compact('shops', 'categories', 'selectedCategory', 'useLocation'));
     }
 
     /**
-     * Mendapatkan daftar toko terdekat berdasarkan lokasi pengguna
+     * Fungsi ini digunakan untuk mengambil daftar toko yang paling dekat dari lokasi pengguna.
+     * Data dikembalikan dalam format JSON, biasanya digunakan untuk kebutuhan API atau frontend dinamis (AJAX).
      */
     public function getNearbyShops(Request $request)
     {
         try {
-            // Validasi input
+            // Pastikan input yang diterima valid: lat dan long wajib ada, limit opsional
             $request->validate([
-                'latitude' => 'required|numeric',
+                'latitude'  => 'required|numeric',
                 'longitude' => 'required|numeric',
-                'limit' => 'nullable|integer|min:1|max:20'
+                'limit'     => 'nullable|integer|min:1|max:20'
             ]);
 
+            // Ambil nilai koordinat dan batas jumlah hasil yang ingin ditampilkan
             $userLat = $request->input('latitude');
             $userLng = $request->input('longitude');
-            $limit = $request->input('limit', 5); // Default 5 toko terdekat
+            $limit   = $request->input('limit', 5); // Batas default: 5 toko terdekat
 
-            // Ambil semua toko aktif
+            // Ambil semua toko yang statusnya aktif
             $shops = Shop::where('status', 'active')
                 ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug', 'has_delivery')
                 ->get();
 
-            // Hitung jarak untuk setiap toko
+            // Hitung jarak toko ke lokasi pengguna dan susun dalam bentuk array dengan data lengkap
             $shopsWithDistance = $shops->map(function ($shop) use ($userLat, $userLng) {
                 $distance = LocationHelper::calculateDistance(
                     $userLat,
@@ -423,40 +510,54 @@ class ShopController extends Controller
                 );
 
                 return [
-                    'id' => $shop->id,
-                    'name' => $shop->name,
-                    'address' => $shop->address,
-                    'latitude' => $shop->latitude,
-                    'longitude' => $shop->longitude,
+                    'id'             => $shop->id,
+                    'name'           => $shop->name,
+                    'address'        => $shop->address,
+                    'latitude'       => $shop->latitude,
+                    'longitude'      => $shop->longitude,
                     'featured_image' => $shop->featured_image,
-                    'slug' => $shop->slug,
-                    'has_delivery' => $shop->has_delivery,
-                    'distance' => round($distance, 2) // Bulatkan ke 2 desimal
+                    'slug'           => $shop->slug,
+                    'has_delivery'   => $shop->has_delivery,
+                    'distance'       => round($distance, 2) // Bulatkan jarak ke 2 desimal untuk tampilan
                 ];
             });
 
-            // Urutkan berdasarkan jarak terdekat
+            // Urutkan berdasarkan nilai jarak dari yang paling dekat, dan ambil sesuai batas yang diminta
             $sortedShops = $shopsWithDistance->sortBy('distance')->take($limit);
 
+            // Kembalikan hasil dalam bentuk JSON untuk dikonsumsi oleh frontend
             return response()->json([
                 'status' => 'success',
-                'shops' => $sortedShops->values()->all()
+                'shops'  => $sortedShops->values()->all()
             ]);
         } catch (\Exception $e) {
+            // Tangani jika terjadi kesalahan dan catat ke log error
             Log::error('Error in getNearbyShops: ' . $e->getMessage());
+
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
     }
 
+    /**
+     * Fungsi ini digunakan untuk mengambil daftar toko yang paling sering dikunjungi oleh pengguna.
+     * Pengurutan didasarkan pada jumlah kunjungan yang tercatat melalui relasi visitorLogs.
+     */
     private function getPopularShops($limit = 4)
     {
-        return Shop::withCount('visitorLogs')
-            ->where('status', 'active')
-            ->orderBy('visitor_logs_count', 'desc')
-            ->limit($limit)
-            ->get(['id', 'name', 'address', 'featured_image', 'slug', 'has_delivery']);
+        return Shop::withCount('visitorLogs') // Hitung jumlah kunjungan yang terkait dengan setiap toko
+            ->where('status', 'active')       // Hanya ambil toko yang masih aktif
+            ->orderBy('visitor_logs_count', 'desc') // Urutkan dari yang paling banyak dikunjungi
+            ->limit($limit)                   // Batasi jumlah toko yang diambil (default: 4)
+            ->get([
+                'id',
+                'name',
+                'address',
+                'featured_image',
+                'slug',
+                'has_delivery'
+            ]);
     }
 }

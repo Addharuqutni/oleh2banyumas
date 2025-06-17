@@ -12,25 +12,23 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the products.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\View\View
+     * Menyajikan halaman daftar produk dengan dukungan filter berdasarkan toko atau nama produk.
      */
     public function index(Request $request)
     {
-        $query = Product::with('shop');
+        $query = Product::with('shop'); // Sertakan relasi toko untuk ditampilkan
 
-        // Filter by shop if provided
+        // Filter berdasarkan toko jika dipilih
         if ($request->filled('shop_id')) {
             $query->where('shop_id', $request->shop_id);
         }
 
-        // Search by name if provided
+        // Pencarian berdasarkan nama produk
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        // Ambil data produk dan daftar toko untuk form filter
         $products = $query->orderBy('name')->paginate(10);
         $shops = Shop::orderBy('name')->get();
 
@@ -38,9 +36,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new product.
-     *
-     * @return \Illuminate\View\View
+     * Menampilkan formulir untuk membuat produk baru.
      */
     public function create()
     {
@@ -51,46 +47,42 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created product in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * Memproses penyimpanan produk baru ke database.
      */
     public function store(Request $request)
     {
+        // Validasi input
         $validated = $request->validate([
-            'shop_id' => 'required|exists:shops,id',
-            'name' => 'required|string|max:100',
+            'shop_id'     => 'required|exists:shops,id',
+            'name'        => 'required|string|max:100',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'categories' => 'nullable|array',
+            'price'       => 'required|numeric|min:0',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categories'  => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
 
-        // Set availability
+        // Tandai produk tersedia jika dicentang
         $validated['is_available'] = $request->has('is_available');
 
-        // Generate slug from the name
+        // Buat slug dari nama produk dan pastikan unik
         $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-        
-        // Ensure slug is unique
-        $count = 2;
         $originalSlug = $validated['slug'];
+        $count = 2;
         while (Product::where('slug', $validated['slug'])->exists()) {
             $validated['slug'] = $originalSlug . '-' . $count++;
         }
 
-        // Handle image upload
+        // Upload gambar jika tersedia
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
-        // Create the product
+        // Simpan data produk
         $product = Product::create($validated);
 
-        // Attach categories
-        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+        // Hubungkan kategori
+        if ($request->has('categories') && is_array($request->categories)) {
             $product->categories()->attach($request->categories);
         }
 
@@ -99,10 +91,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for editing the specified product.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\View\View
+     * Menampilkan formulir pengeditan produk yang sudah ada.
      */
     public function edit(Product $product)
     {
@@ -114,60 +103,50 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified product in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\RedirectResponse
+     * Memperbarui data produk ke database sesuai perubahan form.
      */
     public function update(Request $request, Product $product)
     {
+        // Validasi form
         $validated = $request->validate([
-            'shop_id' => 'required|exists:shops,id',
-            'name' => 'required|string|max:100',
+            'shop_id'     => 'required|exists:shops,id',
+            'name'        => 'required|string|max:100',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'categories' => 'nullable|array',
+            'price'       => 'required|numeric|min:0',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categories'  => 'nullable|array',
             'categories.*' => 'exists:categories,id',
         ]);
 
-        // Set availability
         $validated['is_available'] = $request->has('is_available');
 
-        // Generate slug only if the name has changed
+        // Update slug hanya jika nama berubah
         if ($product->name !== $validated['name']) {
             $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
-            
-            // Ensure slug is unique
-            $count = 2;
             $originalSlug = $validated['slug'];
+            $count = 2;
             while (Product::where('slug', $validated['slug'])->where('id', '!=', $product->id)->exists()) {
                 $validated['slug'] = $originalSlug . '-' . $count++;
             }
         }
 
-        // Handle image
+        // Ganti gambar jika diunggah
         if ($request->hasFile('image')) {
-            // Delete old image if exists
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
-
             $validated['image'] = $request->file('image')->store('products', 'public');
-        } elseif ($request->has('remove_image')) {
-            // Remove image if requested
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-                $validated['image'] = null;
-            }
+        } elseif ($request->has('remove_image') && $product->image) {
+            // Hapus gambar jika diminta
+            Storage::disk('public')->delete($product->image);
+            $validated['image'] = null;
         }
 
-        // Update the product
+        // Simpan perubahan
         $product->update($validated);
 
-        // Sync categories
-        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+        // Sinkronisasi kategori
+        if ($request->has('categories') && is_array($request->categories)) {
             $product->categories()->sync($request->categories);
         } else {
             $product->categories()->detach();
@@ -176,21 +155,16 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')
             ->with('success', 'Produk berhasil diperbarui.');
     }
-
+    
     /**
-     * Remove the specified product from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\RedirectResponse
+     * Menghapus produk dari sistem beserta file gambar jika ada.
      */
     public function destroy(Product $product)
     {
-        // Delete product image
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
 
-        // Delete product
         $product->delete();
 
         return redirect()->route('admin.products.index')

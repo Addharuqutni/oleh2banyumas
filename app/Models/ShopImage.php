@@ -9,14 +9,19 @@ class ShopImage extends Model
 {
     use HasFactory;
 
+    /**
+     * Atribut-atribut yang dapat diisi secara massal.
+     * Digunakan ketika menyimpan data gambar tambahan untuk toko.
+     */
     protected $fillable = [
-        'shop_id',
-        'image_path',
-        'caption',
+        'shop_id',     // ID toko yang memiliki gambar ini
+        'image_path',  // Lokasi penyimpanan file gambar
+        'caption',     // Teks keterangan untuk gambar (opsional)
     ];
 
     /**
-     * Get the shop that owns the image.
+     * Relasi: satu gambar dimiliki oleh satu toko.
+     * Menghubungkan gambar ini dengan entitas toko induknya.
      */
     public function shop()
     {

@@ -9,6 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * Daftar atribut yang dapat diisi secara massal.
+     * Digunakan untuk menghindari error MassAssignmentException saat menyimpan data.
+     */
     protected $fillable = [
         'shop_id',
         'name',
@@ -16,11 +20,12 @@ class Product extends Model
         'price',
         'image',
         'is_available',
-        'slug', // Ensure slug is included for mass assignment
+        'slug', // Slug wajib disertakan untuk kebutuhan route model binding
     ];
 
     /**
-     * Get the shop that owns the product.
+     * Relasi satu produk dimiliki oleh satu toko.
+     * Menyambungkan produk ke toko pemiliknya.
      */
     public function shop()
     {
@@ -28,20 +33,20 @@ class Product extends Model
     }
 
     /**
-     * Get the categories for the product.
+     * Relasi many-to-many: produk dapat memiliki banyak kategori.
+     * Menggunakan tabel pivot `product_categories` sebagai penghubung.
      */
     public function categories()
-{
-    return $this->belongsToMany(Category::class, 'product_categories');
-}
+    {
+        return $this->belongsToMany(Category::class, 'product_categories');
+    }
 
     /**
-     * Override the default route key binding.
-     *
-     * @return string
+     * Mengubah perilaku default route model binding.
+     * Laravel akan menggunakan kolom `slug` saat mencocokkan model di route.
      */
     public function getRouteKeyName()
     {
-        return 'slug'; // Use 'slug' for route model binding
+        return 'slug';
     }
 }

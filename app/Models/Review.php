@@ -9,6 +9,10 @@ class Review extends Model
 {
     use HasFactory;
 
+    /**
+     * Atribut-atribut yang diperbolehkan untuk diisi secara massal.
+     * Digunakan saat menyimpan ulasan dari pengguna ke database.
+     */
     protected $fillable = [
         'shop_id',
         'name',
@@ -19,7 +23,8 @@ class Review extends Model
     ];
 
     /**
-     * Get the shop that owns the review.
+     * Relasi satu ulasan dimiliki oleh satu toko.
+     * Menghubungkan ulasan ini dengan toko yang diulas.
      */
     public function shop()
     {

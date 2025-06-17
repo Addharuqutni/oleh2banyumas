@@ -11,9 +11,8 @@ class Admin extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Menentukan atribut-atribut yang boleh diisi secara massal (mass assignment).
+     * Ini digunakan ketika kita membuat atau memperbarui data admin secara langsung dari request.
      */
     protected $fillable = [
         'name',
@@ -22,9 +21,8 @@ class Admin extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Menyembunyikan atribut-atribut sensitif saat model diubah menjadi array atau JSON.
+     * Data seperti kata sandi dan token akan otomatis disembunyikan.
      */
     protected $hidden = [
         'password',
@@ -32,9 +30,8 @@ class Admin extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Mengubah tipe data atribut tertentu saat diakses.
+     * Dalam hal ini, password otomatis di-hash saat disimpan.
      */
     protected $casts = [
         'password' => 'hashed',
