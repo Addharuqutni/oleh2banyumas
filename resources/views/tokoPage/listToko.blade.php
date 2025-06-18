@@ -15,6 +15,13 @@
                 </div>
             </div>
 
+            @if ($useLocation)
+                <div class="alert alert-success small d-flex align-items-center gap-2">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Menampilkan toko terdekat dari lokasi Anda
+                </div>
+            @endif
+
             <!-- Combined Search and Filter -->
             <div class="card border-0 shadow-sm rounded-3 mb-4">
                 <div class="card-body p-3 p-md-4">
@@ -48,6 +55,7 @@
                     </form>
                 </div>
             </div>
+
 
             <!-- Active Filters (if any) -->
             @if ($selectedCategory || request('search'))
@@ -109,7 +117,8 @@
                             <h5 class="mt-3">Tidak ada toko yang ditemukan</h5>
                             @if ($selectedCategory)
                                 <p>Tidak ada toko yang menjual produk kategori
-                                    <strong>{{ $selectedCategory->name }}</strong></p>
+                                    <strong>{{ $selectedCategory->name }}</strong>
+                                </p>
                             @elseif(request('search'))
                                 <p>Tidak ada toko yang cocok dengan pencarian "<strong>{{ request('search') }}</strong>"
                                 </p>
@@ -157,6 +166,22 @@
             if (categorySelect) {
                 categorySelect.addEventListener('change', function() {
                     this.form.submit();
+                });
+            }
+        });
+
+        // Ambil Lokasi Pengguna
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasLatLng = urlParams.has('latitude') && urlParams.has('longitude');
+
+            if (!hasLatLng && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    urlParams.set('latitude', position.coords.latitude);
+                    urlParams.set('longitude', position.coords.longitude);
+                    window.location.search = urlParams.toString();
+                }, function() {
+                    console.warn('Izin lokasi ditolak atau gagal.');
                 });
             }
         });

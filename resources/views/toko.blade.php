@@ -48,6 +48,89 @@
         </div>
     </div>
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map centered on Banyumas
+            var map = L.map('map').setView([-7.4312, 109.2350], 11);
+            var userMarker = null;
+
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add markers for each shop from database
+            @foreach ($shops as $shop)
+                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+                    .bindPopup('<div class="popup-content">' +
+                        '@if ($shop->featured_image)' +
+                        '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
+                        '@else' +
+                        '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
+                        '@endif' +
+                        '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
+                        '<div>' +
+                        '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
+                        '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
+                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
+                        '<div class="view-link d-flex align-items-center mt-2">' +
+                        '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
+                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
+                        '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>')
+                    .addTo(map);
+            @endforeach
+
+            // Ambil lokasi pengguna secara langsung
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // Tambahkan marker lokasi pengguna ke peta
+                    const userIcon = L.divIcon({
+                        className: 'user-location-marker',
+                        html: '<div class="pulse"></div>',
+                        iconSize: [20, 20]
+                    });
+
+                    const userMarker = L.marker([lat, lng], {
+                            icon: userIcon
+                        }).addTo(map)
+                        .bindPopup('Lokasi Anda')
+                        .openPopup();
+
+                    // Pusatkan peta ke lokasi pengguna
+                    map.setView([lat, lng], 13);
+                }, function(error) {
+                    console.warn('Gagal mendapatkan lokasi:', error);
+                    // Tidak ada alert agar pengalaman pengguna tetap smooth
+                });
+            }
+
+            // Make map responsive
+            window.addEventListener('resize', function() {
+                map.invalidateSize();
+            });
+
+            // Event listener untuk tombol refresh lokasi
+            document.getElementById('refresh-location')?.addEventListener('click', function() {
+                getUserLocation();
+            });
+        });
+    </script>
+
     <style>
         .map-container {
             position: relative;
@@ -205,134 +288,30 @@
                 height: 160px;
             }
         }
-    </style>
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize map centered on Banyumas
-            var map = L.map('map').setView([-7.4312, 109.2350], 11);
-            var userMarker = null;
-
-            // Add OpenStreetMap tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-                maxZoom: 19
-            }).addTo(map);
-
-            // Add markers for each shop from database
-            @foreach ($shops as $shop)
-                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
-                    .bindPopup('<div class="popup-content">' +
-                        '@if ($shop->featured_image)' +
-                        '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
-                        '@else' +
-                        '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
-                        '@endif' +
-                        '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
-                        '<div>' +
-                        '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
-                        '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
-                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
-                        '<div class="view-link d-flex align-items-center mt-2">' +
-                        '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
-                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
-                        '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>')
-                    .addTo(map);
-            @endforeach
-
-            // Jika ada lokasi pengguna, tambahkan marker pengguna
-            @if ($useLocation)
-                // Tambahkan marker lokasi pengguna
-                userMarker = L.marker([
-                    {{ request()->input('latitude') }},
-                    {{ request()->input('longitude') }}
-                ], {
-                    icon: L.divIcon({
-                        className: 'user-location-marker',
-                        html: '<div class="pulse"></div>',
-                        iconSize: [20, 20]
-                    })
-                }).addTo(map);
-                userMarker.bindPopup('Lokasi Anda').openPopup();
-
-                // Zoom ke lokasi pengguna
-                map.setView([
-                    {{ request()->input('latitude') }},
-                    {{ request()->input('longitude') }}
-                ], 13);
-            @endif
-
-            // Make map responsive
-            window.addEventListener('resize', function() {
-                map.invalidateSize();
-            });
-
-            // Fungsi untuk mendapatkan lokasi pengguna
-            function getUserLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-
-                        // Redirect ke halaman yang sama dengan parameter lokasi
-                        window.location.href =
-                            `{{ route('shops.index') }}?latitude=${latitude}&longitude=${longitude}`;
-                    }, function(error) {
-                        console.error('Error getting location:', error);
-                        alert('Tidak dapat mengakses lokasi Anda. Pastikan Anda mengizinkan akses lokasi.');
-                    });
-                } else {
-                    alert('Browser Anda tidak mendukung geolokasi.');
-                }
-            }
-
-            // Event listener untuk tombol refresh lokasi
-            document.getElementById('refresh-location')?.addEventListener('click', function() {
-                getUserLocation();
-            });
-        });
-    </script>
-
-    <style>
-        /* User location marker styling */
-        .user-location-marker {
-            background: transparent;
-        }
-
-        .pulse {
-            display: block;
+        .user-location-marker .pulse {
             width: 20px;
             height: 20px;
+            background: rgba(0, 123, 255, 0.5);
             border-radius: 50%;
-            background: rgba(52, 168, 83, 0.8);
-            border: 2px solid white;
-            cursor: pointer;
-            box-shadow: 0 0 0 rgba(52, 168, 83, 0.4);
+            position: relative;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0.4);
+                transform: scale(0.8);
+                opacity: 0.7;
             }
 
-            70% {
-                box-shadow: 0 0 0 10px rgba(52, 168, 83, 0);
+            50% {
+                transform: scale(1.5);
+                opacity: 0.2;
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(52, 168, 83, 0);
+                transform: scale(0.8);
+                opacity: 0.7;
             }
         }
     </style>
