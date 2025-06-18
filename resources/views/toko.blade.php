@@ -23,7 +23,7 @@
 
         <!-- Toko Populer Section -->
         <div class="container py-4">
-            <h2 class="subjudul fw-semibold mb-4">Semua Toko Oleh-Oleh</h2>
+            <h2 class="subjudul fw-semibold mb-4">Rekomendasi Toko Oleh-Oleh</h2>
             <div class="row g-4">
                 @forelse($popularShops as $shop)
                     <!-- Toko Card -->
@@ -71,26 +71,29 @@
             // Add markers for each shop from database
             @foreach ($shops as $shop)
                 L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
-                    .bindPopup('<div class="popup-content">' +
-                        '@if ($shop->featured_image)' +
-                        '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
-                        '@else' +
-                        '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
-                        '@endif' +
-                        '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
-                        '<div>' +
-                        '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
-                        '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
-                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
-                        '<div class="view-link d-flex align-items-center mt-2">' +
-                        '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
-                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
-                        '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>')
-                    .addTo(map);
+                    .bindPopup(`
+                        <div class="popup-content" style="max-width: 220px;">
+                            <div class="mb-2 text-center">
+                                <img 
+                                    src="{{ $shop->featured_image ? asset('storage/' . $shop->featured_image) : asset('images/default-shop.jpg') }}" 
+                                    alt="{{ $shop->name }}" 
+                                    style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;"
+                                >
+                            </div>
+                            <h6 class="text-primary fw-bold mb-1">{{ $shop->name }}</h6>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;"><strong>Alamat:</strong> {{ $shop->address }}</p>
+                            <div class="d-grid gap-1 mt-2">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('shops.detail', ['shop' => $shop]) }}">
+                                    Detail Toko
+                                </a>
+                                <a class="btn btn-sm btn-light text-primary" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">
+                                    Lihat di Google Maps
+                                </a>
+                            </div>
+                        </div>
+                    `).addTo(map);
             @endforeach
+
 
             // Ambil lokasi pengguna secara langsung
             if (navigator.geolocation) {

@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="position-relative border rounded shadow-sm">
-                    
+
                     <div id="map" style="width: 100%; height: 70vh;"></div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
         border-bottom: 2px solid #198754;
         margin-bottom: 10px;
     }
-    
+
     .popup-content h3 {
         font-size: 1.2rem;
         margin-bottom: 10px;
@@ -47,7 +47,7 @@
         border-bottom: 1px solid #dee2e6;
         padding-bottom: 8px;
     }
-    
+
     .view-link {
         margin-top: 10px;
         border-top: 1px solid #dee2e6;
@@ -56,7 +56,7 @@
         justify-content: space-between;
         align-items: center;
     }
-    
+
     @media (max-width: 768px) {
         #map {
             height: 50vh !important;
@@ -65,43 +65,45 @@
 </style>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize map centered on Banyumas
-            var map = L.map('map').setView([-7.4312, 109.2350], 11);
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize map centered on Banyumas
+        var map = L.map('map').setView([-7.4312, 109.2350], 11);
 
-            // Add OpenStreetMap tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-                maxZoom: 19
-            }).addTo(map);
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
 
-            // Add markers for each shop from database
-            @foreach ($shops as $shop)
-                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
-                    .bindPopup('<div class="popup-content">' +
-                        '@if ($shop->featured_image)' +
-                        '<img src="{{ asset('storage/' . $shop->featured_image) }}" alt="{{ $shop->name }}">' +
-                        '@else' +
-                        '<img src="{{ asset('images/default-shop.jpg') }}" alt="{{ $shop->name }}">' +
-                        '@endif' +
-                        '<h3 class="text-primary fw-bold">{{ $shop->name }}</h3>' +
-                        '<div>' +
-                        '<h5 class="fw-semibold text-secondary">Alamat:</h5>' +
-                        '<h6 class="text-secondary">{{ $shop->address }}</h6>' +
-                        '<a class="btn btn-sm btn-light text-primary rounded text-decoration-none" href="{{ route('shops.detail', ['shop' => $shop]) }}">Detail Toko</a>' +
-                        '<div class="view-link d-flex align-items-center mt-2">' +
-                        '<small class="text-secondary">Klik untuk melihat lokasi:</small>' +
-                        '<a class="text-decoration-none ms-2" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">' +
-                        '<small class="badge bg-light text-primary">View on Google Maps</small></a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>')
-                    .addTo(map);
-            @endforeach
+        // Add markers for each shop from database
+        @foreach ($shops as $shop)
+            L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+                .bindPopup(`
+                        <div class="popup-content" style="max-width: 220px;">
+                            <div class="mb-2 text-center">
+                                <img 
+                                    src="{{ $shop->featured_image ? asset('storage/' . $shop->featured_image) : asset('images/default-shop.jpg') }}" 
+                                    alt="{{ $shop->name }}" 
+                                    style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;"
+                                >
+                            </div>
+                            <h6 class="text-primary fw-bold mb-1">{{ $shop->name }}</h6>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;"><strong>Alamat:</strong> {{ $shop->address }}</p>
+                            <div class="d-grid gap-1 mt-2">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('shops.detail', ['shop' => $shop]) }}">
+                                    Detail Toko
+                                </a>
+                                <a class="btn btn-sm btn-light text-primary" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">
+                                    Lihat di Google Maps
+                                </a>
+                            </div>
+                        </div>
+                    `).addTo(map);
+        @endforeach
 
-            // Make map responsive
-            window.addEventListener('resize', function() {
-                map.invalidateSize();
-            });
+        // Make map responsive
+        window.addEventListener('resize', function() {
+            map.invalidateSize();
         });
-    </script>
+    });
+</script>
