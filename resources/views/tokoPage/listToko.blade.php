@@ -24,15 +24,16 @@
                                 <span class="input-group-text bg-white border-end-0">
                                     <i class="bi bi-search text-success"></i>
                                 </span>
-                                <input type="text" class="form-control border-start-0 py-2" name="search" 
+                                <input type="text" class="form-control border-start-0 py-2" name="search"
                                     placeholder="Cari toko atau produk..." value="{{ request('search') }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <select class="form-select py-2 category-select" name="category_id">
                                 <option value="">Semua Kategori</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ request('category_id') == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
@@ -47,46 +48,46 @@
                     </form>
                 </div>
             </div>
-            
+
             <!-- Active Filters (if any) -->
-            @if($selectedCategory || request('search'))
+            @if ($selectedCategory || request('search'))
                 <div class="mb-3">
                     <div class="d-flex flex-wrap gap-2 align-items-center">
                         <span class="text-muted small">Filter aktif:</span>
-                        
-                        @if($selectedCategory)
+
+                        @if ($selectedCategory)
                             <div class="badge bg-light text-dark p-2">
                                 <i class="bi bi-tag-fill me-1 text-success small"></i>
                                 {{ $selectedCategory->name }}
-                                <a href="{{ route('shops.list', array_merge(request()->except(['category_id', 'page']), [])) }}" 
-                                   class="text-dark ms-1">
+                                <a href="{{ route('shops.list', array_merge(request()->except(['category_id', 'page']), [])) }}"
+                                    class="text-dark ms-1">
                                     <i class="bi bi-x-circle"></i>
                                 </a>
                             </div>
                         @endif
-                        
-                        @if(request('search'))
+
+                        @if (request('search'))
                             <div class="badge bg-light text-dark p-2">
                                 <i class="bi bi-search me-1 text-success small"></i>
                                 "{{ request('search') }}"
-                                <a href="{{ route('shops.list', array_merge(request()->except(['search', 'page']), [])) }}" 
-                                   class="text-dark ms-1">
+                                <a href="{{ route('shops.list', array_merge(request()->except(['search', 'page']), [])) }}"
+                                    class="text-dark ms-1">
                                     <i class="bi bi-x-circle"></i>
                                 </a>
                             </div>
                         @endif
-                        
+
                         <a href="{{ route('shops.list') }}" class="text-decoration-none small text-muted">
                             <i class="bi bi-x"></i> Hapus semua
                         </a>
                     </div>
                 </div>
             @endif
-            
+
             <!-- Results Count -->
             <p class="small text-muted mb-3">
                 Menampilkan {{ $shops->count() }} dari {{ $shops->total() }} toko
-                @if($selectedCategory)
+                @if ($selectedCategory)
                     kategori <strong>{{ $selectedCategory->name }}</strong>
                 @endif
             </p>
@@ -96,17 +97,22 @@
                 <!-- Store Card -->
                 @forelse($shops as $shop)
                     <div class="col-md-3 col-sm-6 mb-4">
-                        @include('partials.store-card', ['shop' => $shop, 'selectedCategory' => $selectedCategory ?? null])
+                        @include('partials.store-card', [
+                            'shop' => $shop,
+                            'selectedCategory' => $selectedCategory ?? null,
+                        ])
                     </div>
                 @empty
                     <div class="col-12 text-center py-5">
                         <div class="empty-results">
                             <i class="bi bi-shop"></i>
                             <h5 class="mt-3">Tidak ada toko yang ditemukan</h5>
-                            @if($selectedCategory)
-                                <p>Tidak ada toko yang menjual produk kategori <strong>{{ $selectedCategory->name }}</strong></p>
+                            @if ($selectedCategory)
+                                <p>Tidak ada toko yang menjual produk kategori
+                                    <strong>{{ $selectedCategory->name }}</strong></p>
                             @elseif(request('search'))
-                                <p>Tidak ada toko yang cocok dengan pencarian "<strong>{{ request('search') }}</strong>"</p>
+                                <p>Tidak ada toko yang cocok dengan pencarian "<strong>{{ request('search') }}</strong>"
+                                </p>
                             @else
                                 <p>Coba ubah filter pencarian Anda</p>
                             @endif
@@ -122,10 +128,27 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center">
-                {{ $shops->links() }}
+                {{ $shops->onEachSide(1)->links('partials.custom-pagination') }}
             </div>
         </div>
     </div>
+
+    <style>
+        .page-link {
+            border-radius: 0.5rem;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .page-item.active .page-link {
+            background-color: #6c757d;
+            /* Warna gelap */
+            border-color: #6c757d;
+            color: #fff;
+        }
+    </style>
 
     <script>
         // Auto-submit form when category is changed
