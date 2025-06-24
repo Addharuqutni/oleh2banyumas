@@ -1,6 +1,7 @@
 @extends('layouts.index')
 
 @section('title', 'Toko - Oleh Oleh')
+@section('description', 'Website Oleh Oleh Banyumas menyediakan daftar toko oleh-oleh makanan khas Banyumas, langsung dari pengrajin asli. Temukan camilan favorit Anda di sini!')
 
 @section('content')
     <div class="container py-5">
