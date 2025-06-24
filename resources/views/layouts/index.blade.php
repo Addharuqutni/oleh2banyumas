@@ -18,7 +18,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <meta name="description"
-        content="Website Oleh Oleh Makanan Ringan Khas Banyumas - Temukan berbagai toko oleh-oleh makanan khas Banyumas langsung dari pengrajin asli">
+        content="Website Oleh Oleh Makanan Ringan Khas Banyumas - Temukan berbagai toko oleh-oleh makanan khas Banyumas">
     <meta name="theme-color" content="#2e7d32">
     <title>@yield('title', 'Oleh-Oleh Banyumas')</title>
 

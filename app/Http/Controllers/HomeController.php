@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shop;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Review;
 use App\Models\SearchLog;
 use Illuminate\Http\Request;
 
@@ -18,6 +15,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         // Ambil semua toko aktif dari database, hanya kolom penting yang dipilih untuk efisiensi
         $shops = Shop::where('status', 'active')
             ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug')
