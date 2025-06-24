@@ -21,6 +21,9 @@ Website ini merupakan aplikasi berbasis web yang menyajikan informasi geografis 
 - 📰 **Artikel Oleh-Oleh Tradisional**  
   Informasi menarik seputar makanan khas Banyumas seperti Getuk Goreng, Jenang Jaket, Mendoan, dan lainnya.
 
+- 🔍 **XML Sitemap**  
+  Sitemap otomatis yang membantu mesin pencari mengindeks semua halaman website, termasuk toko dan produk.
+
 - 📈 **Panel Admin**  
   Dashboard untuk mengelola data toko, produk, kategori, review, statistik kunjungan, serta log pencarian pengguna.
 

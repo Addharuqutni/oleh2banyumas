@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ShopController as AdminShopController;
@@ -18,6 +19,9 @@ use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 
 // Halaman utama (landing)
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Sitemap XML
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 // Halaman peta semua toko
 Route::get('/maps', [ShopController::class, 'maps'])->name('maps');

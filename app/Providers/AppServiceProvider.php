@@ -21,5 +21,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Load helper class
         require_once app_path('Helpers/LocationHelper.php');
+        
+        // Register the sitemap command
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \App\Console\Commands\GenerateSitemap::class,
+            ]);
+        }
     }
 }

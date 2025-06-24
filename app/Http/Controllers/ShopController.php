@@ -94,6 +94,8 @@ class ShopController extends Controller
             $this->logSearchQuery($search);
 
             // Terapkan filter pencarian terhadap nama, alamat, deskripsi toko, dan produk terkait
+            // objek query builder
+            // Closure memudahkan filter pencarian multikolom & relasi.
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
                     ->orWhere('address', 'like', '%' . $search . '%')
@@ -373,36 +375,7 @@ class ShopController extends Controller
         // Kembalikan pengguna ke halaman sebelumnya dengan pesan sukses
         return back()->with('success', 'Terima kasih atas ulasan Anda. Ulasan akan ditampilkan setelah disetujui.');
     }
-
-    /**
-     * Fungsi ini digunakan sebagai fallback untuk mendukung URL lama yang masih menggunakan ID toko.
-     * Fungsinya berguna saat sedang melakukan migrasi dari sistem ID ke slug agar tautan lama tetap dapat diakses.
-     */
-    public function detailTokoFallback($identifier)
-    {
-        // Pertama-tama coba cari toko berdasarkan slug (string unik di URL)
-        $shop = Shop::where('slug', $identifier)->first();
-
-        // Jika slug tidak ditemukan dan nilai identifier adalah angka, coba cari berdasarkan ID numerik
-        if (!$shop && is_numeric($identifier)) {
-            $shop = Shop::find($identifier);
-        }
-
-        // Jika toko tidak ditemukan atau statusnya tidak aktif, tampilkan halaman 404
-        if (!$shop || $shop->status !== 'active') {
-            abort(404);
-        }
-
-        // Jika pengguna mengakses lewat ID numerik dan toko memiliki slug, arahkan ulang ke URL berbasis slug
-        // Ini dilakukan untuk meningkatkan struktur URL agar lebih ramah mesin pencari (SEO-friendly)
-        if (is_numeric($identifier) && $shop->slug) {
-            return redirect()->route('shops.detail', ['shop' => $shop]);
-        }
-
-        // Tampilkan detail toko seperti biasa menggunakan fungsi show()
-        return $this->show($shop);
-    }
-
+    
     /**
      * Fungsi ini menampilkan daftar toko yang memiliki produk dalam kategori tertentu.
      * Lokasi pengguna juga dapat digunakan untuk menyusun daftar toko berdasarkan jarak.

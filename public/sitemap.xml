@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <!-- Halaman Utama -->
+    <url>
+        <loc>https://olehbanyumas.com/</loc>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/about</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/maps</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Halaman Toko -->
+    <url>
+        <loc>https://olehbanyumas.com/toko</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/list-toko</loc>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <!-- Halaman Artikel -->
+    <url>
+        <loc>https://olehbanyumas.com/artikel</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/getukgoreng</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/jenangjaket</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/nopia</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/keripiktempe</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/lanting</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/mendoan</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/cimplung</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/artikel/mireng</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Catatan: URL dinamis seperti detail toko dan produk harus dihasilkan secara dinamis -->
+    <!-- Contoh URL dinamis untuk toko dan produk: -->
+    <!-- 
+    <url>
+        <loc>https://olehbanyumas.com/toko/nama-toko</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://olehbanyumas.com/toko/nama-toko/produk/nama-produk</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    -->
+</urlset>
