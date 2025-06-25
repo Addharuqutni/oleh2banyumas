@@ -298,7 +298,7 @@
                             {{ $reviews->total() }} ulasan
                         </div>
                         <div>
-                            {{ $reviews->links() }}
+                            {{ $reviews->onEachSide(1)->links('pagination::bootstrap-5') }}
                         </div>
                     </div>
                 @endif

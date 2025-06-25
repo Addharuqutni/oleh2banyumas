@@ -136,7 +136,7 @@
                             <h6 class="text-primary fw-bold mb-1">${shop.name}</h6>
                             <p class="text-muted mb-1" style="font-size: 0.85rem;"><strong>Alamat:</strong> ${shop.address}</p>
                             <div class="d-grid gap-1 mt-2">
-                                <a class="btn btn-sm btn-outline-primary" href="/shops/${shop.slug}">
+                                <a class="btn btn-sm btn-outline-primary" href="{{ route('shops.detail', ['shop' => $shop]) }}">
                                     Detail Toko
                                 </a>
                                 <a class="btn btn-sm btn-light text-primary" target="_blank" href="https://www.google.com/maps?q=${shop.latitude},${shop.longitude}">

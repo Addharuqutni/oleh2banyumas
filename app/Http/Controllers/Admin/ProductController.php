@@ -99,6 +99,7 @@ class ProductController extends Controller
         $categories = Category::orderBy('name')->get();
         $selectedCategories = $product->categories->pluck('id')->toArray();
 
+        session(['previous_url' => url()->previous()]);
         return view('admin.products.edit', compact('product', 'shops', 'categories', 'selectedCategories'));
     }
 
@@ -152,10 +153,12 @@ class ProductController extends Controller
             $product->categories()->detach();
         }
 
-        return redirect()->route('admin.products.index')
+        return redirect(session('previous_url', route('admin.products.index')))
             ->with('success', 'Produk berhasil diperbarui.');
+        // return redirect()->route('admin.products.index')
+        //     ->with('success', 'Produk berhasil diperbarui.');
     }
-    
+
     /**
      * Menghapus produk dari sistem beserta file gambar jika ada.
      */

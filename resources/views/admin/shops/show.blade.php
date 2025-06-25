@@ -252,7 +252,7 @@
                                                 {{ number_format($product->price, 0, ',', '.') }}</p>
                                         </div>
                                         <div>
-                                            <a href="{{ route('admin.products.edit', $product->id) }}"
+                                            <a href="{{ route('admin.products.edit', $product->slug) }}"
                                                 class="btn btn-sm btn-outline-primary">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
