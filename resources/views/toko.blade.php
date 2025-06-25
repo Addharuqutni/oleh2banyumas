@@ -13,6 +13,25 @@
                 </div>
             </div>
 
+            <!-- Filter Kategori -->
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="filter-container bg-white p-3 rounded shadow-sm">
+                        <h5 class="mb-3">Filter Berdasarkan Kategori Produk</h5>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-primary btn-sm category-filter active" data-category="all">
+                                <i class="bi bi-grid-3x3-gap"></i> Semua Kategori
+                            </button>
+                            @foreach($categories as $category)
+                                <button class="btn btn-outline-primary btn-sm category-filter" data-category="{{ $category->id }}">
+                                    {{ $category->name }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mb-5">
                 <div class="col-12">
                     <div class="map-container shadow-sm rounded">
@@ -62,6 +81,7 @@
             // Initialize map centered on Banyumas
             var map = L.map('map').setView([-7.4312, 109.2350], 11);
             var userMarker = null;
+            var shopMarkers = []; // Array untuk menyimpan semua marker toko
 
             // Add OpenStreetMap tile layer
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -69,31 +89,73 @@
                 maxZoom: 19
             }).addTo(map);
 
-            // Add markers for each shop from database
-            @foreach ($shops as $shop)
-                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+            // Data toko dengan kategori produk
+            var shopsData = [
+                @foreach ($shops as $shop)
+                {
+                    id: {{ $shop->id }},
+                    name: '{{ addslashes($shop->name) }}',
+                    address: '{{ addslashes($shop->address) }}',
+                    latitude: {{ $shop->latitude }},
+                    longitude: {{ $shop->longitude }},
+                    slug: '{{ $shop->slug }}',
+                    featured_image: '{{ $shop->featured_image ? asset('storage/' . $shop->featured_image) : asset('images/default-shop.jpg') }}',
+                    detail_url: '{{ route('shops.detail', ['shop' => $shop]) }}',
+                    has_delivery: {{ $shop->has_delivery ? 'true' : 'false' }},
+                    categories: [
+                        @php
+                            $categoryIds = [];
+                            foreach($shop->products as $product) {
+                                foreach($product->categories as $category) {
+                                    if (!in_array($category->id, $categoryIds)) {
+                                        $categoryIds[] = $category->id;
+                                    }
+                                }
+                            }
+                        @endphp
+                        @foreach($categoryIds as $categoryId)
+                            {{ $categoryId }},
+                        @endforeach
+                    ]
+                },
+                @endforeach
+            ];
+
+            // Fungsi untuk membuat marker toko
+            function createShopMarker(shop) {
+                var marker = L.marker([shop.latitude, shop.longitude])
                     .bindPopup(`
                         <div class="popup-content" style="max-width: 220px;">
                             <div class="mb-2 text-center">
                                 <img 
-                                    src="{{ $shop->featured_image ? asset('storage/' . $shop->featured_image) : asset('images/default-shop.jpg') }}" 
-                                    alt="{{ $shop->name }}" 
+                                    src="${shop.featured_image}" 
+                                    alt="${shop.name}" 
                                     style="width: 100%; height: 120px; object-fit: cover; border-radius: 6px;"
                                 >
                             </div>
-                            <h6 class="text-primary fw-bold mb-1">{{ $shop->name }}</h6>
-                            <p class="text-muted mb-1" style="font-size: 0.85rem;"><strong>Alamat:</strong> {{ $shop->address }}</p>
+                            <h6 class="text-primary fw-bold mb-1">${shop.name}</h6>
+                            <p class="text-muted mb-1" style="font-size: 0.85rem;"><strong>Alamat:</strong> ${shop.address}</p>
                             <div class="d-grid gap-1 mt-2">
-                                <a class="btn btn-sm btn-outline-primary" href="{{ route('shops.detail', ['shop' => $shop]) }}">
+                                <a class="btn btn-sm btn-outline-primary" href="/shops/${shop.slug}">
                                     Detail Toko
                                 </a>
-                                <a class="btn btn-sm btn-light text-primary" target="_blank" href="https://www.google.com/maps?q={{ $shop->latitude }},{{ $shop->longitude }}">
+                                <a class="btn btn-sm btn-light text-primary" target="_blank" href="https://www.google.com/maps?q=${shop.latitude},${shop.longitude}">
                                     Lihat di Google Maps
                                 </a>
                             </div>
                         </div>
-                    `).addTo(map);
-            @endforeach
+                    `);
+                
+                marker.shopData = shop; // Simpan data toko di marker
+                return marker;
+            }
+
+            // Tambahkan semua marker toko ke peta
+            shopsData.forEach(function(shop) {
+                var marker = createShopMarker(shop);
+                marker.addTo(map);
+                shopMarkers.push(marker);
+            });
 
 
             // Ambil lokasi pengguna secara langsung
@@ -122,6 +184,48 @@
                     // Tidak ada alert agar pengalaman pengguna tetap smooth
                 });
             }
+
+            // Fungsi untuk filter marker berdasarkan kategori
+            function filterMarkersByCategory(categoryId) {
+                shopMarkers.forEach(function(marker) {
+                    var shop = marker.shopData;
+                    
+                    if (categoryId === 'all') {
+                        // Tampilkan semua marker
+                        if (!map.hasLayer(marker)) {
+                            marker.addTo(map);
+                        }
+                    } else {
+                        // Tampilkan marker hanya jika toko memiliki produk dengan kategori yang dipilih
+                        if (shop.categories.includes(parseInt(categoryId))) {
+                            if (!map.hasLayer(marker)) {
+                                marker.addTo(map);
+                            }
+                        } else {
+                            if (map.hasLayer(marker)) {
+                                map.removeLayer(marker);
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Event listener untuk tombol filter kategori
+            document.querySelectorAll('.category-filter').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    // Hapus class active dari semua tombol
+                    document.querySelectorAll('.category-filter').forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Tambahkan class active ke tombol yang diklik
+                    this.classList.add('active');
+                    
+                    // Filter marker berdasarkan kategori yang dipilih
+                    var categoryId = this.getAttribute('data-category');
+                    filterMarkersByCategory(categoryId);
+                });
+            });
 
             // Make map responsive
             window.addEventListener('resize', function() {
@@ -282,6 +386,35 @@
             background-color: #e8f5e9;
         }
 
+        /* Filter Kategori Styling */
+        .filter-container {
+            border: #e0e0e0;
+        }
+
+        .category-filter {
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .category-filter:hover {
+            background-color: #e3f2fd;
+            border-color: #2e7d32;
+            transform: translateY(-1px);
+        }
+
+        .category-filter.active {
+            background-color: #2e7d32;
+            border-color: #2e7d32;
+            color: white;
+        }
+
+        .category-filter.active:hover {
+            background-color: #2e7d32;
+            border-color: #2e7d32;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 767px) {
             .store-card {
@@ -290,6 +423,21 @@
 
             .card-img-container {
                 height: 160px;
+            }
+
+            .filter-container {
+                padding: 1rem !important;
+            }
+
+            .filter-container h5 {
+                font-size: 1rem;
+                margin-bottom: 1rem !important;
+            }
+
+            .category-filter {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                margin-bottom: 0.5rem;
             }
         }
 

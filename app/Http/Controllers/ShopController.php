@@ -27,9 +27,15 @@ class ShopController extends Controller
 
         // Ambil semua toko yang berstatus aktif untuk ditampilkan dalam daftar dan peta
         $shops = Shop::where('status', 'active')
+            ->with(['products' => function($query) {
+                $query->where('is_available', true)->with('categories');
+            }]) // Load relasi produk yang tersedia dan kategorinya
             ->select('id', 'name', 'address', 'latitude', 'longitude', 'featured_image', 'slug', 'has_delivery')
             ->orderBy('name') // Urutkan berdasarkan nama toko
             ->get();
+
+        // Ambil semua kategori untuk filter
+        $categories = Category::orderBy('name')->get();
 
         // Ambil daftar toko yang populer berdasarkan jumlah kunjungan
         $popularShops = $this->getPopularShops(4);
@@ -44,7 +50,7 @@ class ShopController extends Controller
         }
 
         // Tampilkan tampilan 'toko' dengan data toko lengkap, toko populer, dan toko terdekat (jika ada)
-        return view('toko', compact('shops', 'popularShops', 'nearbyShops', 'useLocation'));
+        return view('toko', compact('shops', 'popularShops', 'nearbyShops', 'useLocation', 'categories'));
     }
 
     /**

@@ -65,20 +65,21 @@
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize map centered on Banyumas
-        var map = L.map('map').setView([-7.4312, 109.2350], 11);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map centered on Banyumas
+            var map = L.map('map').setView([-7.4312, 109.2350], 11);
+            var userMarker = null;
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-            maxZoom: 19
-        }).addTo(map);
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
 
-        // Add markers for each shop from database
-        @foreach ($shops as $shop)
-            L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
-                .bindPopup(`
+            // Add markers for each shop from database
+            @foreach ($shops as $shop)
+                L.marker([{{ $shop->latitude }}, {{ $shop->longitude }}])
+                    .bindPopup(`
                         <div class="popup-content" style="max-width: 220px;">
                             <div class="mb-2 text-center">
                                 <img 
@@ -99,11 +100,44 @@
                             </div>
                         </div>
                     `).addTo(map);
-        @endforeach
+            @endforeach
 
-        // Make map responsive
-        window.addEventListener('resize', function() {
-            map.invalidateSize();
+
+            // Ambil lokasi pengguna secara langsung
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // Tambahkan marker lokasi pengguna ke peta
+                    const userIcon = L.divIcon({
+                        className: 'user-location-marker',
+                        html: '<div class="pulse"></div>',
+                        iconSize: [20, 20]
+                    });
+
+                    const userMarker = L.marker([lat, lng], {
+                            icon: userIcon
+                        }).addTo(map)
+                        .bindPopup('Lokasi Anda')
+                        .openPopup();
+
+                    // Pusatkan peta ke lokasi pengguna
+                    map.setView([lat, lng], 13);
+                }, function(error) {
+                    console.warn('Gagal mendapatkan lokasi:', error);
+                    // Tidak ada alert agar pengalaman pengguna tetap smooth
+                });
+            }
+
+            // Make map responsive
+            window.addEventListener('resize', function() {
+                map.invalidateSize();
+            });
+
+            // Event listener untuk tombol refresh lokasi
+            document.getElementById('refresh-location')?.addEventListener('click', function() {
+                getUserLocation();
+            });
         });
-    });
-</script>
+    </script>
