@@ -142,22 +142,7 @@
         </div>
     </div>
 
-    <style>
-        .page-link {
-            border-radius: 0.5rem;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            padding: 0.5rem;
-        }
 
-        .page-item.active .page-link {
-            background-color: #6c757d;
-            /* Warna gelap */
-            border-color: #6c757d;
-            color: #fff;
-        }
-    </style>
 
     <script>
         // Auto-submit form when category is changed
