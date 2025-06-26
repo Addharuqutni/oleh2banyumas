@@ -163,46 +163,5 @@
         </div>
     </section>
 
-    <style>
-        /* Styling untuk Section */
-        .section-header {
-            margin-bottom: 2rem;
-        }
-        
-        /* Styling untuk Cards */
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-img-container {
-            padding-top: 100%; /* 1:1 Aspect Ratio */
-        }
-        
-        .card-img-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        
-        .hover-overlay {
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-            transition: opacity 0.3s ease;
-        }
-        
-        .card-img-container:hover .card-img-top {
-            transform: scale(1.05);
-        }
-        
-        .card-img-container:hover .hover-overlay {
-            opacity: 1 !important;
-        }
-    </style>
+
 @endsection

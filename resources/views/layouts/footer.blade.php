@@ -37,31 +37,3 @@
         </div>
     </div>
 </footer>
-
-<style>
-    .footer-link {
-        color: var(--text-dark);
-        font-weight: 500;
-        position: relative;
-        transition: color 0.3s ease;
-    }
-    
-    .footer-link:hover {
-        color: var(--primary-green);
-    }
-    
-    .footer-link::after {
-        content: '';
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: var(--primary-green);
-        transition: width 0.3s ease;
-    }
-    
-    .footer-link:hover::after {
-        width: 100%;
-    }
-</style>

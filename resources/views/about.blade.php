@@ -124,34 +124,5 @@
     </div>
 </div>
 
-<style>
-    .icon-circle {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-    }
-    
-    .goal-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    
-    .goal-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .object-fit-cover {
-        object-fit: cover;
-    }
-    
-    @media (max-width: 768px) {
-        .lead {
-            font-size: 1rem;
-        }
-    }
-</style>
+
 @endsection

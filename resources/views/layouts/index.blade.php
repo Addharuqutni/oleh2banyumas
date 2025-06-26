@@ -596,10 +596,264 @@
             border-color: rgba(0, 0, 0, 0.1);
         }
 
+        /* Hero Section Styling */
+        .hero-section {
+            padding: 2rem 0;
+            position: relative;
+        }
+
+        .hero-content {
+            padding: 2.5rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 2.5rem;
+            color: #2e7d32;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-title span {
+            display: block;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .hero-title .first-line {
+            animation-delay: 0.2s;
+        }
+
+        .hero-title .second-line {
+            animation-delay: 0.4s;
+        }
+
+        .hero-title .third-line {
+            animation-delay: 0.6s;
+            font-weight: 800;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .navbar .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .navbar .nav-link:not(.active):hover {
+            color: var(--primary-green);
+        }
+        
+        .navbar .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background-color: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar .nav-link.active:hover::after {
+            width: 30px;
+        }
+
+        /* Footer Link Styling */
+        .footer-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+            text-decoration: none;
+            padding: 0.25rem 0;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-green);
+        }
+        
+        .footer-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-link:hover::after {
+            width: 100%;
+        }
+
+        /* Map Styling */
+        .map-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 0.375rem;
+        }
+
+        #map {
+            width: 100%;
+            height: 70vh;
+        }
+
+        /* Leaflet Popup Styling */
+        .leaflet-popup-content {
+            max-width: 300px;
+        }
+
+        .leaflet-popup-content img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .leaflet-popup-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .leaflet-popup-content h5 {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .leaflet-popup-content h6 {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .leaflet-popup-content .view-link {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* Popup Content for Maps */
+        .popup-content img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-bottom: 2px solid #198754;
+            margin-bottom: 10px;
+        }
+
+        .popup-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #198754;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 8px;
+        }
+
+        .view-link {
+            margin-top: 10px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* User Location Marker */
+        .user-location-marker .pulse {
+            width: 20px;
+            height: 20px;
+            background: rgba(0, 123, 255, 0.5);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.7;
+            }
+        }
+
+        /* Distance Badge */
+        .distance-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        /* Filter Kategori Styling */
+        .filter-container {
+            border: 1px solid #e0e0e0;
+        }
+
+        .category-filter {
+            transition: all 0.3s ease;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .category-filter:hover {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-1px);
+        }
+
+        .category-filter.active {
+            background-color: #2196f3;
+            border-color: #2196f3;
+            color: white;
+        }
+
+        .category-filter.active:hover {
+            background-color: #1976d2;
+            border-color: #1976d2;
+        }
+
         /* Responsive Adjustments */
+        @media (max-width: 991px) {
+            .navbar .nav-link.active::after {
+                display: none;
+            }
+            
+            .navbar-collapse {
+                transition: all 0.3s ease;
+            }
+        }
+
         @media (max-width: 768px) {
             #map {
-                height: 50vh;
+                height: 50vh !important;
             }
 
             .judul {
@@ -616,6 +870,31 @@
 
             .card-img-container {
                 height: 150px;
+            }
+
+            .filter-container {
+                padding: 1rem !important;
+            }
+
+            .filter-container h5 {
+                font-size: 1rem;
+                margin-bottom: 1rem !important;
+            }
+
+            .category-filter {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .store-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .card-img-container {
+                height: 160px;
             }
         }
 

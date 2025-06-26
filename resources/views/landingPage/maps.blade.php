@@ -30,39 +30,7 @@
 <!-- Bootstrap Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
-<style>
-    /* Minimal styling for popup content */
-    .popup-content img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-bottom: 2px solid #198754;
-        margin-bottom: 10px;
-    }
 
-    .popup-content h3 {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-        color: #198754;
-        border-bottom: 1px solid #dee2e6;
-        padding-bottom: 8px;
-    }
-
-    .view-link {
-        margin-top: 10px;
-        border-top: 1px solid #dee2e6;
-        padding-top: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        #map {
-            height: 50vh !important;
-        }
-    }
-</style>
 
 <script>
         document.addEventListener('DOMContentLoaded', function() {
