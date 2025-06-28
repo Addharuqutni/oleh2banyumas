@@ -178,22 +178,24 @@
                                         <div class="info-content">
                                             <h6 class="info-title">Layanan Antar Jemput</h6>
                                             <p class="info-text">
-                                                @if($shop->has_delivery)
+                                                @if ($shop->has_delivery)
                                                     <span class="badge bg-success">Tersedia</span>
                                                 @else
                                                     <span class="badge bg-secondary">Tidak Tersedia</span>
                                                 @endif
                                             </p>
-                                            @if($shop->has_delivery)
+                                            @if ($shop->has_delivery)
                                                 <div class="delivery-links mt-2">
-                                                    @if($shop->grab_link)
-                                                        <a href="{{ $shop->grab_link }}" target="_blank" class="btn btn-sm delivery-btn grab-btn me-2">
+                                                    @if ($shop->grab_link)
+                                                        <a href="{{ $shop->grab_link }}" target="_blank"
+                                                            class="btn btn-sm delivery-btn grab-btn me-2">
                                                             <i class="bi bi-car-front-fill"></i>
                                                             <span>Pesan via Grab</span>
                                                         </a>
                                                     @endif
-                                                    @if($shop->gojek_link)
-                                                        <a href="{{ $shop->gojek_link }}" target="_blank" class="btn btn-sm delivery-btn gojek-btn">
+                                                    @if ($shop->gojek_link)
+                                                        <a href="{{ $shop->gojek_link }}" target="_blank"
+                                                            class="btn btn-sm delivery-btn gojek-btn">
                                                             <i class="bi bi-car-front-fill"></i>
                                                             <span>Pesan via Gojek</span>
                                                         </a>
@@ -238,8 +240,8 @@
             <div class="row g-4">
                 @forelse($shop->products as $product)
                     <div class="col-md-3 col-sm-6">
-                        <a href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}" 
-                           class="product-card-link">
+                        <a href="{{ route('shops.products.show', ['shop' => $shop->slug, 'product' => $product->slug]) }}"
+                            class="product-card-link">
                             @include('partials.product-card', ['product' => $product])
                         </a>
                     </div>
@@ -366,11 +368,7 @@
                 </form>
             </div>
         </div>
-
     </div>
-
-
-
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -523,4 +521,787 @@
         });
     </script>
 
+    <style>
+        Add commentMore actions .delivery-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .grab-btn {
+            background-color: #00b14f;
+            color: white;
+            border: none;
+        }
+
+        .grab-btn:hover {
+            background-color: #009a43;
+            color: white;
+        }
+
+        .gojek-btn {
+            background-color: #00aa13;
+            color: white;
+            border: none;
+        }
+
+        .gojek-btn:hover {
+            background-color: #009510;
+            color: white;
+        }
+
+        .store-distance {
+            color: #2e7d32;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .store-distance i {
+            font-size: 1rem;
+        }
+
+        /* Store Detail Card */
+        .store-detail-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .store-header {
+            background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .store-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .store-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .rating-badge {
+            background-color: white;
+            color: #1b5e20;
+            font-weight: 700;
+            font-size: 1.25rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .star-rating i {
+            color: #ffc107;
+            font-size: 1.2rem;
+        }
+
+        .review-count {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .store-content {
+            padding: 1.5rem;
+        }
+
+        /* Store Carousel */
+        .store-carousel {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1rem;
+        }
+
+        .carousel-img {
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .caption-tag {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #1b5e20;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.3rem 0.7rem;
+            border-radius: 50px;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 10%;
+            opacity: 0.7;
+        }
+
+        .carousel-indicators {
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-indicators button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-indicators button.active {
+            background-color: white;
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* Store Info */
+        .store-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #81c784;
+            /* var(--primary-light) */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .info-icon i {
+            font-size: 1.2rem;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-text {
+            color: #00000;
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .direction-btn,
+        .call-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #2e7d32;
+            color: #ffffff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Map Section */
+        .map-container {
+            height: 400px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .map-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 100;
+        }
+
+        .navigation-btn-container {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .navigation-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #2e7d32;
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Product Cards */
+        .product-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-img-container {
+            position: relative;
+            padding-top: 75%;
+            overflow: hidden;
+        }
+
+        .product-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.1);
+        }
+
+        .product-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            color: #2e7d32;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-action {
+            margin-top: auto;
+        }
+
+        .product-detail-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: #81c784;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover .product-detail-btn {
+            background-color: #2e7d32;
+        }
+
+        /* Empty State */
+        .empty-state {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #888888;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .empty-state p {
+            color: #888888;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Reviews Section */
+        .review-summary {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+
+        .rating-badge-large {
+            background: #2e7d32;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+        }
+
+        .rating-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .star-rating-large {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .star-rating-large i {
+            font-size: 1.5rem;
+            color: #ffc107;
+        }
+
+        .review-count-large {
+            color: #888888;
+            font-size: 1rem;
+        }
+
+        .reviews-container {
+            margin-bottom: 3rem;
+        }
+
+        .review-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            background: #2e7d32;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .reviewer-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #000000;
+        }
+
+        .review-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #888888;
+            font-size: 0.85rem;
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .review-rating i {
+            color: #ffc107;
+            font-size: 1rem;
+        }
+
+        .review-body {
+            padding: 1rem;
+        }
+
+        .review-text {
+            color: #888888;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Add Review Form */
+        .add-review-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            color: #2e7d32;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #2e7d32;
+            border-radius: 3px;
+        }
+
+        .review-form {
+            max-width: 800px;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888888;
+        }
+
+        .input-with-icon.textarea i {
+            top: 0.5rem;
+            transform: none;
+        }
+
+        .input-with-icon input,
+        .input-with-icon textarea {
+            padding-left: 2.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-with-icon input:focus,
+        .input-with-icon textarea:focus {
+            border-color: #2e7d32;
+            box-shadow: #2e7d32;
+        }
+
+        /* Star Rating Input */
+        .rating-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stars-container {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 0.3rem;
+        }
+
+        .stars-container input {
+            display: none;
+        }
+
+        .stars-container label {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ddd;
+            transition: color 0.3s ease;
+        }
+
+        .stars-container label:hover,
+        .stars-container label:hover~label,
+        .stars-container input:checked~label {
+            color: #ffc107;
+        }
+
+        .rating-text {
+            color: #888888;
+            font-size: 0.9rem;
+        }
+
+        .submit-review-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 1.8rem;
+                text-align: center;
+                margin-top: 2rem;
+            }
+
+            .btn-back {
+                top: 0;
+                left: 0;
+                transform: none;
+            }
+
+            .store-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .store-rating {
+                align-self: flex-start;
+            }
+
+            .carousel-img {
+                height: 250px;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-img {
+                height: 200px;
+            }
+
+            .rating-badge-large {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .star-rating-large i {
+                font-size: 1rem;
+            }
+
+            .review-summary {
+                padding: 1rem;
+            }
+
+            .navigation-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .navigation-btn-container {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .stars-container label {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .btn-back span {
+                display: none;
+            }
+
+            .btn-back {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+            }
+
+            .btn-back i {
+                margin-right: 0;
+            }
+
+            .store-name {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .carousel-img {
+                height: 180px;
+            }
+
+            .map-container {
+                height: 250px;
+            }
+
+            .info-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .info-title {
+                font-size: 0.95rem;
+            }
+
+            .info-text {
+                font-size: 0.9rem;
+            }
+
+            .direction-btn,
+            .call-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .review-card {
+                margin-bottom: 1rem;
+            }
+
+            .review-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .review-rating {
+                align-self: flex-start;
+            }
+
+            .add-review-container {
+                padding: 1rem;
+            }
+
+            .rating-input {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.1rem;
+            }
+
+            .submit-review-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 @endsection
