@@ -6,8 +6,10 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Shop;
 use App\Http\Controllers\ShopController;
+use App\Services\PriceClusteringService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+
 
 class ProductController extends Controller
 {
@@ -84,5 +86,49 @@ class ProductController extends Controller
             ->inRandomOrder()
             ->limit(4)
             ->get();
+    }
+
+    public function clusterByPrice(Request $request)
+    {
+        $selectedCategory = $request->input('category');
+        $selectedCluster = $request->input('cluster');
+
+        $query = Product::with(['shop', 'categories'])
+            ->where('is_available', true)
+            ->whereHas('shop', function ($q) {
+                $q->where('status', 'active');
+            })
+            ->whereNotNull('price_cluster_group');
+
+        if ($selectedCategory) {
+            $query->whereHas('categories', function ($q) use ($selectedCategory) {
+                $q->where('categories.id', $selectedCategory);
+            });
+        }
+
+        $availableClusters = $query->clone()
+            ->select('price_cluster_group')
+            ->distinct()
+            ->orderBy('price_cluster_group')
+            ->pluck('price_cluster_group');
+
+        if ($selectedCluster !== null && $selectedCluster !== '') {
+            $query->where('price_cluster_group', $selectedCluster);
+        }
+
+        $products = $query->orderBy('price')->paginate(12)->withQueryString();
+        $categories = Category::orderBy('name')->get();
+
+        // Ambil metadata dari cache, jika tidak ada, berikan array kosong
+        $clusterMetadata = Cache::get('price_cluster_metadata', []);
+
+        return view('products.cluster', [
+            'products' => $products,
+            'categories' => $categories,
+            'available_clusters' => $availableClusters,
+            'cluster_metadata'   => $clusterMetadata, // <-- KIRIM METADATA KE VIEW
+            'selected_category'  => $selectedCategory,
+            'selected_cluster'   => $selectedCluster,
+        ]);
     }
 }

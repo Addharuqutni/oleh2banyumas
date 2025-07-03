@@ -62,7 +62,16 @@ Route::post('/toko/{shop}/reviews', [ShopController::class, 'storeReview'])->nam
 
 // Detail produk pada toko tertentu
 Route::get('/toko/detail-toko/{shop:slug}/produk/{product:slug}', [ProductController::class, 'show'])->name('shops.products.show');
-
+Route::prefix('products')->name('products.')->group(function () {
+    // name('products.') + name('index') = 'products.index'
+    Route::get('/', [ProductController::class, 'index'])->name('index');
+    
+    // name('products.') + name('cluster') = 'products.cluster'
+    Route::get('/cluster', [ProductController::class, 'clusterByPrice'])->name('cluster');
+    
+    // name('products.') + name('show') = 'products.show'
+    Route::get('/{shop:slug}/{product:slug}', [ProductController::class, 'show'])->name('show');
+});
 
 /**
  *  Halaman Artikel

@@ -32,7 +32,7 @@
     <meta name="theme-color" content="#2e7d32">
 
     <meta property="og:title" content="@yield('title', 'Oleh Oleh Banyumas')" />
-    <meta property="og:description" content="@yield('description', 'Website Oleh Oleh Makanan Ringan Khas Banyumas - Temukan berbagai toko oleh-oleh makanan khas Banyumas langsung dari pengrajin asli.')" />
+    <meta property="og:description" content="@yield('description', 'Website Oleh Oleh Makanan Ringan Khas Banyumas - Temukan berbagai toko oleh-oleh makanan khas Banyumas')" />
     <meta property="og:image" content="{{ secure_url('images/Logo.png') }}" />
     <meta property="og:url" content="{{ url()->current() }}" />
 
