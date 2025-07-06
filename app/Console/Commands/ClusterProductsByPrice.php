@@ -53,7 +53,7 @@ class ClusterProductsByPrice extends Command
             $this->info('Membuat dan menyimpan metadata cluster...');
             
             // Siapkan nama deskriptif untuk setiap cluster
-            $clusterNames = ['Harga Terjangkau', 'Kelas Menengah', 'Premium', 'Sangat Premium', 'Eksklusif'];
+            $clusterNames = ['Ekonomis', 'Menengah', 'Tinggi'];
             
             $clusterMetadata = [];
             foreach ($result['cluster_info'] as $index => $info) {

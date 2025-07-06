@@ -17,34 +17,7 @@ class ProductController extends Controller
      * Fungsi ini digunakan untuk menampilkan daftar produk yang tersedia.
      * Termasuk fitur filter berdasarkan kategori dan pagination untuk membatasi jumlah tampilan per halaman.
      */
-    public function index(Request $request)
-    {
-        // Inisialisasi query untuk mengambil produk yang tersedia dan berasal dari toko yang aktif
-        $query = Product::with('shop')
-            ->whereHas('shop', function ($query) {
-                $query->where('status', 'active'); // Pastikan toko tempat produk berada masih aktif
-            })
-            ->where('is_available', true); // Hanya ambil produk yang tersedia untuk dibeli
-
-        // Jika terdapat filter kategori dari request, terapkan filter tersebut
-        if ($request->filled('category')) {
-            $categoryId = $request->input('category');
-
-            // Pastikan produk memiliki kategori sesuai yang dipilih oleh pengguna
-            $query->whereHas('categories', function ($q) use ($categoryId) {
-                $q->where('categories.id', $categoryId);
-            });
-        }
-
-        // Urutkan hasil berdasarkan nama produk dan tampilkan dalam bentuk halaman (12 item per halaman)
-        $products = $query->orderBy('name')->paginate(12);
-
-        // Ambil semua kategori untuk ditampilkan sebagai filter di halaman
-        $categories = Category::orderBy('name')->get();
-
-        // Kirim data produk dan kategori ke tampilan view
-        return view('products.index', compact('products', 'categories'));
-    }
+    public function index(Request $request) {}
 
     /**
      * Fungsi ini menampilkan detail dari suatu produk berdasarkan slug toko dan slug produk.
@@ -129,6 +102,34 @@ class ProductController extends Controller
             'cluster_metadata'   => $clusterMetadata, // <-- KIRIM METADATA KE VIEW
             'selected_category'  => $selectedCategory,
             'selected_cluster'   => $selectedCluster,
+        ]);
+    }
+
+    public function generatePriceClusters(PriceClusteringService $clusteringService)
+    {
+        $products = Product::all();
+        $result = $clusteringService->clusterByPrice($products);
+
+        $metadata = [];
+        foreach ($result['cluster_info'] as $info) {
+            $metadata[$info['index']] = $info;
+        }
+
+        // Update product dengan cluster index
+        foreach ($result['clusters'] as $clusterIndex => $clusterProducts) {
+            foreach ($clusterProducts as $product) {
+                $product->price_cluster_group = $clusterIndex;
+                $product->save();
+            }
+        }
+
+        // Cache metadata
+        Cache::put('price_cluster_metadata', $metadata, now()->addHours(1));
+
+        return response()->json([
+            'message' => 'Clustering completed successfully',
+            'metadata' => $metadata,
+            'total_products' => $result['total_products'],
         ]);
     }
 }

@@ -40,6 +40,12 @@
                         <i class="bi bi-shop{{ Request::is('toko*') ? '-window' : '' }} me-2"></i>Toko
                     </a>
                 </li>
+                <li class="nav-item text-center d-lg-none py-2">
+                    <a class="nav-link px-3 fw-medium {{ Request::is('products*') ? 'active text-success' : '' }}"
+                        href="/products/cluster">
+                        <i class="bi bi-box-seam{{ Request::is('products*') ? '-fill' : '' }} me-2"></i>Produk
+                    </a>
+                </li>
 
                 <!-- Menu untuk desktop -->
                 <li class="nav-item d-none d-lg-block">
@@ -57,6 +63,10 @@
                 <li class="nav-item d-none d-lg-block">
                     <a class="nav-link px-3 fw-medium {{ Request::is('toko*') ? 'active text-success' : '' }}"
                         href="/toko">Toko</a>
+                </li>
+                <li class="nav-item d-none d-lg-block">
+                    <a class="nav-link px-3 fw-medium {{ Request::is('products*') ? 'active text-success' : '' }}"
+                        href="/products/cluster">Produk</a>
                 </li>
             </ul>
         </div>

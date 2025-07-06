@@ -68,6 +68,7 @@ Route::prefix('products')->name('products.')->group(function () {
     
     // name('products.') + name('cluster') = 'products.cluster'
     Route::get('/cluster', [ProductController::class, 'clusterByPrice'])->name('cluster');
+    Route::get('/cluster-refresh', [ProductController::class, 'generatePriceClusters'])->name('cluster.refresh');
     
     // name('products.') + name('show') = 'products.show'
     Route::get('/{shop:slug}/{product:slug}', [ProductController::class, 'show'])->name('show');

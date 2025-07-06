@@ -3,19 +3,15 @@
 @section('title', 'Kelompok Harga Produk')
 
 @section('content')
-    <div class="container mt-4">
-        {{-- Header Section --}}
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h1 class="page-title">Kelompok Harga Produk</h1>
-                        <p class="text-muted">Temukan produk berdasarkan kelompok harga yang telah ditentukan.</p>
-                    </div>
-                    <a href="{{ route('products.index') }}" class="btn btn-outline-primary">
-                        <i class="fas fa-arrow-left me-2"></i>Kembali ke Produk
-                    </a>
-                </div>
+    <div class="container py-5">
+        <div class="mb-5 position-relative">
+            <a href="{{ url()->previous() }}" class="btn btn-link position-absolute start-0 text-success"
+                style="transition: transform 0.3s ease;">
+                <i class="bi bi-chevron-left fs-4 me-1"></i>
+            </a>
+            <div class="text-center">
+                <h2 class="judul fw-bold mb-1">Klasterisasi Harga Produk</h2>
+                <p class="text-muted">Temukan produk berdasarkan kelompok harga yang telah ditentukan.</p>
             </div>
         </div>
 
@@ -55,7 +51,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary w-100">
+                                <button type="submit" class="btn btn-success w-100">
                                     <i class="fas fa-filter me-2"></i>Filter
                                 </button>
                             </div>
@@ -73,24 +69,20 @@
                         <div class="product-img-container">
                             <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('images/default-product.jpg') }}"
                                 alt="{{ $product->name }}" class="product-img">
-                            <div class="price-badge">
-                                Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </div>
                             <div class="cluster-badge cluster-header-{{ $product->price_cluster_group ?? 'default' }}">
                                 {{-- Mengambil nama deskriptif dari metadata untuk badge --}}
                                 {{ $cluster_metadata[$product->price_cluster_group]['name'] ?? 'Lainnya' }}
                             </div>
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h6 class="product-title">{{ Str::limit($product->name, 50) }}</h6>
-                            <p class="product-shop mb-2">
-                                <i class="fas fa-store me-1"></i>{{ $product->shop->name }}
-                            </p>
-                            <div class="mt-auto pt-2">
-                                <a href="{{ route('products.show', [$product->shop->slug, $product->slug]) }}"
-                                    class="btn btn-outline-primary btn-sm w-100">
-                                    <i class="fas fa-eye me-1"></i>Lihat Detail
-                                </a>
+                            <h5 class="product-title">{{ $product->name }}</h5>
+                            <p class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                            <small class="d-block mb-2 text-muted">
+                                <i class="bi bi-shop"></i> {{ $product->shop->name }}
+                            </small>
+                            <div class="mt-auto">
+                                <a href="{{ route('shops.products.show', ['shop' => $product->shop->slug, 'product' => $product->slug]) }}"
+                                    class="btn-detail w-100 text-center">Detail Produk</a>
                             </div>
                         </div>
                     </div>
@@ -153,10 +145,14 @@
         }
 
         .product-card {
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+            border-radius: 0.5rem;
             overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
@@ -166,19 +162,22 @@
 
         .product-img-container {
             position: relative;
-            height: 200px;
+            padding-top: 75%;
             overflow: hidden;
         }
 
         .product-img {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
         .product-card:hover .product-img {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .price-badge {
@@ -193,21 +192,23 @@
         }
 
         .product-body {
-            padding: 1rem;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .product-title {
+            font-size: 1.1rem;
             font-weight: 600;
+            color: #000000;
             margin-bottom: 0.5rem;
             line-height: 1.4;
-            min-height: 44px;
-            /* Ensure consistent title height */
         }
 
         .product-shop {
             color: #6c757d;
             font-size: 0.9rem;
-            margin-bottom: 0.5rem;
         }
     </style>
 @endsection
