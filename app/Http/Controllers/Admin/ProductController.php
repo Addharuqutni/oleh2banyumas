@@ -42,7 +42,8 @@ class ProductController extends Controller
     {
         $shops = Shop::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
-
+        
+        session(['previous_url' => url()->previous()]);
         return view('admin.products.create', compact('shops', 'categories'));
     }
 
@@ -86,8 +87,10 @@ class ProductController extends Controller
             $product->categories()->attach($request->categories);
         }
 
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Produk berhasil ditambahkan.');
+        return redirect(session('previous_url', route('admin.products.index')))
+            ->with('success', 'Produk berhasil diperbarui.');
+        // return redirect()->route('admin.products.index')
+        //     ->with('success', 'Produk berhasil ditambahkan.');
     }
 
     /**
