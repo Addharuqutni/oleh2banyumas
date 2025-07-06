@@ -123,8 +123,8 @@ class ProductController extends Controller
             }
         }
 
-        // Cache metadata
-        Cache::put('price_cluster_metadata', $metadata, now()->addHours(1));
+        // Simpan metadata secara permanen
+        Cache::forever('price_cluster_metadata', $metadata);
 
         return response()->json([
             'message' => 'Clustering completed successfully',
