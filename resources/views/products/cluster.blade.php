@@ -12,6 +12,9 @@
             <div class="text-center">
                 <h2 class="judul fw-bold mb-1">Klasterisasi Harga Produk</h2>
                 <p class="text-muted">Temukan produk berdasarkan kelompok harga yang telah ditentukan.</p>
+                <a href="{{ route('cluster.map') }}" class="btn btn-outline-success mt-2">
+                    <i class="bi bi-geo-alt me-1"></i> Lihat Pada Peta
+                </a>
             </div>
         </div>
 

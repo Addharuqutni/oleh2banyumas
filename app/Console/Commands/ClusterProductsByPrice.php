@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Product;
 use App\Services\PriceClusteringService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache; // <-- TAMBAHKAN INI
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class ClusterProductsByPrice extends Command

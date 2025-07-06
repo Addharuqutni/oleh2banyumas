@@ -8,6 +8,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ClusterMapController;
 use App\Http\Controllers\Admin\ShopController as AdminShopController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -25,6 +26,9 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 
 // Halaman peta semua toko
 Route::get('/maps', [ShopController::class, 'maps'])->name('maps');
+
+// Halaman peta clustering harga produk
+Route::get('/cluster-map', [ClusterMapController::class, 'index'])->name('cluster.map');
 
 // Halaman tentang aplikasi
 Route::get('/about', [HomeController::class, 'about'])->name('about');
