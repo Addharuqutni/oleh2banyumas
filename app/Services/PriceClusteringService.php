@@ -55,10 +55,16 @@ class PriceClusteringService
 
     private function initializeCentroids(array $data): array
     {
-        $keys = array_rand($data, $this->k);
-        $keys = is_array($keys) ? $keys : [$keys];
+        sort($data); // Urutkan data terlebih dahulu
+        $step = floor(count($data) / $this->k);
+        $centroids = [];
 
-        return array_map(fn($key) => $data[$key], $keys);
+        for ($i = 0; $i < $this->k; $i++) {
+            $index = min(round($i * $step), count($data) - 1);
+            $centroids[] = $data[$index];
+        }
+
+        return $centroids;
     }
 
     private function kMeans(array $data): array
