@@ -14,6 +14,10 @@ class Kernel extends ConsoleKernel
     {
         // Menghasilkan sitemap setiap hari pada pukul 01:00
         $schedule->command('sitemap:generate')->dailyAt('01:00');
+        
+        // Memperbarui metadata cluster harga dari file JSON ke cache setiap 6 jam
+        // Ini memastikan metadata selalu tersedia di cache meskipun cache dibersihkan
+        $schedule->command('cluster:refresh-metadata')->everyFourHours();
     }
 
     /**

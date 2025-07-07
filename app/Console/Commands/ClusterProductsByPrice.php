@@ -49,7 +49,7 @@ class ClusterProductsByPrice extends Command
                 }
             }
             
-            // --- BLOK KODE BARU DIMULAI DI SINI ---
+            // --- BLOK KODE UNTUK MENYIMPAN METADATA CLUSTER ---
             $this->info('Membuat dan menyimpan metadata cluster...');
             
             // Siapkan nama deskriptif untuk setiap cluster
@@ -66,11 +66,14 @@ class ClusterProductsByPrice extends Command
                 ];
             }
             
-            // Simpan metadata ke cache selamanya, akan di-update saat command ini jalan lagi
+            // Simpan metadata ke cache dan database untuk memastikan data tidak hilang
             Cache::forever('price_cluster_metadata', $clusterMetadata);
             
-            $this->info('Metadata berhasil disimpan.');
-            // --- BLOK KODE BARU BERAKHIR DI SINI ---
+            // Simpan juga ke dalam file JSON sebagai backup permanen
+            $jsonPath = storage_path('app/price_cluster_metadata.json');
+            file_put_contents($jsonPath, json_encode($clusterMetadata, JSON_PRETTY_PRINT));
+            
+            $this->info('Metadata berhasil disimpan ke cache dan file permanen.');
 
             $this->info('Proses clustering harga produk berhasil diselesaikan.');
             Log::info('Job clustering harga selesai.');

@@ -75,16 +75,35 @@ class ClusterMapController extends Controller
     }
     
     /**
-     * Mendapatkan metadata cluster dari cache
+     * Mendapatkan metadata cluster dari cache atau file backup
      * 
      * Mengambil data metadata cluster harga dari cache sistem.
+     * Jika data tidak tersedia di cache, akan mencoba membaca dari file JSON backup.
      * Metadata ini berisi informasi tentang setiap cluster seperti label, nama, dan rentang harga.
      *
      * @return array Array berisi metadata cluster harga
      */
     private function getClusterMetadata(): array
     {
-        return Cache::get('price_cluster_metadata', []);
+        // Coba ambil dari cache terlebih dahulu
+        $metadata = Cache::get('price_cluster_metadata');
+        
+        // Jika tidak ada di cache, coba ambil dari file JSON
+        if (empty($metadata)) {
+            $jsonPath = storage_path('app/price_cluster_metadata.json');
+            if (file_exists($jsonPath)) {
+                $jsonContent = file_get_contents($jsonPath);
+                $metadata = json_decode($jsonContent, true);
+                
+                // Simpan kembali ke cache untuk mempercepat akses berikutnya
+                if (!empty($metadata)) {
+                    Cache::forever('price_cluster_metadata', $metadata);
+                    Log::info('Metadata cluster berhasil dimuat dari file backup JSON');
+                }
+            }
+        }
+        
+        return $metadata ?: [];
     }
     
     /**
